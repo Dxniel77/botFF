@@ -1,553 +1,768 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>EOS Trade Lab</title>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
-<style>
-:root{
-  --bg:#030609;--bg1:#070e16;--bg2:#0b1520;--bg3:#101e2e;
-  --a:#00cfff;--a2:#0055cc;--aG:linear-gradient(135deg,#0055cc,#00cfff);
-  --gold:#f0a500;--goldG:linear-gradient(135deg,#b07800,#f0a500);
-  --gr:#00e5a0;--rd:#ff3d5a;
-  --t1:#dff0ff;--t2:#5a8aaa;--t3:#1e3d56;
-  --bd:rgba(0,207,255,.1);--bd2:rgba(0,207,255,.05);
-  --glow:0 0 40px rgba(0,207,255,.15);--card:rgba(7,14,22,.97);
-  --r:14px;--r2:9px;
-}
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-html,body{background:var(--bg);color:var(--t1);font-family:'Syne',sans-serif;min-height:100vh;overflow-x:hidden;overscroll-behavior:none;}
-#cvs{position:fixed;inset:0;z-index:0;pointer-events:none;}
-.gbg{position:fixed;inset:0;z-index:0;pointer-events:none;
-  background-image:linear-gradient(rgba(0,207,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,207,255,.03) 1px,transparent 1px);
-  background-size:48px 48px;}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>VIP · Membresía</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Variables ── */
+    :root {
+      --gold:    #C9A84C;
+      --gold2:   #F5D080;
+      --gold3:   #7A5C1A;
+      --bg:      #0A0A0E;
+      --bg2:     #111118;
+      --bg3:     #1A1A26;
+      --border:  rgba(201,168,76,0.18);
+      --text:    #F0EDE6;
+      --muted:   #7A7A8A;
+      --red:     #FF4D4D;
+      --yellow:  #FFB830;
+      --green:   #3DDB85;
+      --radius:  16px;
+    }
 
-/* LOADING */
-#loading{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg);}
-#loading.hidden{display:none;}
-.ld-ring{width:40px;height:40px;border:2px solid var(--bd);border-top-color:var(--a);border-radius:50%;animation:spin .8s linear infinite;margin-bottom:16px;}
-@keyframes spin{to{transform:rotate(360deg)}}
-.ld-txt{font-family:'DM Mono',monospace;font-size:11px;color:var(--t2);letter-spacing:1.5px;}
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* BLOCKED */
-#blocked{position:fixed;inset:0;z-index:9998;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(3,6,9,.98);padding:32px;text-align:center;}
-#blocked.hidden{display:none;}
-.bl-icon{font-size:64px;margin-bottom:20px;animation:bpulse 2s infinite;}
-@keyframes bpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
-.bl-title{font-size:24px;font-weight:800;margin-bottom:8px;}
-.bl-sub{font-size:12px;color:var(--t2);font-family:'DM Mono',monospace;letter-spacing:.8px;margin-bottom:32px;line-height:1.7;}
-.bl-card{width:100%;max-width:320px;background:var(--bg2);border:1px solid rgba(255,61,90,.2);border-radius:var(--r);padding:20px;position:relative;overflow:hidden;}
-.bl-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--rd),transparent);}
-.bl-msg{font-size:11px;color:var(--t2);font-family:'DM Mono',monospace;letter-spacing:.3px;margin-bottom:16px;line-height:1.6;}
-.bl-btn{width:100%;padding:14px;border-radius:var(--r2);border:none;background:var(--aG);color:#000;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 4px 24px rgba(0,85,204,.4);}
-.bl-btn:active{transform:scale(.98);}
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
 
-/* HEADER */
-.hdr{position:fixed;top:0;left:0;right:0;z-index:200;height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;background:rgba(3,6,9,.92);border-bottom:1px solid var(--bd);backdrop-filter:blur(20px);}
-.hl{display:flex;align-items:center;gap:10px;}
-.hlogo{width:32px;height:32px;border-radius:9px;overflow:hidden;background:var(--aG);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:8px;font-weight:500;color:#000;flex-shrink:0;}
-.hlogo img{width:100%;height:100%;object-fit:cover;}
-.hn{font-size:15px;font-weight:800;letter-spacing:-.2px;}
-.hs{font-size:9px;color:var(--t2);font-family:'DM Mono',monospace;letter-spacing:1.5px;margin-top:1px;}
-.hr{display:flex;align-items:center;gap:8px;}
-.live{width:6px;height:6px;border-radius:50%;background:var(--gr);box-shadow:0 0 8px var(--gr);animation:lp 2s infinite;}
-@keyframes lp{0%,100%{opacity:1}50%{opacity:.4}}
-.langb{font-family:'DM Mono',monospace;font-size:10px;color:var(--a);background:rgba(0,207,255,.07);border:1px solid var(--bd);border-radius:20px;padding:4px 10px;cursor:pointer;letter-spacing:.5px;}
+    /* ── Noise overlay ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
 
-/* NAV */
-.nav{position:fixed;bottom:0;left:0;right:0;z-index:200;background:rgba(3,6,9,.95);border-top:1px solid var(--bd);backdrop-filter:blur(20px);padding-bottom:env(safe-area-inset-bottom,0);display:none;}
-.nav.show{display:grid;}
-.nav4{grid-template-columns:repeat(4,1fr);}
-.nav5{grid-template-columns:repeat(5,1fr);}
-.ni{display:flex;flex-direction:column;align-items:center;padding:10px 4px 9px;cursor:pointer;position:relative;}
-.ni::after{content:'';position:absolute;top:0;left:20%;right:20%;height:2px;border-radius:0 0 3px 3px;background:var(--aG);transform:scaleX(0);transition:transform .3s cubic-bezier(.34,1.56,.64,1);}
-.ni.active::after{transform:scaleX(1);}
-.ni-i{font-size:18px;margin-bottom:3px;transition:transform .2s;}
-.ni.active .ni-i{transform:scale(1.1);}
-.ni-l{font-size:9px;font-family:'DM Mono',monospace;letter-spacing:.5px;color:var(--t2);transition:color .2s;}
-.ni.active .ni-l{color:var(--a);}
+    /* ── Loading ── */
+    #loading {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      z-index: 100;
+      background: var(--bg);
+    }
+    .loader-ring {
+      width: 56px; height: 56px;
+      border: 2px solid var(--border);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    #loading p { color: var(--muted); font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; }
 
-/* CONTENT */
-.wrap{padding:70px 14px 86px;position:relative;z-index:1;}
-.sec{display:none;}
-.sec.on{display:block;animation:si .3s cubic-bezier(.25,.46,.45,.94);}
-@keyframes si{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.card{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:16px;margin-bottom:12px;position:relative;overflow:hidden;}
-.shine{position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,207,255,.3),transparent);}
+    /* ── No access screen ── */
+    #no-access {
+      display: none;
+      position: fixed;
+      inset: 0;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+      text-align: center;
+      z-index: 50;
+    }
+    #no-access .lock-icon {
+      font-size: 64px;
+      margin-bottom: 24px;
+      filter: grayscale(0.3);
+    }
+    #no-access h2 {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+    #no-access p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 280px;
+    }
+    #no-access .btn-activate {
+      margin-top: 28px;
+      padding: 14px 36px;
+      background: linear-gradient(135deg, var(--gold3), var(--gold));
+      color: var(--bg);
+      border: none;
+      border-radius: 50px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+    }
 
-/* MEM CARD */
-.mem{background:linear-gradient(135deg,#060d18 0%,#091524 55%,#060e1a 100%);border:1px solid rgba(0,207,255,.18);border-radius:var(--r);padding:20px;margin-bottom:12px;position:relative;overflow:hidden;}
-.mem::before{content:'';position:absolute;top:-40%;right:-15%;width:200px;height:200px;background:radial-gradient(circle,rgba(0,85,204,.12),transparent 70%);pointer-events:none;}
-.mem::after{content:'';position:absolute;bottom:-30%;left:-5%;width:140px;height:140px;background:radial-gradient(circle,rgba(0,207,255,.06),transparent 70%);pointer-events:none;}
-.mt{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px;}
-.mn{font-size:20px;font-weight:800;letter-spacing:-.3px;}
-.mi{font-size:10px;color:var(--t2);font-family:'DM Mono',monospace;margin-top:3px;letter-spacing:.5px;}
-.rank{display:flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-family:'DM Mono',monospace;font-size:10px;font-weight:500;letter-spacing:.5px;white-space:nowrap;}
-.rk0{background:rgba(90,110,140,.15);border:1px solid rgba(130,160,200,.2);color:#8aabb5;}
-.rk1{background:rgba(0,229,160,.08);border:1px solid rgba(0,229,160,.25);color:var(--gr);}
-.rk2{background:rgba(0,207,255,.08);border:1px solid rgba(0,207,255,.25);color:var(--a);}
-.rk3{background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.3);color:#c084fc;}
-.rk4{background:rgba(240,165,0,.1);border:1px solid rgba(240,165,0,.3);color:var(--gold);}
-.cdl{font-size:10px;color:var(--t2);font-family:'DM Mono',monospace;letter-spacing:1.5px;margin-bottom:8px;}
-.cd{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;}
-.cdb{background:rgba(0,207,255,.04);border:1px solid rgba(0,207,255,.12);border-radius:10px;padding:10px 4px;text-align:center;transition:border-color .5s,background .5s;}
-.cdb.warn{border-color:rgba(240,165,0,.45);background:rgba(240,165,0,.07);}
-.cdb.crit{border-color:rgba(255,61,90,.5);background:rgba(255,61,90,.08);animation:pulsRed 1.2s infinite;}
-@keyframes pulsRed{0%,100%{box-shadow:none}50%{box-shadow:0 0 12px rgba(255,61,90,.3)}}
-.cdn{font-family:'DM Mono',monospace;font-size:26px;font-weight:400;color:var(--a);line-height:1;text-shadow:0 0 20px rgba(0,207,255,.4);}
-.cdb.warn .cdn{color:var(--gold);text-shadow:0 0 16px rgba(240,165,0,.4);}
-.cdb.crit .cdn{color:var(--rd);text-shadow:0 0 16px rgba(255,61,90,.4);}
-.cdu{font-size:8px;color:var(--t2);margin-top:4px;letter-spacing:1px;font-family:'DM Mono',monospace;}
-.rt{display:flex;align-items:center;margin-top:18px;}
-.rts{flex:1;display:flex;flex-direction:column;align-items:center;position:relative;}
-.rtl{position:absolute;top:11px;left:50%;right:-50%;height:2px;background:var(--bg3);z-index:0;}
-.rtl.done{background:linear-gradient(90deg,var(--a),var(--a2));}
-.rtd{width:22px;height:22px;border-radius:50%;border:2px solid var(--bg3);background:var(--bg1);display:flex;align-items:center;justify-content:center;font-size:10px;z-index:1;position:relative;transition:all .4s;}
-.rts.done .rtd{border-color:var(--a);background:rgba(0,207,255,.1);}
-.rts.now .rtd{border-color:var(--gold);background:rgba(240,165,0,.12);box-shadow:0 0 14px rgba(240,165,0,.4);animation:rnow 2s infinite;}
-@keyframes rnow{0%,100%{box-shadow:0 0 14px rgba(240,165,0,.4)}50%{box-shadow:0 0 24px rgba(240,165,0,.7)}}
-.rtn{font-size:7px;color:var(--t2);margin-top:5px;letter-spacing:.3px;font-family:'DM Mono',monospace;text-align:center;}
-.rts.now .rtn{color:var(--gold);}
-.prog{margin-top:14px;}
-.pi{display:flex;justify-content:space-between;font-size:10px;color:var(--t2);font-family:'DM Mono',monospace;margin-bottom:6px;}
-.pb{height:3px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden;}
-.pf{height:100%;border-radius:3px;background:var(--aG);box-shadow:0 0 8px rgba(0,207,255,.3);transition:width 1.5s cubic-bezier(.25,.46,.45,.94);}
+    /* ── Main app ── */
+    #app {
+      display: none;
+      position: relative;
+      z-index: 1;
+      padding: 20px 16px 32px;
+      max-width: 420px;
+      margin: 0 auto;
+    }
 
-/* RENEW BANNER */
-.rnw{border-radius:var(--r);padding:16px;margin-bottom:12px;position:relative;overflow:hidden;}
-.rnw::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;}
-.rnw.warn{border:1px solid rgba(240,165,0,.35);background:rgba(240,165,0,.06);}
-.rnw.warn::before{background:linear-gradient(90deg,transparent,var(--gold),transparent);}
-.rnw.crit{border:1px solid rgba(255,61,90,.4);background:rgba(255,61,90,.07);animation:pulsRed 1.5s infinite;}
-.rnw.crit::before{background:linear-gradient(90deg,transparent,var(--rd),transparent);}
-.rnw-t{font-size:13px;font-weight:700;margin-bottom:5px;}
-.rnw.warn .rnw-t{color:var(--gold);}
-.rnw.crit .rnw-t{color:var(--rd);}
-.rnw-s{font-size:11px;color:var(--t2);font-family:'DM Mono',monospace;margin-bottom:12px;line-height:1.5;}
-.rnw-inp{width:100%;background:rgba(0,207,255,.04);border:1px solid var(--bd);border-radius:var(--r2);padding:12px 14px;color:var(--t1);font-family:'DM Mono',monospace;font-size:16px;letter-spacing:4px;text-align:center;outline:none;text-transform:uppercase;margin-bottom:10px;transition:border-color .2s;}
-.rnw-inp:focus{border-color:rgba(0,207,255,.4);}
-.rnw-btn{width:100%;padding:13px;border-radius:var(--r2);border:none;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;cursor:pointer;}
-.rnw-btn:active{transform:scale(.98);}
-.rnw.warn .rnw-btn{background:var(--goldG);color:#000;}
-.rnw.crit .rnw-btn{background:linear-gradient(135deg,#c0001a,#ff3d5a);color:#fff;}
+    /* ── Header gold line ── */
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+    .top-bar .logo {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .top-bar .status-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green);
+      animation: pulse-dot 2s infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
 
-/* MISC */
-.st{font-size:11px;font-weight:700;color:var(--a);letter-spacing:2px;font-family:'DM Mono',monospace;text-transform:uppercase;display:flex;align-items:center;gap:8px;margin-bottom:12px;}
-.st::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(0,207,255,.2),transparent);}
-.cg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
-.fg label{font-size:10px;color:var(--t2);letter-spacing:.8px;font-family:'DM Mono',monospace;display:block;margin-bottom:6px;}
-.fg input,.fg select{width:100%;background:rgba(0,207,255,.03);border:1px solid var(--bd);border-radius:var(--r2);padding:11px 12px;color:var(--t1);font-family:'DM Mono',monospace;font-size:13px;outline:none;transition:border-color .2s;-webkit-appearance:none;}
-.fg input:focus,.fg select:focus{border-color:rgba(0,207,255,.3);}
-.fg select option{background:#070e16;}
-.res{background:rgba(0,207,255,.03);border:1px solid rgba(0,207,255,.12);border-radius:var(--r);padding:16px;display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
-.ri{text-align:center;}
-.rv{font-family:'DM Mono',monospace;font-size:20px;font-weight:400;line-height:1;}
-.rv.a{color:var(--a);}.rv.g{color:var(--gr);}.rv.r{color:var(--rd);}.rv.o{color:var(--gold);}
-.rl{font-size:9px;color:var(--t2);letter-spacing:.8px;margin-top:5px;font-family:'DM Mono',monospace;}
-.tip{border-radius:var(--r2);padding:12px 14px;margin-top:10px;font-size:12px;color:var(--t2);line-height:1.5;}
-.ci{width:100%;background:rgba(0,207,255,.04);border:1px solid var(--bd);border-radius:var(--r);padding:16px;color:var(--t1);font-family:'DM Mono',monospace;font-size:20px;font-weight:500;letter-spacing:5px;text-align:center;outline:none;text-transform:uppercase;margin-bottom:12px;transition:border-color .2s;}
-.ci:focus{border-color:rgba(0,207,255,.35);}
-.ci::placeholder{font-size:12px;letter-spacing:2px;color:var(--t3);}
-.btn{width:100%;padding:14px;border-radius:var(--r2);border:none;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;}
-.bta{background:var(--aG);color:#000;box-shadow:0 4px 24px rgba(0,85,204,.35);}
-.bta:active{transform:scale(.98);}
-.bto{background:transparent;border:1px solid var(--bd);color:var(--a);margin-top:8px;}
-.btg{background:var(--goldG);color:#000;box-shadow:0 4px 24px rgba(176,120,0,.3);}
-.ss{display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:var(--r2);background:rgba(0,229,160,.05);border:1px solid rgba(0,229,160,.15);font-size:12px;color:var(--t2);margin-bottom:12px;}
-.div{height:1px;background:var(--bd2);margin:16px 0;}
-.ta{width:100%;background:rgba(0,207,255,.03);border:1px solid var(--bd);border-radius:var(--r2);padding:11px 12px;color:var(--t1);font-family:'Syne',sans-serif;font-size:13px;outline:none;resize:none;transition:border-color .2s;}
-.astat{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;}
-.ast{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:12px 8px;text-align:center;}
-.asv{font-family:'DM Mono',monospace;font-size:22px;font-weight:400;color:var(--a);}
-.asv.go{color:var(--gold);}.asv.gr{color:var(--gr);}
-.asl{font-size:9px;color:var(--t2);letter-spacing:.8px;margin-top:4px;font-family:'DM Mono',monospace;}
-.dgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px;}
-.db{padding:10px 4px;border-radius:var(--r2);border:1px solid var(--bd);background:transparent;color:var(--t2);font-family:'DM Mono',monospace;font-size:12px;cursor:pointer;transition:all .2s;}
-.db.sel{background:rgba(0,207,255,.1);border-color:rgba(0,207,255,.35);color:var(--a);}
-.cr{background:rgba(0,207,255,.05);border:1px solid rgba(0,207,255,.2);border-radius:var(--r2);padding:14px;text-align:center;margin-top:10px;}
-.crv{font-family:'DM Mono',monospace;font-size:22px;font-weight:400;color:var(--a);letter-spacing:3px;}
-.crs{font-size:11px;color:var(--t2);font-family:'DM Mono',monospace;margin-top:6px;}
-.agrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
-.ag{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:14px;cursor:pointer;text-align:center;}
-.agi{font-size:24px;margin-bottom:6px;}
-.agl{font-size:12px;font-weight:700;}
-.ags{font-size:10px;color:var(--t2);font-family:'DM Mono',monospace;margin-top:2px;}
-.toast{position:fixed;top:68px;left:50%;transform:translateX(-50%) translateY(-4px);background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r2);padding:9px 18px;font-family:'DM Mono',monospace;font-size:11px;color:var(--a);letter-spacing:.5px;z-index:9998;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap;box-shadow:var(--glow),0 8px 32px rgba(0,0,0,.6);}
-.toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
-</style>
+    /* ── Profile card ── */
+    .profile-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 16px;
+      position: relative;
+      overflow: hidden;
+      animation: fadeUp 0.5s ease both;
+    }
+    .profile-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .profile-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .avatar-wrap {
+      position: relative;
+      flex-shrink: 0;
+    }
+    .avatar {
+      width: 62px; height: 62px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--gold);
+    }
+    .avatar-fallback {
+      width: 62px; height: 62px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold3), var(--bg3));
+      border: 2px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--gold2);
+    }
+    .vip-badge {
+      position: absolute;
+      bottom: -2px; right: -2px;
+      background: var(--gold);
+      color: var(--bg);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      padding: 2px 5px;
+      border-radius: 6px;
+    }
+    .profile-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .profile-name {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .profile-username {
+      font-size: 12px;
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+      margin-top: 2px;
+    }
+    .tier-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 8px;
+      padding: 4px 10px;
+      background: rgba(201,168,76,0.12);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--gold2);
+      letter-spacing: 0.06em;
+    }
+
+    /* Expiry section */
+    .expiry-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .expiry-date {
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      color: var(--gold2);
+      margin-bottom: 14px;
+    }
+
+    /* Progress bar */
+    .progress-wrap {
+      position: relative;
+      height: 6px;
+      background: var(--bg3);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 6px;
+    }
+    .progress-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 1s ease;
+      background: linear-gradient(90deg, var(--gold3), var(--gold));
+    }
+    .progress-fill.yellow { background: linear-gradient(90deg, #8B5E00, var(--yellow)); }
+    .progress-fill.red    { background: linear-gradient(90deg, #7A0000, var(--red)); }
+    .progress-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+    }
+
+    /* ── Countdown card ── */
+    .countdown-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+      margin-bottom: 16px;
+      animation: fadeUp 0.5s 0.1s ease both;
+    }
+    .countdown-title {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+    .countdown-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+    .countdown-unit {
+      background: var(--bg3);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 10px;
+      padding: 12px 6px;
+      text-align: center;
+    }
+    .countdown-num {
+      font-family: 'DM Mono', monospace;
+      font-size: 26px;
+      font-weight: 500;
+      line-height: 1;
+      color: var(--gold2);
+      margin-bottom: 4px;
+    }
+    .countdown-num.urgent { color: var(--red); animation: blink 1s step-end infinite; }
+    @keyframes blink { 50% { opacity: 0.4; } }
+    .countdown-label {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+    }
+
+    /* Alert banner */
+    .alert-banner {
+      display: none;
+      background: rgba(255,77,77,0.1);
+      border: 1px solid rgba(255,77,77,0.3);
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      font-size: 13px;
+      color: var(--red);
+      text-align: center;
+      font-weight: 600;
+      animation: fadeUp 0.5s ease both;
+    }
+    .ticker-tape {
+      display: none;
+      background: var(--red);
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      padding: 8px 0;
+      text-align: center;
+      margin-bottom: 16px;
+      border-radius: 8px;
+      animation: pulse-bg 1s ease infinite alternate;
+    }
+    @keyframes pulse-bg {
+      from { opacity: 0.85; }
+      to   { opacity: 1; }
+    }
+
+    /* ── Calculadora ── */
+    .calc-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+      margin-bottom: 16px;
+      animation: fadeUp 0.5s 0.2s ease both;
+    }
+    .calc-title {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+    .calc-row {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .calc-field label {
+      display: block;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .calc-field input, .calc-field select {
+      width: 100%;
+      background: var(--bg3);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 10px;
+      padding: 12px 14px;
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+    }
+    .calc-field input:focus, .calc-field select:focus {
+      border-color: var(--gold);
+    }
+    .calc-field select option { background: var(--bg2); }
+
+    .btn-calc {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, var(--gold3), var(--gold));
+      color: var(--bg);
+      border: none;
+      border-radius: 12px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.1s;
+    }
+    .btn-calc:active { opacity: 0.85; transform: scale(0.98); }
+
+    .calc-result {
+      display: none;
+      margin-top: 16px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .calc-result-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .calc-result-row:last-child { border-bottom: none; }
+    .calc-result-label { font-size: 12px; color: var(--muted); }
+    .calc-result-val {
+      font-family: 'DM Mono', monospace;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--gold2);
+    }
+    .calc-result-val.highlight {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--green);
+    }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      animation: fadeUp 0.5s 0.4s ease both;
+    }
+    .footer span { color: var(--gold); }
+  </style>
 </head>
 <body>
-<canvas id="cvs"></canvas>
-<div class="gbg"></div>
-<div class="toast" id="toast"></div>
 
-<!-- LOADING -->
+<!-- Loading -->
 <div id="loading">
-  <div class="ld-ring"></div>
-  <div class="ld-txt">VERIFICANDO ACCESO...</div>
+  <div class="loader-ring"></div>
+  <p>Verificando membresía</p>
 </div>
 
-<!-- BLOQUEADO -->
-<div id="blocked" class="hidden">
-  <div class="bl-icon">🔒</div>
-  <div class="bl-title">Acceso VIP Requerido</div>
-  <div class="bl-sub">No tienes una membresía activa.<br>Activa tu código desde el bot.</div>
-  <div class="bl-card">
-    <div class="bl-msg">Para acceder necesitas activar un código VIP en el bot de Telegram.</div>
-    <button class="bl-btn" onclick="if(tg)tg.close()">← Volver al Bot</button>
-  </div>
+<!-- Sin acceso -->
+<div id="no-access">
+  <div class="lock-icon">🔒</div>
+  <h2>Sin membresía activa</h2>
+  <p>Activa un código VIP para acceder al canal exclusivo de copy trading.</p>
+  <button class="btn-activate" onclick="window.Telegram.WebApp.close()">Volver al bot</button>
 </div>
 
-<!-- HEADER -->
-<header class="hdr">
-  <div class="hl">
-    <div class="hlogo"><img src="logo.png" alt="EOS" onerror="this.parentElement.innerHTML='EOS'"></div>
-    <div><div class="hn">EOS Trade Lab</div><div class="hs">VIP DASHBOARD</div></div>
-  </div>
-  <div class="hr">
-    <div class="live"></div>
-    <button class="langb" onclick="tLang()" id="lb">EN</button>
-  </div>
-</header>
+<!-- App principal -->
+<div id="app">
 
-<div class="wrap">
-
-  <!-- HOME -->
-  <div class="sec on" id="sec-home">
-    <div id="renewSlot"></div>
-    <div class="mem">
-      <div class="mt">
-        <div><div class="mn" id="mName">TRADER VIP</div><div class="mi" id="mId">ID · #000000</div></div>
-        <div class="rank rk2" id="rBadge">⚡ COPY TRADER</div>
-      </div>
-      <div class="cdl" data-es="TIEMPO RESTANTE" data-en="TIME REMAINING">TIEMPO RESTANTE</div>
-      <div class="cd">
-        <div class="cdb" id="bD"><div class="cdn" id="cdD">--</div><div class="cdu" data-es="DÍAS" data-en="DAYS">DÍAS</div></div>
-        <div class="cdb" id="bH"><div class="cdn" id="cdH">--</div><div class="cdu" data-es="HORAS" data-en="HRS">HORAS</div></div>
-        <div class="cdb" id="bM"><div class="cdn" id="cdM">--</div><div class="cdu" data-es="MINS" data-en="MINS">MINS</div></div>
-        <div class="cdb" id="bS"><div class="cdn" id="cdS">--</div><div class="cdu" data-es="SEGS" data-en="SECS">SEGS</div></div>
-      </div>
-      <div class="rt">
-        <div class="rts"><div class="rtl"></div><div class="rtd">👁</div><div class="rtn">OBSERVER</div></div>
-        <div class="rts"><div class="rtl"></div><div class="rtd">📡</div><div class="rtn">FOLLOWER</div></div>
-        <div class="rts"><div class="rtl"></div><div class="rtd">⚡</div><div class="rtn">COPY</div></div>
-        <div class="rts"><div class="rtl"></div><div class="rtd">🔬</div><div class="rtn">ANALYST</div></div>
-        <div class="rts"><div class="rtd">👑</div><div class="rtn">MASTER</div></div>
-      </div>
-      <div class="prog">
-        <div class="pi"><span data-es="SIGUIENTE RANGO" data-en="NEXT RANK">SIGUIENTE RANGO</span><span id="pPct">0%</span></div>
-        <div class="pb"><div class="pf" id="pFill" style="width:0%"></div></div>
-      </div>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-      <button class="btn bta" style="padding:12px;font-size:12px" onclick="goTo('vip')">🔑 <span data-es="Activar Código" data-en="Activate Code">Activar Código</span></button>
-      <button class="btn bto" style="padding:12px;font-size:12px;margin:0" onclick="goTo('help')">🎟 <span data-es="Soporte" data-en="Support">Soporte</span></button>
-    </div>
+  <div class="top-bar">
+    <span class="logo">VIP · Copy Trading</span>
+    <div class="status-dot"></div>
   </div>
 
-  <!-- CALC -->
-  <div class="sec" id="sec-calc">
-    <div class="st" data-es="CALCULADORA DE RIESGO" data-en="RISK CALCULATOR">CALCULADORA DE RIESGO</div>
-    <div class="card"><div class="shine"></div>
-      <div class="cg">
-        <div class="fg"><label data-es="CAPITAL ($)" data-en="CAPITAL ($)">CAPITAL ($)</label><input type="number" id="cCap" value="10000" oninput="doCalc()"></div>
-        <div class="fg"><label data-es="RIESGO (%)" data-en="RISK (%)">RIESGO (%)</label><input type="number" id="cRisk" value="1" step="0.1" oninput="doCalc()"></div>
-        <div class="fg"><label data-es="ENTRADA" data-en="ENTRY">ENTRADA</label><input type="number" id="cEntry" value="66800" oninput="doCalc()"></div>
-        <div class="fg"><label>STOP LOSS</label><input type="number" id="cSL" value="65900" oninput="doCalc()"></div>
-        <div class="fg"><label>TAKE PROFIT</label><input type="number" id="cTP" value="68500" oninput="doCalc()"></div>
-        <div class="fg"><label data-es="APALANCAMIENTO" data-en="LEVERAGE">APALANCAMIENTO</label><select id="cLev" onchange="doCalc()"><option>1x</option><option>2x</option><option>3x</option><option selected>5x</option><option>10x</option><option>20x</option></select></div>
+  <!-- Alerta crítica -->
+  <div id="ticker" class="ticker-tape">⚠️ MENOS DE 24 HORAS · RENUEVA AHORA · ⚠️</div>
+  <div id="alert-banner" class="alert-banner"></div>
+
+  <!-- Perfil VIP -->
+  <div class="profile-card">
+    <div class="profile-row">
+      <div class="avatar-wrap">
+        <div class="avatar-fallback" id="avatar-fallback"></div>
+        <img id="avatar-img" class="avatar" style="display:none" alt="avatar" />
+        <span class="vip-badge">VIP</span>
       </div>
-      <div class="res">
-        <div class="ri"><div class="rv r" id="rLoss">$100</div><div class="rl" data-es="MÁX. PÉRDIDA" data-en="MAX LOSS">MÁX. PÉRDIDA</div></div>
-        <div class="ri"><div class="rv g" id="rGain">$188</div><div class="rl" data-es="MÁX. GANANCIA" data-en="MAX GAIN">MÁX. GANANCIA</div></div>
-        <div class="ri"><div class="rv a" id="rSize">0.055</div><div class="rl" data-es="TAMAÑO POS." data-en="POSITION SIZE">TAMAÑO POS.</div></div>
-        <div class="ri"><div class="rv o" id="rRR">1.9:1</div><div class="rl">R:R RATIO</div></div>
-      </div>
-      <div class="tip" id="calcTip" style="background:rgba(0,229,160,.05);border:1px solid rgba(0,229,160,.15)"><strong style="color:var(--gr)">✅ Riesgo óptimo.</strong> Por cada $1 arriesgado, puedes ganar $1.9</div>
-    </div>
-  </div>
-
-  <!-- VIP -->
-  <div class="sec" id="sec-vip">
-    <div class="st" data-es="ACTIVAR ACCESO" data-en="ACTIVATE ACCESS">ACTIVAR ACCESO</div>
-    <div class="card"><div class="shine"></div>
-      <input type="text" class="ci" id="codeInp" placeholder="VIP-XXXXXX" maxlength="10">
-      <button class="btn bta" onclick="actCode()">🔑 <span data-es="Activar Membresía" data-en="Activate Membership">Activar Membresía</span></button>
-      <button class="btn bto" onclick="renCode()">🔄 <span data-es="Renovar Membresía" data-en="Renew Membership">Renovar Membresía</span></button>
-    </div>
-  </div>
-
-  <!-- HELP -->
-  <div class="sec" id="sec-help">
-    <div class="st" data-es="SOPORTE" data-en="SUPPORT">SOPORTE</div>
-    <div class="card"><div class="shine"></div>
-      <div class="ss"><div class="live"></div><span data-es="Soporte en línea · Respuesta ~2h" data-en="Support online · ~2h response">Soporte en línea · Respuesta ~2h</span></div>
-      <div class="fg" style="margin-bottom:10px"><label data-es="ASUNTO" data-en="SUBJECT">ASUNTO</label><input type="text" id="tSubj" style="width:100%;background:rgba(0,207,255,.03);border:1px solid var(--bd);border-radius:var(--r2);padding:11px 12px;color:var(--t1);font-family:'DM Mono',monospace;font-size:13px;outline:none;" placeholder="Describe tu consulta"></div>
-      <div class="fg" style="margin-bottom:12px"><label data-es="MENSAJE" data-en="MESSAGE">MENSAJE</label><textarea id="tMsg" class="ta" rows="3" placeholder="Explica en detalle..."></textarea></div>
-      <button class="btn bta" onclick="sendTkt()">🎟 <span data-es="Enviar Ticket" data-en="Send Ticket">Enviar Ticket</span></button>
-    </div>
-  </div>
-
-  <!-- ADMIN -->
-  <div class="sec" id="sec-admin">
-    <div class="st">PANEL ADMIN</div>
-    <div class="astat">
-      <div class="ast"><div class="asv" id="admT">—</div><div class="asl">MIEMBROS</div></div>
-      <div class="ast"><div class="asv go" id="admP">—</div><div class="asl">PENDIENTES</div></div>
-      <div class="ast"><div class="asv gr" id="admC">—</div><div class="asl">CÓDIGOS</div></div>
-    </div>
-    <div class="div"></div>
-    <div class="st">GENERAR CÓDIGO VIP</div>
-    <div class="card"><div class="shine"></div>
-      <div class="fg" style="margin-bottom:10px"><label>DÍAS DE ACCESO</label>
-        <div class="dgrid">
-          <button class="db" onclick="selD(7,this)">7d</button>
-          <button class="db" onclick="selD(15,this)">15d</button>
-          <button class="db sel" onclick="selD(30,this)">30d</button>
-          <button class="db" onclick="selD(60,this)">60d</button>
-          <button class="db" onclick="selD(90,this)">90d</button>
-          <button class="db" onclick="selD(180,this)">180d</button>
+      <div class="profile-info">
+        <div class="profile-name" id="profile-name">—</div>
+        <div class="profile-username" id="profile-username"></div>
+        <div class="tier-badge">
+          <span>💎</span>
+          <span id="tier-label">Miembro VIP</span>
         </div>
       </div>
-      <div class="fg" style="margin-bottom:12px"><label>USOS MÁXIMOS</label><input type="number" id="gUses" value="1" min="1" style="width:100%;background:rgba(0,207,255,.03);border:1px solid var(--bd);border-radius:var(--r2);padding:11px 12px;color:var(--t1);font-family:'DM Mono',monospace;font-size:13px;outline:none;"></div>
-      <button class="btn btg" onclick="genC()">✨ Generar Código</button>
-      <div id="gRes" style="display:none" class="cr">
-        <div class="crv" id="gCv">VIP-ABC123</div>
-        <div class="crs" id="gCs">30 días · 1 uso</div>
-        <button onclick="cpCode()" style="margin-top:10px;background:transparent;border:1px solid var(--bd);border-radius:var(--r2);padding:7px 16px;color:var(--a);font-family:'DM Mono',monospace;font-size:11px;cursor:pointer;">📋 Copiar</button>
+    </div>
+
+    <div class="expiry-label">Vencimiento</div>
+    <div class="expiry-date" id="expiry-date">—</div>
+
+    <div class="progress-wrap">
+      <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+    <div class="progress-labels">
+      <span id="progress-days-left">— días restantes</span>
+      <span id="progress-total">— días totales</span>
+    </div>
+  </div>
+
+  <!-- Countdown -->
+  <div class="countdown-card">
+    <div class="countdown-title">Tiempo restante</div>
+    <div class="countdown-grid">
+      <div class="countdown-unit">
+        <div class="countdown-num" id="cnt-d">00</div>
+        <div class="countdown-label">Días</div>
       </div>
-    </div>
-    <div class="agrid">
-      <div class="ag" onclick="tBc()"><div class="agi">📢</div><div class="agl">Broadcast</div><div class="ags">Enviar a todos</div></div>
-      <div class="ag"><div class="agi">👥</div><div class="agl">Miembros</div><div class="ags">Ver activos</div></div>
-    </div>
-    <div id="bcSec" style="display:none">
-      <div class="card"><div class="shine"></div>
-        <div class="fg" style="margin-bottom:12px"><label>MENSAJE PARA TODOS</label><textarea id="bcMsg" class="ta" rows="4" placeholder="Escribe el mensaje..."></textarea></div>
-        <button class="btn bta" onclick="sendBc()">📢 Enviar a todos</button>
+      <div class="countdown-unit">
+        <div class="countdown-num" id="cnt-h">00</div>
+        <div class="countdown-label">Horas</div>
+      </div>
+      <div class="countdown-unit">
+        <div class="countdown-num" id="cnt-m">00</div>
+        <div class="countdown-label">Minutos</div>
+      </div>
+      <div class="countdown-unit">
+        <div class="countdown-num" id="cnt-s">00</div>
+        <div class="countdown-label">Seg</div>
       </div>
     </div>
   </div>
 
+  <!-- Calculadora de lotaje -->
+  <div class="calc-card">
+    <div class="calc-title">💰 Calculadora de Lotaje</div>
+    <div class="calc-row">
+      <div class="calc-field">
+        <label>Balance de cuenta (USD)</label>
+        <input type="number" id="calc-balance" placeholder="Ej: 1000" min="1" inputmode="decimal" />
+      </div>
+      <div class="calc-field">
+        <label>Riesgo por operación (%)</label>
+        <input type="number" id="calc-risk" placeholder="Ej: 1" min="0.1" max="10" step="0.1" value="1" inputmode="decimal" />
+      </div>
+      <div class="calc-field">
+        <label>Stop Loss (pips)</label>
+        <input type="number" id="calc-sl" placeholder="Ej: 20" min="1" inputmode="decimal" />
+      </div>
+      <div class="calc-field">
+        <label>Par de divisas</label>
+        <select id="calc-pair">
+          <option value="10">EURUSD / GBPUSD / USDCAD</option>
+          <option value="10">AUDUSD / NZDUSD</option>
+          <option value="1000">USDJPY / EURJPY</option>
+          <option value="10">XAUUSD (Oro)</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn-calc" onclick="calcLotaje()">Calcular lotaje</button>
+    <div class="calc-result" id="calc-result">
+      <div class="calc-result-row">
+        <span class="calc-result-label">Riesgo en USD</span>
+        <span class="calc-result-val" id="res-risk-usd">—</span>
+      </div>
+      <div class="calc-result-row">
+        <span class="calc-result-label">Valor por pip</span>
+        <span class="calc-result-val" id="res-pip-val">—</span>
+      </div>
+      <div class="calc-result-row">
+        <span class="calc-result-label">Lotaje recomendado</span>
+        <span class="calc-result-val highlight" id="res-lots">—</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Canal VIP · Copy Trading<br/>
+    <span>Membresía activa y verificada ✓</span>
+  </div>
+
 </div>
 
-<!-- NAV USER -->
-<nav class="nav nav4" id="navU">
-  <div class="ni active" onclick="goTo('home')" id="ni-home"><div class="ni-i">⌂</div><div class="ni-l">HOME</div></div>
-  <div class="ni" onclick="goTo('calc')" id="ni-calc"><div class="ni-i">⚡</div><div class="ni-l">CALC</div></div>
-  <div class="ni" onclick="goTo('vip')" id="ni-vip"><div class="ni-i">◈</div><div class="ni-l">VIP</div></div>
-  <div class="ni" onclick="goTo('help')" id="ni-help"><div class="ni-i">🎟</div><div class="ni-l">AYUDA</div></div>
-</nav>
-<!-- NAV ADMIN -->
-<nav class="nav nav5" id="navA">
-  <div class="ni active" onclick="goTo('home')" id="ni-home-a"><div class="ni-i">⌂</div><div class="ni-l">HOME</div></div>
-  <div class="ni" onclick="goTo('calc')" id="ni-calc-a"><div class="ni-i">⚡</div><div class="ni-l">CALC</div></div>
-  <div class="ni" onclick="goTo('vip')" id="ni-vip-a"><div class="ni-i">◈</div><div class="ni-l">VIP</div></div>
-  <div class="ni" onclick="goTo('help')" id="ni-help-a"><div class="ni-i">🎟</div><div class="ni-l">AYUDA</div></div>
-  <div class="ni" onclick="goTo('admin')" id="ni-admin"><div class="ni-i">👑</div><div class="ni-l">ADMIN</div></div>
-</nav>
-
 <script>
-// ═══════════════════════════════════════
-// CONFIG — pon tu Telegram ID aquí
-// ═══════════════════════════════════════
-const ADMIN_IDS    = [0]; // ej: [123456789]
-const BOT_API_BASE = "https://dx-botv1-production.up.railway.app";
+  // ── CONFIG ──
+  // ⚠️ CAMBIA ESTA URL por tu URL de Railway
+  const API_BASE = 'https://dx-botv1-production.up.railway.app';
 
-const tg  = window.Telegram?.WebApp;
-if(tg){ tg.ready(); tg.expand(); }
-const TGU    = tg?.initDataUnsafe?.user;
-const IS_ADM = TGU && ADMIN_IDS.includes(TGU.id);
+  const tg = window.Telegram?.WebApp;
+  if (tg) {
+    tg.ready();
+    tg.expand();
+    // Colores del tema de Telegram (oscuro)
+    document.documentElement.style.setProperty('--bg', '#0A0A0E');
+  }
 
-// ═══════════════════════════════════════
-// INIT — verificar membresía
-// ═══════════════════════════════════════
-async function init(){
-  if(IS_ADM){ openApp(true, null); return; }
+  // ── Formateo ──
+  const pad = n => String(n).padStart(2, '0');
+  const fmtDate = ts => {
+    const d = new Date(ts);
+    return d.toLocaleDateString('es-ES', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
+  };
 
-  try{
-    const initData = tg?.initData || '';
-    const uid      = TGU?.id || 0;
-    const url = BOT_API_BASE + '/api/user_info?' +
-      (initData ? 'initData=' + encodeURIComponent(initData) : 'user_id=' + uid);
+  // ── Countdown global ──
+  let expiresAt = null;
+  let totalDays = 0;
+  let countdownInterval = null;
 
-    const resp = await fetch(url, {signal: AbortSignal.timeout(9000)});
-    if(!resp.ok) throw new Error('HTTP ' + resp.status);
-    const d = await resp.json();
+  function updateCountdown() {
+    if (!expiresAt) return;
+    const now  = Date.now();
+    const diff = Math.max(0, expiresAt - now);
+    const totalSec = Math.floor(diff / 1000);
+    const d = Math.floor(totalSec / 86400);
+    const h = Math.floor((totalSec % 86400) / 3600);
+    const m = Math.floor((totalSec % 3600) / 60);
+    const s = totalSec % 60;
 
-    if(!d.has_membership || d.is_expired){
-      document.getElementById('loading').classList.add('hidden');
-      document.getElementById('blocked').classList.remove('hidden');
-      initPart(); // partículas de fondo
+    document.getElementById('cnt-d').textContent = pad(d);
+    document.getElementById('cnt-h').textContent = pad(h);
+    document.getElementById('cnt-m').textContent = pad(m);
+    document.getElementById('cnt-s').textContent = pad(s);
+
+    const urgent = d === 0 && h < 24;
+    ['cnt-d','cnt-h','cnt-m','cnt-s'].forEach(id => {
+      document.getElementById(id).className = 'countdown-num' + (urgent ? ' urgent' : '');
+    });
+
+    // Alertas
+    const ticker = document.getElementById('ticker');
+    const banner = document.getElementById('alert-banner');
+    if (diff === 0) {
+      ticker.style.display = 'block';
+      ticker.textContent = '⛔ MEMBRESÍA VENCIDA · RENUEVA AHORA';
+    } else if (d === 0 && h < 24) {
+      ticker.style.display = 'block';
+    } else if (d <= 3) {
+      banner.style.display = 'block';
+      banner.textContent = `⚠️ Tu membresía vence en ${d} días · ¡Renueva pronto!`;
+    }
+
+    // Progreso
+    if (totalDays > 0) {
+      const daysLeft = d + (h + m/60 + s/3600) / 24;
+      const pct = Math.min(100, Math.max(0, (daysLeft / totalDays) * 100));
+      const fill = document.getElementById('progress-fill');
+      fill.style.width = pct + '%';
+      fill.className = 'progress-fill' + (pct <= 15 ? ' red' : pct <= 30 ? ' yellow' : '');
+      document.getElementById('progress-days-left').textContent = `${Math.ceil(daysLeft)} días restantes`;
+      document.getElementById('progress-total').textContent = `${totalDays} días totales`;
+    }
+  }
+
+  // ── Tier label ──
+  function getTier(days) {
+    if (days >= 90) return '💎 Miembro Diamante';
+    if (days >= 30) return '🥇 Miembro Premium';
+    if (days >= 7)  return '⭐ Miembro VIP';
+    return '🌱 Acceso Trial';
+  }
+
+  // ── Avatar con fallback ──
+  function setAvatar(firstName, photoUrl) {
+    const img = document.getElementById('avatar-img');
+    const fallback = document.getElementById('avatar-fallback');
+    if (photoUrl) {
+      img.onload = () => { img.style.display = 'block'; fallback.style.display = 'none'; };
+      img.onerror = () => { img.style.display = 'none'; fallback.style.display = 'flex'; };
+      img.src = photoUrl;
+    }
+    fallback.textContent = (firstName || '?')[0].toUpperCase();
+  }
+
+  // ── Render datos ──
+  function renderMembership(data) {
+    document.getElementById('profile-name').textContent = data.first_name || 'Miembro VIP';
+    document.getElementById('profile-username').textContent = data.username ? `@${data.username}` : `ID: ${data.user_id}`;
+    document.getElementById('tier-label').textContent = getTier(data.total_days || 0);
+    document.getElementById('expiry-date').textContent = fmtDate(data.expires_at_ts);
+
+    totalDays = data.total_days || 30;
+    expiresAt = data.expires_at_ts;
+
+    // Avatar: usar foto del initData de Telegram si está disponible
+    const tgUser = tg?.initDataUnsafe?.user;
+    setAvatar(data.first_name, tgUser?.photo_url || null);
+
+    updateCountdown();
+    if (countdownInterval) clearInterval(countdownInterval);
+    countdownInterval = setInterval(updateCountdown, 1000);
+  }
+
+  // ── Calcular lotaje ──
+  function calcLotaje() {
+    const balance = parseFloat(document.getElementById('calc-balance').value);
+    const risk    = parseFloat(document.getElementById('calc-risk').value);
+    const sl      = parseFloat(document.getElementById('calc-sl').value);
+    const pipVal  = parseFloat(document.getElementById('calc-pair').value);
+
+    if (!balance || !risk || !sl || balance <= 0 || sl <= 0) {
+      document.getElementById('calc-result').style.display = 'none';
       return;
     }
 
-    openApp(false, d);
+    const riskUSD  = balance * (risk / 100);
+    const pipValue = pipVal === 1000 ? 0.009 * 1 : 0.0001;
+    // Valor por pip en lote estándar ≈ $10 para majors, ~$9 para JPY
+    const pipValUSD = pipVal === 1000 ? 9 : 10;
+    const lots = riskUSD / (sl * pipValUSD);
+    const lotsRounded = Math.floor(lots * 100) / 100;
 
-  }catch(err){
-    console.warn('API error:', err);
-    // Fallo de red → dejar entrar sin datos reales
-    openApp(false, null);
-  }
-}
-
-function openApp(isAdmin, data){
-  document.getElementById('loading').classList.add('hidden');
-  document.getElementById('navU').classList.toggle('show', !isAdmin);
-  document.getElementById('navA').classList.toggle('show', isAdmin);
-
-  if(data){
-    document.getElementById('mName').textContent = (data.first_name || TGU?.first_name || 'TRADER').toUpperCase();
-    document.getElementById('mId').textContent   = 'ID · #' + (data.user_id || TGU?.id || '000000');
-    startCD(data.expires_at_ts);
-    setRank(data.total_days || 0);
-    checkRenew(data.seconds_left || 0);
-  } else if(TGU){
-    document.getElementById('mName').textContent = (TGU.first_name + ' ' + (TGU.last_name||'')).trim().toUpperCase();
-    document.getElementById('mId').textContent   = 'ID · #' + TGU.id;
+    document.getElementById('res-risk-usd').textContent = `$${riskUSD.toFixed(2)}`;
+    document.getElementById('res-pip-val').textContent  = `$${pipValUSD.toFixed(2)} / pip`;
+    document.getElementById('res-lots').textContent     = `${lotsRounded.toFixed(2)} lotes`;
+    document.getElementById('calc-result').style.display = 'block';
   }
 
-  initPart();
-  doCalc();
-}
+  // ── Carga principal ──
+  async function init() {
+    try {
+      const initData = tg?.initData || '';
+      let url = `${API_BASE}/api/user_info`;
+      if (initData) {
+        url += `?initData=${encodeURIComponent(initData)}`;
+      } else {
+        // Modo desarrollo: usar user_id del initDataUnsafe
+        const uid = tg?.initDataUnsafe?.user?.id;
+        if (uid) url += `?user_id=${uid}`;
+      }
 
-// ═══════════════════════════════════════
-// COUNTDOWN
-// ═══════════════════════════════════════
-function startCD(expMs){
-  if(!expMs) return;
-  const p = n => String(Math.floor(n)).padStart(2,'0');
-  const IDs = ['bD','bH','bM','bS'];
+      const res  = await fetch(url);
+      const data = await res.json();
 
-  const tick = () => {
-    const diff = Math.max(0, expMs - Date.now());
-    document.getElementById('cdD').textContent = p(diff / 86400000);
-    document.getElementById('cdH').textContent = p((diff % 86400000) / 3600000);
-    document.getElementById('cdM').textContent = p((diff % 3600000) / 60000);
-    document.getElementById('cdS').textContent = p((diff % 60000) / 1000);
-    const s = diff / 1000;
-    const cls = s <= 86400 ? 'crit' : s <= 604800 ? 'warn' : '';
-    IDs.forEach(id => {
-      const el = document.getElementById(id);
-      el.classList.remove('warn','crit');
-      if(cls) el.classList.add(cls);
-    });
-  };
-  setInterval(tick, 1000);
-  tick();
-}
+      document.getElementById('loading').style.display = 'none';
 
-// ═══════════════════════════════════════
-// BANNER RENOVACIÓN
-// ═══════════════════════════════════════
-function checkRenew(secs){
-  if(secs > 604800) return; // más de 7 días → sin banner
-  const lvl = secs <= 86400 ? 'crit' : 'warn';
-  const isCrit = lvl === 'crit';
-  document.getElementById('renewSlot').innerHTML = `
-    <div class="rnw ${lvl}">
-      <div class="rnw-t">${isCrit ? '🔴 ¡Acceso crítico!' : '🟡 Renueva pronto'}</div>
-      <div class="rnw-s">${isCrit
-        ? 'Menos de 24 h restantes. Renueva ahora para no perder el canal VIP.'
-        : 'Menos de 7 días restantes. Activa un código para extender tu acceso.'
-      }</div>
-      <input class="rnw-inp" id="rnwCode" type="text" placeholder="VIP-XXXXXX" maxlength="10">
-      <button class="rnw-btn" onclick="doRenew()">🔄 Renovar Ahora</button>
-    </div>`;
-}
-function doRenew(){
-  const c = document.getElementById('rnwCode')?.value.trim().toUpperCase();
-  if(!c){ toast('⚠️ Ingresa tu código'); return; }
-  if(tg) tg.sendData(JSON.stringify({action:'renew', code:c}));
-  toast('🔄 Renovando ' + c + '...');
-}
+      if (!data.has_membership || data.is_expired) {
+        document.getElementById('no-access').style.display = 'flex';
+        return;
+      }
 
-// ═══════════════════════════════════════
-// LANG / NAV / RANKS
-// ═══════════════════════════════════════
-let lang = 'es';
-function tLang(){
-  lang = lang==='es'?'en':'es';
-  document.getElementById('lb').textContent = lang==='es'?'EN':'ES';
-  document.querySelectorAll('[data-es]').forEach(el=>el.textContent=el.getAttribute('data-'+lang));
-}
-function goTo(s){
-  document.querySelectorAll('.sec').forEach(x=>x.classList.remove('on'));
-  document.querySelectorAll('.ni').forEach(x=>x.classList.remove('active'));
-  document.getElementById('sec-'+s)?.classList.add('on');
-  ['ni-'+s,'ni-'+s+'-a'].forEach(id=>document.getElementById(id)?.classList.add('active'));
-  tg?.HapticFeedback?.impactOccurred('light');
-}
-const RKS=[{d:0,l:'👁 OBSERVER',c:'rk0'},{d:15,l:'📡 FOLLOWER',c:'rk1'},{d:45,l:'⚡ COPY TRADER',c:'rk2'},{d:90,l:'🔬 ANALYST',c:'rk3'},{d:180,l:'👑 MASTER',c:'rk4'}];
-function setRank(days){
-  let r=RKS[0]; for(const x of RKS) if(days>=x.d) r=x;
-  const b=document.getElementById('rBadge'); b.className='rank '+r.c; b.textContent=r.l;
-  const i=RKS.indexOf(r),ni=Math.min(i+1,RKS.length-1),nx=RKS[ni];
-  const pct=nx.d>r.d?Math.min(100,Math.round((days-r.d)/(nx.d-r.d)*100)):100;
-  document.getElementById('pFill').style.width=pct+'%';
-  document.getElementById('pPct').textContent=pct+'%';
-  document.querySelectorAll('.rts').forEach((el,idx)=>{
-    el.classList.remove('done','now');
-    if(idx<i) el.classList.add('done'); else if(idx===i) el.classList.add('now');
-  });
-}
+      renderMembership(data);
+      document.getElementById('app').style.display = 'block';
 
-// ═══════════════════════════════════════
-// CALC
-// ═══════════════════════════════════════
-function doCalc(){
-  const cap=parseFloat(document.getElementById('cCap').value)||0;
-  const rp=parseFloat(document.getElementById('cRisk').value)||1;
-  const en=parseFloat(document.getElementById('cEntry').value)||0;
-  const sl=parseFloat(document.getElementById('cSL').value)||0;
-  const tp=parseFloat(document.getElementById('cTP').value)||0;
-  const loss=cap*rp/100,sld=Math.abs(en-sl)||1,tpd=Math.abs(tp-en);
-  const size=loss/sld,gain=size*tpd,rr=tpd/sld;
-  document.getElementById('rLoss').textContent='$'+loss.toFixed(0);
-  document.getElementById('rGain').textContent='$'+gain.toFixed(0);
-  document.getElementById('rSize').textContent=size.toFixed(4);
-  document.getElementById('rRR').textContent=rr.toFixed(2)+':1';
-  const tip=document.getElementById('calcTip');
-  if(rp>2){tip.style.cssText='background:rgba(255,61,90,.05);border:1px solid rgba(255,61,90,.2)';tip.innerHTML='<strong style="color:var(--rd)">⚠️ Riesgo elevado.</strong> No superar el 1-2% por operación.';}
-  else if(rr<1){tip.style.cssText='background:rgba(240,165,0,.05);border:1px solid rgba(240,165,0,.2)';tip.innerHTML='<strong style="color:var(--gold)">⚠️ R:R desfavorable.</strong> Ganancia menor al riesgo.';}
-  else{tip.style.cssText='background:rgba(0,229,160,.05);border:1px solid rgba(0,229,160,.15)';tip.innerHTML=`<strong style="color:var(--gr)">✅ Riesgo óptimo.</strong> Por cada $1 arriesgado, puedes ganar $${rr.toFixed(2)}.`;}
-}
+    } catch (err) {
+      document.getElementById('loading').innerHTML = `
+        <div style="text-align:center;padding:32px;color:#FF4D4D;">
+          <div style="font-size:40px;margin-bottom:16px;">⚠️</div>
+          <div style="font-size:14px;">Error de conexión<br><span style="color:#7A7A8A;font-size:12px;">Intenta de nuevo</span></div>
+        </div>`;
+    }
+  }
 
-// ═══════════════════════════════════════
-// VIP / TICKET / ADMIN
-// ═══════════════════════════════════════
-function actCode(){const c=document.getElementById('codeInp').value.trim();if(!c){toast('⚠️ Ingresa un código');return;}if(tg)tg.sendData(JSON.stringify({action:'activate',code:c.toUpperCase()}));toast('🔑 Activando...');}
-function renCode(){const c=document.getElementById('codeInp').value.trim();if(!c){toast('⚠️ Ingresa un código');return;}if(tg)tg.sendData(JSON.stringify({action:'renew',code:c.toUpperCase()}));toast('🔄 Renovando...');}
-function sendTkt(){const s=document.getElementById('tSubj').value.trim(),m=document.getElementById('tMsg').value.trim();if(!s||!m){toast('⚠️ Completa todos los campos');return;}if(tg)tg.sendData(JSON.stringify({action:'ticket',subject:s,message:m}));document.getElementById('tSubj').value='';document.getElementById('tMsg').value='';toast('🎟 Ticket enviado');}
-let selDays=30;
-function selD(d,btn){selDays=d;document.querySelectorAll('.db').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');}
-function genC(){const uses=parseInt(document.getElementById('gUses').value)||1;const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';const code='VIP-'+Array.from({length:6},()=>chars[Math.floor(Math.random()*chars.length)]).join('');document.getElementById('gRes').style.display='block';document.getElementById('gCv').textContent=code;document.getElementById('gCs').textContent=selDays+'d · '+uses+' uso'+(uses>1?'s':'');if(tg)tg.sendData(JSON.stringify({action:'gen_code',code,days:selDays,uses}));toast('✨ Código generado');tg?.HapticFeedback?.notificationOccurred('success');}
-function cpCode(){navigator.clipboard?.writeText(document.getElementById('gCv').textContent);toast('📋 Código copiado');}
-function tBc(){const b=document.getElementById('bcSec');b.style.display=b.style.display==='none'?'block':'none';}
-function sendBc(){const msg=document.getElementById('bcMsg').value.trim();if(!msg){toast('⚠️ Escribe el mensaje');return;}if(tg)tg.sendData(JSON.stringify({action:'broadcast',message:msg}));document.getElementById('bcMsg').value='';toast('📢 Broadcast enviado');}
-
-// ═══════════════════════════════════════
-// TOAST
-// ═══════════════════════════════════════
-function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('on');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('on'),2600);}
-
-// ═══════════════════════════════════════
-// PARTICLES
-// ═══════════════════════════════════════
-function initPart(){
-  const c=document.getElementById('cvs'),ctx=c.getContext('2d');let W,H,pts=[];
-  function rsz(){W=c.width=window.innerWidth;H=c.height=window.innerHeight;pts=[];const n=Math.floor(W*H/22000);for(let i=0;i<n;i++)pts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.18,vy:(Math.random()-.5)*.18,r:Math.random()*1+.3,a:Math.random()*Math.PI*2});}
-  function draw(){ctx.clearRect(0,0,W,H);pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.a+=.005;if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,207,255,${(.12+Math.sin(p.a)*.08).toFixed(2)})`;ctx.fill();});for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,dist=Math.sqrt(dx*dx+dy*dy);if(dist<85){ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.strokeStyle=`rgba(0,207,255,${(.045*(1-dist/85)).toFixed(3)})`;ctx.lineWidth=.5;ctx.stroke();}}requestAnimationFrame(draw);}
-  window.addEventListener('resize',rsz);rsz();draw();
-}
-
-// ═══════════════════════════════════════
-// ARRANCAR
-// ═══════════════════════════════════════
-init();
+  init();
 </script>
 </body>
 </html>
