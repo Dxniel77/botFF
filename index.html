@@ -206,6 +206,7 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Syne',sans-serif;min
 /* TOAST */
 .toast{position:fixed;top:68px;left:50%;transform:translateX(-50%) translateY(-4px);background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r2);padding:9px 18px;font-family:'DM Mono',monospace;font-size:11px;color:var(--a);letter-spacing:.5px;z-index:9998;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap;box-shadow:var(--glow),0 8px 32px rgba(0,0,0,.6);}
 .toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
+@keyframes pulsRed{0%,100%{box-shadow:0 0 0 rgba(255,61,90,0)}50%{box-shadow:0 0 18px rgba(255,61,90,.35)}}
 </style>
 </head>
 <body>
@@ -400,13 +401,107 @@ html,body{background:var(--bg);color:var(--t1);font-family:'Syne',sans-serif;min
 </nav>
 
 <script>
-// ── CONFIG: pon aquí tu Telegram ID ──
+// ── CONFIG ──
 const ADMIN_IDS=[0]; // ej: [123456789]
+const BOT_API_BASE="https://dx-botv1-production.up.railway.app";
 
 const tg=window.Telegram?.WebApp;
 if(tg){tg.ready();tg.expand();}
 const TGU=tg?.initDataUnsafe?.user;
 const IS_ADM=TGU&&ADMIN_IDS.includes(TGU.id);
+
+// ── LOAD MEMBERSHIP desde el bot ──
+async function loadMembership(){
+  try{
+    const initData=tg?.initData||'';
+    const uid=TGU?.id||0;
+    const url=BOT_API_BASE+'/api/user_info?'+(initData?'initData='+encodeURIComponent(initData):'user_id='+uid);
+    const r=await fetch(url,{signal:AbortSignal.timeout(8000)});
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    const d=await r.json();
+    if(d.first_name)document.getElementById('mName').textContent=d.first_name.toUpperCase();
+    if(d.user_id)document.getElementById('mId').textContent='ID · #'+d.user_id;
+    if(d.has_membership&&!d.is_expired){
+      startCDReal(d.expires_at_ts);
+      setRank(d.total_days||0);
+      checkRenewalAlert(d.seconds_left);
+    }else{
+      // Sin membresía — mostrar ceros y banner
+      ['cdD','cdH','cdM','cdS'].forEach(id=>document.getElementById(id).textContent='00');
+      showRenewalBanner('crit');
+    }
+  }catch(e){
+    console.warn('API error',e);
+    // Fallback: mantener startCD demo
+    startCDDemo();
+  }
+}
+
+function startCDReal(expiresTsMs){
+  const p=n=>String(Math.floor(n)).padStart(2,'0');
+  const t=()=>{
+    const d=Math.max(0,expiresTsMs-Date.now());
+    document.getElementById('cdD').textContent=p(d/86400000);
+    document.getElementById('cdH').textContent=p((d%86400000)/3600000);
+    document.getElementById('cdM').textContent=p((d%3600000)/60000);
+    document.getElementById('cdS').textContent=p((d%60000)/1000);
+    // Color dinámico
+    const secs=d/1000;
+    const boxes=document.querySelectorAll('.cdb');
+    if(secs<=86400){boxes.forEach(b=>{b.style.borderColor='rgba(255,61,90,.5)';b.style.animation='pulsRed 1s infinite';});}
+    else if(secs<=604800){boxes.forEach(b=>{b.style.borderColor='rgba(240,165,0,.4)';b.style.animation='';});}
+    else{boxes.forEach(b=>{b.style.borderColor='';b.style.animation='';});}
+  };
+  setInterval(t,1000);t();
+}
+
+function startCDDemo(){
+  // Fallback demo sin datos reales
+  const exp=new Date(Date.now()+(30*86400+12*3600+45*60)*1000);
+  const p=n=>String(Math.floor(n)).padStart(2,'0');
+  const t=()=>{const d=Math.max(0,exp-Date.now());document.getElementById('cdD').textContent=p(d/86400000);document.getElementById('cdH').textContent=p((d%86400000)/3600000);document.getElementById('cdM').textContent=p((d%3600000)/60000);document.getElementById('cdS').textContent=p((d%60000)/1000);};
+  setInterval(t,1000);t();
+}
+
+function checkRenewalAlert(secsLeft){
+  if(secsLeft<=86400)showRenewalBanner('crit');       // ≤24h
+  else if(secsLeft<=604800)showRenewalBanner('warn'); // ≤7 días
+}
+
+function showRenewalBanner(level){
+  const existing=document.getElementById('renewBanner');
+  if(existing)existing.remove();
+  const isCrit=level==='crit';
+  const banner=document.createElement('div');
+  banner.id='renewBanner';
+  banner.style.cssText=`
+    margin-bottom:12px;border-radius:14px;padding:14px 16px;
+    border:1px solid ${isCrit?'rgba(255,61,90,.45)':'rgba(240,165,0,.4)'};
+    background:${isCrit?'rgba(255,61,90,.07)':'rgba(240,165,0,.06)'};
+    ${isCrit?'animation:pulsRed 1.5s infinite;':''}
+  `;
+  banner.innerHTML=`
+    <div style="font-size:13px;font-weight:700;color:${isCrit?'var(--rd)':'var(--gold)'};margin-bottom:8px">
+      ${isCrit?'🔴 ¡Tu membresía vence pronto!':'🟡 Renueva tu membresía'}
+    </div>
+    <div style="font-size:11px;color:var(--t2);font-family:'DM Mono',monospace;margin-bottom:10px">
+      ${isCrit?'Acceso crítico — renueva ahora para no perder el canal':'Menos de 7 días restantes'}
+    </div>
+    <input type="text" id="renewCode" placeholder="VIP-XXXXXX" style="width:100%;background:rgba(0,207,255,.04);border:1px solid var(--bd);border-radius:9px;padding:11px 14px;color:var(--t1);font-family:'DM Mono',monospace;font-size:16px;font-weight:500;letter-spacing:4px;text-align:center;outline:none;text-transform:uppercase;margin-bottom:10px;">
+    <button onclick="renewFromBanner()" style="width:100%;padding:13px;border-radius:9px;border:none;background:${isCrit?'linear-gradient(135deg,#c0001a,#ff3d5a)':'linear-gradient(135deg,#b07800,#f0a500)'};color:#000;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;">
+      🔄 Renovar Ahora
+    </button>
+  `;
+  const memCard=document.querySelector('.mem');
+  if(memCard)memCard.insertAdjacentElement('afterend',banner);
+}
+
+function renewFromBanner(){
+  const c=document.getElementById('renewCode')?.value.trim().toUpperCase();
+  if(!c){toast('⚠️ Ingresa tu código de renovación');return;}
+  if(tg)tg.sendData(JSON.stringify({action:'renew',code:c}));
+  toast('🔄 Renovando '+c+'...');
+}
 
 // GATE
 function checkGate(){
@@ -422,7 +517,7 @@ function openApp(adm){
     document.getElementById('mName').textContent=(TGU.first_name+' '+(TGU.last_name||'')).trim().toUpperCase();
     document.getElementById('mId').textContent='ID · #'+TGU.id;
   }
-  initPart();startCD();fetchPrices();
+  initPart();loadMembership();fetchPrices();
   setInterval(fetchPrices,60000);
   setTimeout(drawChart,120);doCalc();
 }
@@ -475,20 +570,6 @@ function setRank(days){
   });
 }
 setRank(62);
-
-// COUNTDOWN
-function startCD(){
-  const exp=new Date(Date.now()+(30*86400+12*3600+45*60)*1000);
-  const p=n=>String(Math.floor(n)).padStart(2,'0');
-  const t=()=>{
-    const d=Math.max(0,exp-Date.now());
-    document.getElementById('cdD').textContent=p(d/86400000);
-    document.getElementById('cdH').textContent=p((d%86400000)/3600000);
-    document.getElementById('cdM').textContent=p((d%3600000)/60000);
-    document.getElementById('cdS').textContent=p((d%60000)/1000);
-  };
-  setInterval(t,1000);t();
-}
 
 // PRICES
 let btcBase=66800;
