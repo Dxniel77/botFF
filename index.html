@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DX · Oro & Bitcoin</title>
+    <title>ORO · BITCOIN · TRADER</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -27,10 +27,6 @@
             --bitcoin: #F7931A;
             --verde: #2EBD85;
             --rojo: #F05A5A;
-            --azul: #3B7FBD;
-            --sombra: 0 8px 24px rgba(0,0,0,0.5);
-            --radio: 20px;
-            --radio-sm: 12px;
             --fuente: 'Inter', sans-serif;
             --mono: 'JetBrains Mono', monospace;
         }
@@ -171,23 +167,15 @@
         .tarjeta {
             background: var(--tarjeta);
             border: 1px solid var(--borde);
-            border-radius: var(--radio);
+            border-radius: 20px;
             padding: 20px;
             margin-bottom: 16px;
-            box-shadow: var(--sombra);
-        }
-        .titulo-tarjeta {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--texto-mute);
-            margin-bottom: 16px;
-            text-transform: uppercase;
         }
 
         /* ===== PERFIL ===== */
         .perfil-header {
             background: linear-gradient(135deg, var(--oro), var(--bitcoin));
-            border-radius: var(--radio);
+            border-radius: 20px;
             padding: 20px;
             margin-bottom: 16px;
             display: flex;
@@ -250,7 +238,7 @@
         .stat-card {
             background: var(--input);
             border: 1px solid var(--borde);
-            border-radius: var(--radio-sm);
+            border-radius: 12px;
             padding: 16px;
             text-align: center;
         }
@@ -279,7 +267,7 @@
             width: 100%;
             background: var(--input);
             border: 1px solid var(--borde);
-            border-radius: var(--radio-sm);
+            border-radius: 12px;
             padding: 14px;
             font-size: 15px;
             color: var(--texto);
@@ -296,7 +284,7 @@
             background-position: right 16px center;
         }
 
-        /* Toggle Compra/Venta */
+        /* Toggle */
         .toggle-group {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -306,7 +294,7 @@
         .toggle-btn {
             background: var(--input);
             border: 1px solid var(--borde);
-            border-radius: var(--radio-sm);
+            border-radius: 12px;
             padding: 14px;
             font-weight: 600;
             color: var(--texto-sec);
@@ -330,7 +318,7 @@
             background: var(--oro);
             color: #0B0E14;
             border: none;
-            border-radius: var(--radio-sm);
+            border-radius: 12px;
             padding: 16px;
             font-size: 16px;
             font-weight: 700;
@@ -341,7 +329,7 @@
         /* Resultados */
         .resultado {
             background: var(--input);
-            border-radius: var(--radio-sm);
+            border-radius: 12px;
             padding: 16px;
             margin-top: 16px;
             border-left: 3px solid var(--oro);
@@ -367,81 +355,6 @@
         .rojo { color: var(--rojo); }
         .verde { color: var(--verde); }
 
-        /* Noticias */
-        .noticias-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 16px;
-        }
-        .noticias-timer {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--tarjeta);
-            border: 1px solid var(--borde);
-            border-radius: 30px;
-            padding: 6px 14px;
-            font-size: 12px;
-            color: var(--texto-sec);
-        }
-        .timer-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--verde);
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } }
-        
-        .noticia-item {
-            background: var(--tarjeta);
-            border: 1px solid var(--borde);
-            border-radius: var(--radio);
-            padding: 16px;
-            margin-bottom: 12px;
-            text-decoration: none;
-            color: inherit;
-            display: block;
-        }
-        .noticia-fuente {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 8px;
-        }
-        .fuente-nombre {
-            background: var(--input);
-            border-radius: 20px;
-            padding: 4px 12px;
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--texto-sec);
-        }
-        .fuente-tiempo {
-            font-size: 11px;
-            color: var(--texto-mute);
-        }
-        .noticia-titulo {
-            font-size: 15px;
-            font-weight: 600;
-            line-height: 1.5;
-            margin-bottom: 8px;
-        }
-        .noticia-etiquetas {
-            display: flex;
-            gap: 8px;
-        }
-        .etiqueta {
-            background: var(--input);
-            border-radius: 20px;
-            padding: 2px 10px;
-            font-size: 10px;
-            font-weight: 600;
-        }
-        .etiqueta.oro { color: var(--oro); border: 1px solid rgba(240,185,11,0.3); }
-        .etiqueta.bitcoin { color: var(--bitcoin); border: 1px solid rgba(247,147,26,0.3); }
-
         /* Navegación */
         .nav {
             display: flex;
@@ -464,7 +377,6 @@
             padding: 8px 0;
             cursor: pointer;
             border-radius: 8px;
-            transition: all 0.2s;
         }
         .nav-item.activo {
             color: var(--oro);
@@ -649,7 +561,7 @@
                     </div>
                 </div>
 
-                <!-- PANEL VALOR DEL PIP -->
+                <!-- PANEL PIP -->
                 <div class="panel" id="panel-pip">
                     <div class="titulo-panel">💰 Valor del Pip</div>
                     <div class="subtitulo-panel">Cuánto dinero por pip</div>
@@ -690,7 +602,7 @@
                     </div>
                 </div>
 
-                <!-- PANEL RIESGO/BENEFICIO -->
+                <!-- PANEL RR -->
                 <div class="panel" id="panel-rr">
                     <div class="titulo-panel">⚖️ R:R Ratio</div>
                     <div class="subtitulo-panel">Análisis riesgo/beneficio</div>
@@ -737,24 +649,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- PANEL NOTICIAS -->
-                <div class="panel" id="panel-noticias">
-                    <div class="titulo-panel">📰 Noticias</div>
-                    <div class="subtitulo-panel">Oro y Bitcoin</div>
-
-                    <div class="noticias-header">
-                        <div class="noticias-timer">
-                            <span class="timer-dot"></span>
-                            <span id="timer-texto">actualizando</span>
-                        </div>
-                        <button class="btn-actualizar" onclick="cargarNoticias(true)" style="background:var(--input); border:1px solid var(--borde); border-radius:30px; padding:6px 16px; color:var(--texto-sec); cursor:pointer;">↻</button>
-                    </div>
-
-                    <div id="noticias-lista">
-                        <div style="text-align:center; padding:40px; color:var(--texto-mute);">Cargando noticias...</div>
-                    </div>
-                </div>
             </div>
 
             <!-- Navegación -->
@@ -762,9 +656,8 @@
                 <button class="nav-item" onclick="cambiarPanel('perfil', this)"><span class="nav-icono">👤</span><span>Perfil</span></button>
                 <button class="nav-item activo" onclick="cambiarPanel('lotes', this)"><span class="nav-icono">🎯</span><span>Lotes</span></button>
                 <button class="nav-item" onclick="cambiarPanel('sltp', this)"><span class="nav-icono">📏</span><span>SL/TP</span></button>
-                <button class="nav-item" onclick="cambiarPanel('pip', this)"><span class="nav-icono">💰</span><span>Pip</span></button>
+                <button class="nav-item" onclick="cambiarPanel('pip', this)"><span class="nav-icono">💰</span><span>Pip $</span></button>
                 <button class="nav-item" onclick="cambiarPanel('rr', this)"><span class="nav-icono">⚖️</span><span>R:R</span></button>
-                <button class="nav-item" onclick="cambiarPanel('noticias', this)"><span class="nav-icono">📰</span><span>Noticias</span></button>
             </nav>
         </div>
     </div>
@@ -772,8 +665,7 @@
     <script>
         // ===== CONFIGURACIÓN =====
         const CONFIG = {
-            API_URL: 'https://dx-botv1-production.up.railway.app',
-            CACHE_DURATION: 300000 // 5 minutos
+            API_URL: 'https://dx-botv1-production.up.railway.app'
         };
 
         // ===== DATOS DE PARES =====
@@ -785,9 +677,7 @@
         // ===== ESTADO GLOBAL =====
         let estado = {
             usuario: null,
-            direccion: 'BUY',
-            noticias: [],
-            ultimaActualizacion: null
+            direccion: 'BUY'
         };
 
         // ===== TELEGRAM =====
@@ -806,54 +696,39 @@
                 const userId = tg?.initDataUnsafe?.user?.id;
                 
                 if (!userId) {
-                    // Modo demo
+                    console.log('Modo demo: sin usuario');
                     mostrarPrincipal(null);
-                    cargarNoticias();
                     return;
                 }
                 
-                // Intentar obtener datos
+                // Obtener datos del usuario
+                console.log('Obteniendo datos para usuario:', userId);
                 const data = await obtenerDatosUsuario(userId);
+                console.log('Datos recibidos:', data);
                 
                 if (data && data.has_membership && !data.is_expired) {
                     estado.usuario = data;
                     mostrarPrincipal(data);
+                    // Actualizar perfil inmediatamente
                     actualizarPerfil(data);
                 } else {
                     mostrarDenegado();
                 }
                 
-                // Cargar noticias siempre
-                cargarNoticias();
-                
             } catch (error) {
                 console.error('Error:', error);
                 mostrarPrincipal(null);
-                cargarNoticias();
             }
         }
 
-        // ===== API CON CACHÉ =====
+        // ===== OBTENER DATOS DEL BOT =====
         async function obtenerDatosUsuario(userId) {
-            const cacheKey = `user_${userId}`;
-            const cache = localStorage.getItem(cacheKey);
-            
-            if (cache) {
-                const { data, timestamp } = JSON.parse(cache);
-                if (Date.now() - timestamp < CONFIG.CACHE_DURATION) {
-                    return data;
-                }
-            }
-            
             try {
                 const response = await fetch(`${CONFIG.API_URL}/api/user_info?user_id=${userId}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
                 const data = await response.json();
-                
-                localStorage.setItem(cacheKey, JSON.stringify({
-                    data,
-                    timestamp: Date.now()
-                }));
-                
                 return data;
             } catch (error) {
                 console.error('Error fetching user data:', error);
@@ -882,23 +757,28 @@
             let nivel = 'VIP';
             if (dias < 7) nivel = 'PRUEBA';
             else if (dias < 30) nivel = 'VIP';
-            else if (dias < 90) nivel = 'PREMIUM';
+            else if (ias < 90) nivel = 'PREMIUM';
             else nivel = 'DIAMANTE';
             document.getElementById('insignia-usuario').textContent = nivel;
         }
 
         // ===== PERFIL =====
         function calcularNivel(diasTotales) {
-            if (diasTotales < 30) return { nombre: 'BRONCE', icono: '🥉', siguiente: 30, progreso: (diasTotales / 30) * 100 };
-            if (diasTotales < 90) return { nombre: 'PLATA', icono: '🥈', siguiente: 90, progreso: ((diasTotales - 30) / 60) * 100 };
-            if (diasTotales < 180) return { nombre: 'ORO', icono: '🥇', siguiente: 180, progreso: ((diasTotales - 90) / 90) * 100 };
-            return { nombre: 'DIAMANTE', icono: '💎', siguiente: null, progreso: 100 };
+            if (diasTotales < 30) return { nombre: 'BRONCE', icono: '🥉', progreso: (diasTotales / 30) * 100 };
+            if (diasTotales < 90) return { nombre: 'PLATA', icono: '🥈', progreso: ((diasTotales - 30) / 60) * 100 };
+            if (diasTotales < 180) return { nombre: 'ORO', icono: '🥇', progreso: ((diasTotales - 90) / 90) * 100 };
+            return { nombre: 'DIAMANTE', icono: '💎', progreso: 100 };
         }
 
         function actualizarPerfil(data) {
-            if (!data) return;
+            if (!data) {
+                console.log('No hay datos para actualizar perfil');
+                return;
+            }
             
-            // Nombre y avatar
+            console.log('Actualizando perfil con:', data);
+            
+            // Nombre de Telegram
             const user = tg?.initDataUnsafe?.user;
             if (user) {
                 document.getElementById('perfil-nombre').textContent = user.first_name || 'Usuario';
@@ -908,30 +788,31 @@
                 }
             }
             
-            // Días
+            // Calcular días
             const diasRestantes = Math.floor((data.seconds_left || 0) / 86400);
             const diasTotales = data.total_days || 0;
             
             document.getElementById('perfil-dias-restantes').textContent = diasRestantes;
             document.getElementById('perfil-dias-totales').textContent = diasTotales;
             
-            // Nivel
+            // Calcular nivel y progreso
             const nivel = calcularNivel(diasTotales);
             document.getElementById('perfil-rango').innerHTML = `${nivel.icono} ${nivel.nombre}`;
             document.getElementById('progreso-barra').style.width = nivel.progreso + '%';
             document.getElementById('progreso-porcentaje').textContent = Math.round(nivel.progreso) + '%';
             
-            // Fechas
+            // Fecha de vencimiento
             if (data.expiry) {
                 const fecha = new Date(data.expiry);
                 document.getElementById('perfil-vencimiento').textContent = fecha.toLocaleDateString('es-ES');
             }
             
-            // Fecha ingreso aproximada
-            const diasAprox = diasTotales - diasRestantes;
-            const fechaIngreso = new Date();
-            fechaIngreso.setDate(fechaIngreso.getDate() - diasAprox);
-            document.getElementById('perfil-ingreso').textContent = fechaIngreso.toLocaleDateString('es-ES');
+            // Fecha de ingreso aproximada
+            if (diasTotales > 0) {
+                const fechaIngreso = new Date();
+                fechaIngreso.setDate(fechaIngreso.getDate() - (diasTotales - diasRestantes));
+                document.getElementById('perfil-ingreso').textContent = fechaIngreso.toLocaleDateString('es-ES');
+            }
         }
 
         // ===== CAMBIAR PANEL =====
@@ -942,12 +823,9 @@
             document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('activo'));
             btn.classList.add('activo');
             
+            // Si vamos a perfil, actualizamos datos
             if (panelId === 'perfil' && estado.usuario) {
                 actualizarPerfil(estado.usuario);
-            }
-            
-            if (panelId === 'noticias') {
-                cargarNoticias();
             }
         }
 
@@ -963,14 +841,14 @@
             }
         }
 
-        // ===== CALCULADORAS =====
+        // ===== CALCULADORA LOTES =====
         function calcularLotes() {
             const balance = parseFloat(document.getElementById('lotes-balance').value) || 0;
             const riesgo = parseFloat(document.getElementById('lotes-riesgo').value) || 0;
             const sl = parseFloat(document.getElementById('lotes-sl').value) || 0;
             const par = document.getElementById('lotes-par').value;
             
-            if (!balance || !riesgo || !sl) {
+            if (balance <= 0 || riesgo <= 0 || sl <= 0) {
                 alert('Completa todos los campos');
                 return;
             }
@@ -987,13 +865,14 @@
             document.getElementById('resultado-lotes').classList.add('mostrar');
         }
 
+        // ===== CALCULADORA SL/TP =====
         function calcularSLTP() {
             const par = document.getElementById('sltp-par').value;
             const entrada = parseFloat(document.getElementById('sltp-entrada').value) || 0;
             const sl = parseFloat(document.getElementById('sltp-sl').value) || 0;
             const tp = parseFloat(document.getElementById('sltp-tp').value) || 0;
             
-            if (!entrada || !sl || !tp) {
+            if (entrada <= 0 || sl <= 0 || tp <= 0) {
                 alert('Completa entrada, SL y TP');
                 return;
             }
@@ -1016,12 +895,13 @@
             document.getElementById('resultado-sltp').classList.add('mostrar');
         }
 
+        // ===== CALCULADORA PIP =====
         function calcularPip() {
             const par = document.getElementById('pip-par').value;
             const lotes = parseFloat(document.getElementById('pip-lotes').value) || 0;
             const pips = parseFloat(document.getElementById('pip-pips').value) || 0;
             
-            if (!lotes || !pips) {
+            if (lotes <= 0 || pips <= 0) {
                 alert('Completa lotes y pips');
                 return;
             }
@@ -1036,13 +916,14 @@
             document.getElementById('resultado-pip').classList.add('mostrar');
         }
 
+        // ===== CALCULADORA R:R =====
         function calcularRR() {
             const sl = parseFloat(document.getElementById('rr-sl').value) || 0;
             const tp = parseFloat(document.getElementById('rr-tp').value) || 0;
             const balance = parseFloat(document.getElementById('rr-balance').value) || 0;
             const riesgo = parseFloat(document.getElementById('rr-riesgo').value) || 0;
             
-            if (!sl || !tp || !balance || !riesgo) {
+            if (sl <= 0 || tp <= 0 || balance <= 0 || riesgo <= 0) {
                 alert('Completa todos los campos');
                 return;
             }
@@ -1058,80 +939,6 @@
             document.getElementById('rr-winrate').textContent = winrate.toFixed(1) + '%';
             document.getElementById('resultado-rr').classList.add('mostrar');
         }
-
-        // ===== NOTICIAS =====
-        async function cargarNoticias(manual = false) {
-            const lista = document.getElementById('noticias-lista');
-            
-            try {
-                const response = await fetch('https://min-api.cryptocompare.com/data/v2/news/?lang=ES&categories=BTC,XAU');
-                const data = await response.json();
-                
-                if (data.Data && data.Data.length > 0) {
-                    estado.noticias = data.Data.slice(0, 15);
-                    estado.ultimaActualizacion = new Date();
-                    mostrarNoticias();
-                }
-            } catch (error) {
-                console.error('Error cargando noticias:', error);
-                lista.innerHTML = '<div style="text-align:center; padding:40px; color:var(--texto-mute);">Error al cargar noticias</div>';
-            }
-        }
-
-        function mostrarNoticias() {
-            const lista = document.getElementById('noticias-lista');
-            if (!estado.noticias.length) return;
-
-            let html = '';
-            
-            estado.noticias.forEach(n => {
-                const titulo = n.title.toUpperCase();
-                const esOro = titulo.includes('GOLD') || titulo.includes('ORO') || titulo.includes('XAU');
-                const esBtc = titulo.includes('BTC') || titulo.includes('BITCOIN');
-                
-                const fecha = new Date(n.published_on * 1000);
-                const tiempo = tiempoAgo(fecha);
-                
-                html += `
-                    <a href="${n.url}" target="_blank" class="noticia-item">
-                        <div class="noticia-fuente">
-                            <span class="fuente-nombre">${n.source}</span>
-                            <span class="fuente-tiempo">${tiempo}</span>
-                        </div>
-                        <div class="noticia-titulo">${n.title}</div>
-                        <div class="noticia-etiquetas">
-                            ${esOro ? '<span class="etiqueta oro">🥇 ORO</span>' : ''}
-                            ${esBtc ? '<span class="etiqueta bitcoin">₿ BITCOIN</span>' : ''}
-                        </div>
-                    </a>
-                `;
-            });
-
-            lista.innerHTML = html;
-            
-            if (estado.ultimaActualizacion) {
-                const seg = Math.floor((new Date() - estado.ultimaActualizacion) / 1000);
-                document.getElementById('timer-texto').textContent = `hace ${seg} seg`;
-            }
-        }
-
-        function tiempoAgo(fecha) {
-            const seg = Math.floor((new Date() - fecha) / 1000);
-            if (seg < 60) return 'hace 1m';
-            if (seg < 3600) return `hace ${Math.floor(seg / 60)}m`;
-            if (seg < 86400) return `hace ${Math.floor(seg / 3600)}h`;
-            return `hace ${Math.floor(seg / 86400)}d`;
-        }
-
-        // ===== AUTO-ACTUALIZACIÓN =====
-        setInterval(() => {
-            if (estado.ultimaActualizacion) {
-                const seg = Math.floor((new Date() - estado.ultimaActualizacion) / 1000);
-                document.getElementById('timer-texto').textContent = `hace ${seg} seg`;
-            }
-        }, 1000);
-        
-        setInterval(() => cargarNoticias(), 300000); // 5 minutos
 
         // ===== INICIAR =====
         iniciar();
