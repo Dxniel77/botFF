@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DX Oro y Bitcoin · Calculadoras</title>
+    <title>Oro · Bitcoin · Calculadoras</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -16,27 +16,18 @@
         }
 
         :root {
-            --fondo: #0A0C15;
-            --tarjeta: #121624;
-            --input: #1A1F2E;
-            --borde: #262D3D;
+            --fondo: #0B0E14;
+            --tarjeta: #141A24;
+            --input: #1E2635;
+            --borde: #2A3442;
             --texto: #FFFFFF;
-            --texto-sec: #9DA9BB;
-            --texto-mute: #636F87;
+            --texto-sec: #9AA8B9;
+            --texto-mute: #5F6C80;
             --oro: #F0B90B;
-            --oro-claro: #FCD535;
-            --oro-oscuro: #C99400;
             --bitcoin: #F7931A;
-            --bitcoin-claro: #FBB450;
-            --verde: #2EB67D;
+            --verde: #2EBD85;
             --rojo: #F05A5A;
-            --azul: #3B7FBD;
-            --sombra: 0 12px 24px -8px rgba(0, 0, 0, 0.5);
-            --radio-xl: 28px;
-            --radio-lg: 20px;
-            --radio-md: 14px;
-            --radio-sm: 10px;
-            --fuente: 'Plus Jakarta Sans', sans-serif;
+            --fuente: 'Inter', sans-serif;
             --mono: 'JetBrains Mono', monospace;
         }
 
@@ -53,7 +44,6 @@
             display: flex;
             flex-direction: column;
             height: 100vh;
-            height: 100dvh;
             background: var(--fondo);
         }
 
@@ -70,48 +60,44 @@
         #carga {
             align-items: center;
             justify-content: center;
-            gap: 24px;
-            background: radial-gradient(circle at 50% 30%, #1A1F2E, #0A0C15 90%);
+            gap: 20px;
         }
         .logo-carga {
-            font-size: 42px;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--oro) 0%, var(--bitcoin) 100%);
+            font-size: 36px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--oro), var(--bitcoin));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
-        .spinner-carga {
-            width: 44px;
-            height: 44px;
+        .spinner {
+            width: 40px;
+            height: 40px;
             border: 3px solid var(--borde);
             border-top-color: var(--oro);
             border-radius: 50%;
-            animation: girar 0.8s ease infinite;
+            animation: girar 0.8s linear infinite;
         }
         @keyframes girar { to { transform: rotate(360deg); } }
 
-        /* Pantalla de acceso denegado */
+        /* Pantalla denegado */
         #denegado {
             align-items: center;
             justify-content: center;
             padding: 32px;
             text-align: center;
-            background: radial-gradient(circle at 50% 30%, #1A1414, #0A0C15 90%);
         }
         .icono-denegado { font-size: 64px; margin-bottom: 20px; }
-        .titulo-denegado { font-size: 28px; font-weight: 700; color: var(--rojo); margin-bottom: 12px; }
-        .texto-denegado { color: var(--texto-sec); max-width: 300px; margin-bottom: 32px; }
+        .titulo-denegado { font-size: 24px; font-weight: 700; color: var(--rojo); margin-bottom: 12px; }
+        .texto-denegado { color: var(--texto-sec); max-width: 280px; margin-bottom: 32px; }
         .boton-denegado {
             background: var(--input);
             border: 1px solid var(--borde);
-            color: var(--texto);
-            padding: 16px 40px;
-            border-radius: 60px;
-            font-weight: 600;
+            color: white;
+            padding: 14px 32px;
+            border-radius: 40px;
+            font-weight: 500;
             cursor: pointer;
         }
-        .boton-denegado:active { transform: scale(0.96); }
 
         /* Pantalla principal */
         #principal {
@@ -124,427 +110,374 @@
 
         /* Encabezado */
         .encabezado {
-            padding: 20px 20px 12px;
+            padding: 16px 20px 8px;
             display: flex;
             align-items: center;
-            gap: 8px;
-            flex-shrink: 0;
+            justify-content: space-between;
         }
         .titulo-encabezado {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 700;
-            background: linear-gradient(135deg, var(--oro) 0%, var(--bitcoin) 100%);
+            background: linear-gradient(135deg, var(--oro), var(--bitcoin));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
         .insignia {
             background: rgba(240, 185, 11, 0.1);
             border: 1px solid var(--borde);
-            border-radius: 40px;
-            padding: 6px 16px;
-            font-size: 13px;
+            border-radius: 30px;
+            padding: 4px 14px;
+            font-size: 12px;
             font-weight: 600;
             color: var(--oro);
-            margin-left: auto;
-            font-family: var(--mono);
         }
 
-        /* Área de desplazamiento */
-        .desplazar {
+        /* Contenido desplazable */
+        .contenido {
             flex: 1;
             overflow-y: auto;
-            overflow-x: hidden;
-            padding: 4px 16px 16px;
-            scrollbar-width: thin;
+            padding: 8px 16px 16px;
         }
-        .desplazar::-webkit-scrollbar { width: 4px; }
-        .desplazar::-webkit-scrollbar-track { background: var(--tarjeta); }
-        .desplazar::-webkit-scrollbar-thumb { background: var(--borde); }
 
-        /* Paneles de herramientas */
+        /* Paneles */
         .panel {
             display: none;
-            animation: aparecer 0.3s ease;
         }
         .panel.activo { display: block; }
-        @keyframes aparecer {
-            from { opacity: 0.5; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
 
-        /* Títulos de sección */
-        .titulo-seccion {
-            font-size: 32px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            margin: 16px 0 4px;
+        /* Títulos */
+        .titulo-panel {
+            font-size: 28px;
+            font-weight: 700;
+            margin: 8px 0 4px;
         }
-        .subtitulo {
-            font-size: 14px;
+        .subtitulo-panel {
+            font-size: 13px;
             color: var(--texto-mute);
             margin-bottom: 20px;
-            font-family: var(--mono);
             border-left: 3px solid var(--oro);
             padding-left: 12px;
         }
 
-        /* Tarjetas de información */
+        /* Tarjetas */
         .tarjeta {
             background: var(--tarjeta);
             border: 1px solid var(--borde);
-            border-radius: var(--radio-xl);
+            border-radius: 20px;
             padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: var(--sombra);
+            margin-bottom: 16px;
         }
         .titulo-tarjeta {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 600;
             color: var(--texto-mute);
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             text-transform: uppercase;
-        }
-        .titulo-tarjeta span {
-            background: rgba(240, 185, 11, 0.1);
-            color: var(--oro);
-            padding: 4px 10px;
-            border-radius: 30px;
-            font-size: 13px;
+            letter-spacing: 0.5px;
         }
 
-        /* Consejos rápidos */
+        /* Consejos */
         .consejo {
-            background: linear-gradient(135deg, rgba(240, 185, 11, 0.1) 0%, transparent 100%);
-            border: 1px solid var(--borde);
-            border-left: 4px solid var(--oro);
-            border-radius: var(--radio-md);
-            padding: 16px;
-            margin-bottom: 20px;
-            display: flex;
-            gap: 12px;
-        }
-        .icono-consejo {
-            background: rgba(240, 185, 11, 0.1);
-            border: 1px solid var(--borde);
-            border-radius: 30px;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-        }
-        .texto-consejo { flex: 1; }
-        .titulo-consejo {
-            font-weight: 700;
-            color: var(--oro);
-            margin-bottom: 4px;
-            font-size: 14px;
-            text-transform: uppercase;
-        }
-        .descripcion-consejo {
-            color: var(--texto-sec);
+            background: rgba(240, 185, 11, 0.05);
+            border-left: 3px solid var(--oro);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 16px;
             font-size: 13px;
-            line-height: 1.6;
+            color: var(--texto-sec);
+            line-height: 1.5;
+        }
+        .consejo strong {
+            color: var(--oro);
+            display: block;
+            margin-bottom: 4px;
         }
 
         /* Formularios */
         .campo { margin-bottom: 16px; }
         .etiqueta {
-            display: flex;
-            justify-content: space-between;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             color: var(--texto-sec);
             margin-bottom: 6px;
             text-transform: uppercase;
         }
-        .etiqueta small {
-            color: var(--texto-mute);
-            font-weight: 400;
-            font-family: var(--mono);
-        }
         .control, .selector {
             width: 100%;
             background: var(--input);
             border: 1px solid var(--borde);
-            border-radius: var(--radio-md);
-            padding: 14px 16px;
-            font-size: 16px;
-            color: var(--texto);
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 15px;
+            color: white;
             font-family: var(--mono);
             outline: none;
         }
-        .control:focus, .selector:focus {
-            border-color: var(--oro);
-            box-shadow: 0 0 0 3px rgba(240, 185, 11, 0.1);
-        }
         .selector {
             appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23636F87' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%235F6C80' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: right 16px center;
-            padding-right: 44px;
+        }
+
+        /* Grid para 2 columnas */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
         }
 
         /* Botones de compra/venta */
-        .grupo-toggle {
+        .toggle-group {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 8px;
             margin-bottom: 16px;
         }
-        .btn-toggle {
+        .toggle-btn {
             background: var(--input);
             border: 1px solid var(--borde);
-            border-radius: var(--radio-md);
+            border-radius: 12px;
             padding: 14px;
             font-weight: 600;
             color: var(--texto-sec);
-            cursor: pointer;
             text-align: center;
+            cursor: pointer;
         }
-        .btn-toggle.activo[data-dir="BUY"] {
-            background: rgba(46, 182, 125, 0.15);
+        .toggle-btn.comprar.activo {
+            background: rgba(46, 189, 133, 0.15);
             border-color: var(--verde);
             color: var(--verde);
         }
-        .btn-toggle.activo[data-dir="SELL"] {
+        .toggle-btn.vender.activo {
             background: rgba(240, 90, 90, 0.15);
             border-color: var(--rojo);
             color: var(--rojo);
         }
 
         /* Botón principal */
-        .btn-accion {
+        .btn-principal {
             width: 100%;
-            background: linear-gradient(135deg, var(--oro) 0%, var(--oro-claro) 100%);
-            color: #0A0C15;
+            background: var(--oro);
+            color: #0B0E14;
             border: none;
-            border-radius: var(--radio-md);
+            border-radius: 12px;
             padding: 16px;
             font-size: 16px;
             font-weight: 700;
             cursor: pointer;
-            margin: 12px 0 8px;
+            margin: 8px 0;
         }
-        .btn-accion:active { transform: scale(0.97); }
 
         /* Resultados */
         .resultado {
-            margin-top: 20px;
-            padding: 20px;
             background: var(--input);
-            border-radius: var(--radio-lg);
-            border-left: 4px solid var(--oro);
+            border-radius: 16px;
+            padding: 16px;
+            margin-top: 16px;
+            border-left: 3px solid var(--oro);
             display: none;
         }
         .resultado.mostrar { display: block; }
-        .destacado {
-            font-size: 36px;
-            font-weight: 800;
-            text-align: center;
+        .valor-destacado {
+            font-size: 32px;
+            font-weight: 700;
             color: var(--oro);
+            text-align: center;
             margin: 8px 0 16px;
             font-family: var(--mono);
         }
         .fila {
             display: flex;
             justify-content: space-between;
-            padding: 12px 0;
+            padding: 10px 0;
             border-bottom: 1px solid var(--borde);
             font-size: 14px;
         }
         .fila:last-child { border-bottom: none; }
-        .etiqueta-fila { color: var(--texto-mute); }
-        .valor-fila { font-family: var(--mono); font-weight: 600; }
-        .valor-fila.oro { color: var(--oro); }
-        .valor-fila.rojo { color: var(--rojo); }
-        .valor-fila.verde { color: var(--verde); }
+        .rojo { color: var(--rojo); }
+        .verde { color: var(--verde); }
+        .oro { color: var(--oro); }
 
-        /* Noticias */
-        .encabezado-noticias {
+        /* NOTICIAS - REDISEÑO COMPLETO */
+        .noticias-header {
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
             margin-bottom: 16px;
         }
-        .temporizador {
+        .noticias-timer {
             display: flex;
             align-items: center;
             gap: 8px;
             background: var(--tarjeta);
             border: 1px solid var(--borde);
-            border-radius: 40px;
+            border-radius: 30px;
             padding: 6px 14px;
             font-size: 12px;
-            font-family: var(--mono);
-            color: var(--texto-mute);
+            color: var(--texto-sec);
         }
-        .punto-temporizador {
+        .timer-dot {
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background: var(--oro);
-            animation: latido 2s ease infinite;
+            background: var(--verde);
         }
-        @keyframes latido { 0% { opacity: 1; } 50% { opacity: 0.3; } }
-        
-        .btn-actualizar {
-            background: rgba(240, 185, 11, 0.1);
+        .noticias-refresh {
+            background: var(--input);
             border: 1px solid var(--borde);
-            border-radius: 40px;
-            padding: 8px 20px;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--oro);
+            border-radius: 30px;
+            padding: 6px 16px;
+            font-size: 12px;
+            color: var(--texto-sec);
             cursor: pointer;
         }
-        .btn-actualizar:active { opacity: 0.8; }
 
-        .item-noticia {
+        /* Lista de noticias */
+        .noticias-lista {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* Tarjeta de noticia individual */
+        .noticia-card {
             background: var(--tarjeta);
             border: 1px solid var(--borde);
-            border-left: 3px solid var(--oro);
-            border-radius: var(--radio-lg);
+            border-radius: 16px;
             padding: 16px;
-            margin-bottom: 12px;
             text-decoration: none;
-            display: block;
             color: inherit;
+            display: block;
         }
-        .item-noticia:active { transform: translateX(4px); background: var(--input); }
-        
-        .fuente-noticia {
+
+        .noticia-fuente {
             display: flex;
             align-items: center;
             gap: 8px;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
-        .icono-fuente {
-            background: rgba(240, 185, 11, 0.1);
-            border-radius: 20px;
-            padding: 2px 10px;
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--oro);
-            font-family: var(--mono);
-        }
-        .hora-noticia {
-            font-size: 11px;
-            color: var(--texto-mute);
-            font-family: var(--mono);
-        }
-        .titulo-noticia {
-            font-weight: 600;
-            font-size: 15px;
-            line-height: 1.5;
-            margin-bottom: 8px;
-        }
-        .etiquetas-noticia {
-            display: flex;
-            gap: 6px;
-        }
-        .etiqueta {
+        .fuente-nombre {
             background: var(--input);
-            border: 1px solid var(--borde);
             border-radius: 20px;
-            padding: 2px 8px;
-            font-size: 10px;
+            padding: 4px 12px;
+            font-size: 11px;
             font-weight: 600;
             color: var(--texto-sec);
         }
-        .etiqueta.oro { color: var(--oro); border-color: rgba(240, 185, 11, 0.2); }
-        .etiqueta.bitcoin { color: var(--bitcoin); border-color: rgba(247, 147, 26, 0.2); }
+        .fuente-tiempo {
+            font-size: 11px;
+            color: var(--texto-mute);
+        }
 
-        .sin-noticias {
+        .noticia-titulo {
+            font-size: 15px;
+            font-weight: 600;
+            line-height: 1.5;
+            margin-bottom: 12px;
+            color: white;
+        }
+
+        .noticia-etiquetas {
+            display: flex;
+            gap: 8px;
+        }
+        .etiqueta {
+            background: var(--input);
+            border-radius: 20px;
+            padding: 4px 10px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+        .etiqueta.oro { 
+            background: rgba(240, 185, 11, 0.1); 
+            color: var(--oro); 
+            border: 1px solid rgba(240, 185, 11, 0.2);
+        }
+        .etiqueta.bitcoin { 
+            background: rgba(247, 147, 26, 0.1); 
+            color: var(--bitcoin); 
+            border: 1px solid rgba(247, 147, 26, 0.2);
+        }
+
+        /* Estado vacío */
+        .noticias-vacio {
             text-align: center;
             padding: 40px 20px;
             color: var(--texto-mute);
         }
-        .icono-sin-noticias { font-size: 48px; margin-bottom: 12px; opacity: 0.5; }
+        .vacio-icono { font-size: 48px; margin-bottom: 12px; opacity: 0.5; }
 
         /* Navegación inferior */
-        .nav-inferior {
+        .nav {
             display: flex;
             background: var(--tarjeta);
             border-top: 1px solid var(--borde);
-            padding: 8px 4px;
-            flex-shrink: 0;
+            padding: 6px 4px;
         }
-        .item-nav {
+        .nav-item {
             flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
-            background: transparent;
+            gap: 2px;
+            background: none;
             border: none;
             color: var(--texto-mute);
             font-size: 11px;
-            font-weight: 600;
+            font-weight: 500;
             padding: 8px 0;
             cursor: pointer;
-            border-radius: var(--radio-sm);
+            border-radius: 8px;
         }
-        .item-nav.activo {
+        .nav-item.activo {
             color: var(--oro);
             background: rgba(240, 185, 11, 0.1);
         }
-        .icono-nav { font-size: 22px; }
+        .nav-icono { font-size: 20px; }
     </style>
 </head>
 <body>
     <div id="app">
-        <!-- PANTALLA DE CARGA -->
+        <!-- CARGA -->
         <div id="carga" class="pantalla activa">
             <div class="logo-carga">ORO · BTC</div>
-            <div class="spinner-carga"></div>
+            <div class="spinner"></div>
         </div>
 
-        <!-- PANTALLA DE ACCESO DENEGADO -->
+        <!-- DENEGADO -->
         <div id="denegado" class="pantalla">
             <div class="icono-denegado">🔒</div>
-            <div class="titulo-denegado">Acceso Restringido</div>
-            <div class="texto-denegado">Necesitas una suscripción activa para usar las calculadoras de Oro y Bitcoin.</div>
-            <button class="boton-denegado" onclick="window.Telegram?.WebApp?.close()">← Volver al Bot</button>
+            <div class="titulo-denegado">Sin acceso</div>
+            <div class="texto-denegado">Necesitas una suscripción activa para usar las calculadoras</div>
+            <button class="boton-denegado" onclick="window.Telegram?.WebApp?.close()">← Volver</button>
         </div>
 
-        <!-- PANTALLA PRINCIPAL -->
+        <!-- PRINCIPAL -->
         <div id="principal" class="pantalla">
             <div class="encabezado">
                 <div class="titulo-encabezado">ORO | BITCOIN</div>
                 <div class="insignia" id="insignia-usuario">VIP</div>
             </div>
 
-            <div class="desplazar" id="area-desplazar">
-                <!-- PANEL 1: TAMAÑO (LOTES) -->
+            <div class="contenido" id="contenido">
+                <!-- PANEL LOTES -->
                 <div class="panel activo" id="panel-lotes">
-                    <div class="titulo-seccion">🎯 Tamaño</div>
-                    <div class="subtitulo">Calcula tu lote según el riesgo</div>
+                    <div class="titulo-panel">🎯 Tamaño</div>
+                    <div class="subtitulo-panel">Calcula tu lote según riesgo</div>
                     
                     <div class="consejo">
-                        <div class="icono-consejo">🥇</div>
-                        <div class="texto-consejo">
-                            <div class="titulo-consejo">ORO (XAUUSD)</div>
-                            <div class="descripcion-consejo">1 lote estándar = $10 por pip · Usa SL de 100-150 pips por la volatilidad</div>
-                        </div>
+                        <strong>🥇 Oro (XAUUSD)</strong>
+                        1 lote = $10 por pip · SL recomendado: 100-150 pips
                     </div>
 
                     <div class="consejo">
-                        <div class="icono-consejo">₿</div>
-                        <div class="texto-consejo">
-                            <div class="titulo-consejo">BITCOIN (BTCUSD)</div>
-                            <div class="descripcion-consejo">1 lote = $1 por pip · El BTC es muy volátil, SL mínimo 500-1000 pips</div>
-                        </div>
+                        <strong>₿ Bitcoin (BTCUSD)</strong>
+                        1 lote = $1 por pip · SL recomendado: 500-1000 pips
                     </div>
 
                     <div class="tarjeta">
-                        <div class="titulo-tarjeta"><span>1</span> Datos de la operación</div>
+                        <div class="titulo-tarjeta">Datos</div>
                         
                         <div class="campo">
                             <div class="etiqueta">Activo</div>
@@ -554,65 +487,54 @@
                             </select>
                         </div>
 
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <div class="grid-2">
                             <div class="campo">
-                                <div class="etiqueta">Balance <small>USD</small></div>
-                                <input type="number" id="lotes-balance" class="control" value="10000" step="any">
+                                <div class="etiqueta">Balance $</div>
+                                <input type="number" id="lotes-balance" class="control" value="10000">
                             </div>
                             <div class="campo">
-                                <div class="etiqueta">Riesgo <small>%</small></div>
-                                <input type="number" id="lotes-riesgo" class="control" value="1" step="0.1" min="0.1" max="5">
+                                <div class="etiqueta">Riesgo %</div>
+                                <input type="number" id="lotes-riesgo" class="control" value="1" step="0.1">
                             </div>
                         </div>
 
                         <div class="campo">
-                            <div class="etiqueta">Stop Loss <small>pips</small></div>
-                            <input type="number" id="lotes-sl" class="control" value="100" step="any" placeholder="Oro: 100-150 | BTC: 500-1000">
+                            <div class="etiqueta">SL (pips)</div>
+                            <input type="number" id="lotes-sl" class="control" value="100">
                         </div>
 
-                        <button class="btn-accion" onclick="calcularLotes()">Calcular Lote</button>
+                        <button class="btn-principal" onclick="calcularLotes()">Calcular</button>
 
                         <div class="resultado" id="resultado-lotes">
-                            <div class="destacado" id="lotes-valor">0.00</div>
+                            <div class="valor-destacado" id="lotes-valor">0.00</div>
                             <div class="fila">
-                                <span class="etiqueta-fila">Lotes recomendados</span>
-                                <span class="valor-fila oro" id="lotes-resultado">0.00</span>
+                                <span>Lotes</span>
+                                <span class="oro" id="lotes-resultado">0.00</span>
                             </div>
                             <div class="fila">
-                                <span class="etiqueta-fila">Dinero en riesgo</span>
-                                <span class="valor-fila rojo" id="lotes-riesgo-dinero">$0</span>
+                                <span>Riesgo $</span>
+                                <span class="rojo" id="lotes-riesgo-dinero">$0</span>
                             </div>
                             <div class="fila">
-                                <span class="etiqueta-fila">Valor por pip</span>
-                                <span class="valor-fila" id="lotes-pip">$0</span>
+                                <span>$ por pip</span>
+                                <span id="lotes-pip">$0</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- PANEL 2: SL / TP -->
+                <!-- PANEL SL/TP -->
                 <div class="panel" id="panel-sltp">
-                    <div class="titulo-seccion">📏 SL / TP</div>
-                    <div class="subtitulo">Convierte pips a precios exactos</div>
+                    <div class="titulo-panel">📏 SL / TP</div>
+                    <div class="subtitulo-panel">Convierte pips a precios</div>
 
                     <div class="consejo">
-                        <div class="icono-consejo">🥇</div>
-                        <div class="texto-consejo">
-                            <div class="titulo-consejo">ORO (XAUUSD)</div>
-                            <div class="descripcion-consejo">1 pip = 0.10 · Ej: Entrada 1950.50, SL 100 pips = 1949.50</div>
-                        </div>
-                    </div>
-
-                    <div class="consejo">
-                        <div class="icono-consejo">₿</div>
-                        <div class="texto-consejo">
-                            <div class="titulo-consejo">BITCOIN (BTCUSD)</div>
-                            <div class="descripcion-consejo">1 pip = 1.0 · Ej: Entrada 45000, SL 500 pips = 44500</div>
-                        </div>
+                        <strong>🥇 Oro:</strong> Entrada ± (pips × 0.10)<br>
+                        <strong>₿ Bitcoin:</strong> Entrada ± (pips × 1.0)
                     </div>
 
                     <div class="tarjeta">
-                        <div class="titulo-tarjeta"><span>1</span> Datos de la señal</div>
+                        <div class="titulo-tarjeta">Señal</div>
 
                         <div class="campo">
                             <div class="etiqueta">Activo</div>
@@ -623,254 +545,229 @@
                         </div>
 
                         <div class="campo">
-                            <div class="etiqueta">Precio de entrada</div>
-                            <input type="number" id="sltp-entrada" class="control" step="any" placeholder="Ej: 1950.50 o 45000">
+                            <div class="etiqueta">Entrada</div>
+                            <input type="number" id="sltp-entrada" class="control" step="any" placeholder="Ej: 1950.50">
                         </div>
 
-                        <div class="grupo-toggle">
-                            <div class="btn-toggle activo" data-dir="BUY" id="btn-comprar" onclick="cambiarDireccion('BUY')">📈 COMPRAR (BUY)</div>
-                            <div class="btn-toggle" data-dir="SELL" id="btn-vender" onclick="cambiarDireccion('SELL')">📉 VENDER (SELL)</div>
+                        <div class="toggle-group">
+                            <div class="toggle-btn comprar activo" id="btn-comprar" onclick="cambiarDireccion('BUY')">📈 COMPRAR</div>
+                            <div class="toggle-btn vender" id="btn-vender" onclick="cambiarDireccion('SELL')">📉 VENDER</div>
                         </div>
 
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <div class="grid-2">
                             <div class="campo">
-                                <div class="etiqueta">SL <small>pips</small></div>
-                                <input type="number" id="sltp-sl" class="control" step="any" placeholder="Oro: 100 | BTC: 500">
+                                <div class="etiqueta">SL pips</div>
+                                <input type="number" id="sltp-sl" class="control" placeholder="100">
                             </div>
                             <div class="campo">
-                                <div class="etiqueta">TP <small>pips</small></div>
-                                <input type="number" id="sltp-tp" class="control" step="any" placeholder="Oro: 200 | BTC: 1000">
+                                <div class="etiqueta">TP pips</div>
+                                <input type="number" id="sltp-tp" class="control" placeholder="200">
                             </div>
                         </div>
 
-                        <button class="btn-accion" onclick="calcularSLTP()">Calcular Precios</button>
+                        <button class="btn-principal" onclick="calcularSLTP()">Calcular</button>
 
                         <div class="resultado" id="resultado-sltp">
                             <div class="fila">
-                                <span class="etiqueta-fila">Stop Loss</span>
-                                <span class="valor-fila rojo" id="sltp-resultado-sl">—</span>
+                                <span>Stop Loss</span>
+                                <span class="rojo" id="sltp-sl">—</span>
                             </div>
                             <div class="fila">
-                                <span class="etiqueta-fila">Take Profit</span>
-                                <span class="valor-fila verde" id="sltp-resultado-tp">—</span>
+                                <span>Take Profit</span>
+                                <span class="verde" id="sltp-tp">—</span>
                             </div>
                             <div class="fila">
-                                <span class="etiqueta-fila">Distancia SL</span>
-                                <span class="valor-fila" id="sltp-distancia-sl">0 pips</span>
+                                <span>Distancia SL</span>
+                                <span id="sltp-sl-dist">0 pips</span>
                             </div>
                             <div class="fila">
-                                <span class="etiqueta-fila">Distancia TP</span>
-                                <span class="valor-fila" id="sltp-distancia-tp">0 pips</span>
+                                <span>Distancia TP</span>
+                                <span id="sltp-tp-dist">0 pips</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- PANEL 3: VALOR DEL PIP -->
+                <!-- PANEL PIP VALUE -->
                 <div class="panel" id="panel-pip">
-                    <div class="titulo-seccion">💰 Valor del Pip</div>
-                    <div class="subtitulo">Cuánto dinero por cada pip</div>
+                    <div class="titulo-panel">💰 Valor del Pip</div>
+                    <div class="subtitulo-panel">Cuánto dinero por pip</div>
 
                     <div class="consejo">
-                        <div class="icono-consejo">🥇</div>
-                        <div class="texto-consejo">
-                            <div class="titulo-consejo">ORO (XAUUSD)</div>
-                            <div class="descripcion-consejo">1 lote = $10 por pip · 0.10 lotes = $1 por pip · 0.01 lotes = $0.10 por pip</div>
-                        </div>
-                    </div>
-
-                    <div class="consejo">
-                        <div class="icono-consejo">₿</div>
-                        <div class="texto-consejo">
-                            <div class="titulo-consejo">BITCOIN (BTCUSD)</div>
-                            <div class="descripcion-consejo">1 lote = $1 por pip · 10 lotes = $10 por pip · 0.10 lotes = $0.10 por pip</div>
-                        </div>
+                        <strong>🥇 Oro:</strong> Lotes × $10 por pip<br>
+                        <strong>₿ Bitcoin:</strong> Lotes × $1 por pip
                     </div>
 
                     <div class="tarjeta">
-                        <div class="titulo-tarjeta"><span>1</span> Calculadora</div>
+                        <div class="titulo-tarjeta">Calculadora</div>
 
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <div class="grid-2">
                             <div class="campo">
                                 <div class="etiqueta">Activo</div>
                                 <select id="pip-par" class="selector">
-                                    <option value="XAUUSD">🥇 ORO (XAUUSD)</option>
-                                    <option value="BTCUSD">₿ BITCOIN (BTCUSD)</option>
+                                    <option value="XAUUSD">🥇 ORO</option>
+                                    <option value="BTCUSD">₿ BITCOIN</option>
                                 </select>
                             </div>
                             <div class="campo">
                                 <div class="etiqueta">Lotes</div>
-                                <input type="number" id="pip-lotes" class="control" value="0.10" step="0.01" min="0.01">
+                                <input type="number" id="pip-lotes" class="control" value="0.10" step="0.01">
                             </div>
                         </div>
 
                         <div class="campo">
-                            <div class="etiqueta">Cantidad de pips</div>
-                            <input type="number" id="pip-pips" class="control" value="100" step="any">
+                            <div class="etiqueta">Pips</div>
+                            <input type="number" id="pip-pips" class="control" value="100">
                         </div>
 
-                        <button class="btn-accion" onclick="calcularPip()">Calcular</button>
+                        <button class="btn-principal" onclick="calcularPip()">Calcular</button>
 
                         <div class="resultado" id="resultado-pip">
-                            <div class="destacado" id="pip-valor">$0.00</div>
+                            <div class="valor-destacado" id="pip-valor">$0.00</div>
                             <div class="fila">
-                                <span class="etiqueta-fila">Valor por pip</span>
-                                <span class="valor-fila oro" id="pip-por-pip">$0.00</span>
+                                <span>$ por pip</span>
+                                <span class="oro" id="pip-por-pip">$0.00</span>
                             </div>
                             <div class="fila">
-                                <span class="etiqueta-fila">Total para {100} pips</span>
-                                <span class="valor-fila" id="pip-total">$0.00</span>
+                                <span>Total</span>
+                                <span id="pip-total">$0.00</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- PANEL 4: RIESGO / BENEFICIO -->
+                <!-- PANEL RIESGO/BENEFICIO -->
                 <div class="panel" id="panel-rr">
-                    <div class="titulo-seccion">⚖️ R:R Ratio</div>
-                    <div class="subtitulo">¿Vale la pena la operación?</div>
+                    <div class="titulo-panel">⚖️ R:R Ratio</div>
+                    <div class="subtitulo-panel">¿Vale la pena?</div>
 
                     <div class="consejo">
-                        <div class="icono-consejo">🎯</div>
-                        <div class="texto-consejo">
-                            <div class="titulo-consejo">Regla de oro del trading</div>
-                            <div class="descripcion-consejo">Busca siempre 1:2 o superior. Si arriesgas $100, busca ganar $200. 1:1.5 es aceptable, menos de 1:1 es mala operación.</div>
-                        </div>
+                        <strong>1:2 o superior</strong> es buena operación<br>
+                        <strong>1:1.5</strong> es aceptable<br>
+                        <strong>Menos de 1:1</strong> es mala
                     </div>
 
                     <div class="tarjeta">
-                        <div class="titulo-tarjeta"><span>1</span> Análisis</div>
+                        <div class="titulo-tarjeta">Análisis</div>
 
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <div class="grid-2">
                             <div class="campo">
-                                <div class="etiqueta">SL <small>pips</small></div>
-                                <input type="number" id="rr-sl" class="control" step="any" placeholder="Ej: 100">
+                                <div class="etiqueta">SL pips</div>
+                                <input type="number" id="rr-sl" class="control" placeholder="100">
                             </div>
                             <div class="campo">
-                                <div class="etiqueta">TP <small>pips</small></div>
-                                <input type="number" id="rr-tp" class="control" step="any" placeholder="Ej: 200">
+                                <div class="etiqueta">TP pips</div>
+                                <input type="number" id="rr-tp" class="control" placeholder="200">
                             </div>
                         </div>
 
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <div class="grid-2">
                             <div class="campo">
-                                <div class="etiqueta">Balance <small>USD</small></div>
-                                <input type="number" id="rr-balance" class="control" value="10000" step="any">
+                                <div class="etiqueta">Balance $</div>
+                                <input type="number" id="rr-balance" class="control" value="10000">
                             </div>
                             <div class="campo">
-                                <div class="etiqueta">Riesgo <small>%</small></div>
+                                <div class="etiqueta">Riesgo %</div>
                                 <input type="number" id="rr-riesgo" class="control" value="1" step="0.1">
                             </div>
                         </div>
 
-                        <button class="btn-accion" onclick="calcularRR()">Analizar Operación</button>
+                        <button class="btn-principal" onclick="calcularRR()">Analizar</button>
 
                         <div class="resultado" id="resultado-rr">
-                            <div class="destacado" id="rr-ratio">1:0.0</div>
-                            
+                            <div class="valor-destacado" id="rr-ratio">1:0.0</div>
                             <div class="fila">
-                                <span class="etiqueta-fila">Ganancia potencial</span>
-                                <span class="valor-fila verde" id="rr-ganancia">+$0</span>
+                                <span>Ganancia</span>
+                                <span class="verde" id="rr-ganancia">+$0</span>
                             </div>
                             <div class="fila">
-                                <span class="etiqueta-fila">Pérdida máxima</span>
-                                <span class="valor-fila rojo" id="rr-perdida">-$0</span>
+                                <span>Pérdida</span>
+                                <span class="rojo" id="rr-perdida">-$0</span>
                             </div>
                             <div class="fila">
-                                <span class="etiqueta-fila">% aciertos necesario</span>
-                                <span class="valor-fila" id="rr-winrate">0%</span>
+                                <span>Winrate necesario</span>
+                                <span id="rr-winrate">0%</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- PANEL 5: NOTICIAS -->
+                <!-- PANEL NOTICIAS - REDISEÑADO -->
                 <div class="panel" id="panel-noticias">
-                    <div class="titulo-seccion">📰 Noticias</div>
-                    <div class="subtitulo">Últimas noticias de Oro y Bitcoin</div>
+                    <div class="titulo-panel">📰 Noticias</div>
+                    <div class="subtitulo-panel">Oro y Bitcoin</div>
 
-                    <div class="encabezado-noticias">
-                        <div class="temporizador">
-                            <span class="punto-temporizador"></span>
-                            <span id="texto-temporizador">Actualizando...</span>
+                    <div class="noticias-header">
+                        <div class="noticias-timer">
+                            <span class="timer-dot"></span>
+                            <span id="timer-texto">actualizando</span>
                         </div>
-                        <button class="btn-actualizar" onclick="cargarNoticias(true)">↻ Actualizar</button>
+                        <button class="noticias-refresh" onclick="cargarNoticias(true)">↻ actualizar</button>
                     </div>
 
-                    <div id="contenedor-noticias">
-                        <div class="sin-noticias">
-                            <div class="icono-sin-noticias">📡</div>
+                    <div class="noticias-lista" id="noticias-lista">
+                        <div class="noticias-vacio">
+                            <div class="vacio-icono">📡</div>
                             <div>Cargando noticias...</div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- NAVEGACIÓN INFERIOR -->
-            <nav class="nav-inferior">
-                <button class="item-nav activo" onclick="cambiarPanel('lotes', this)"><span class="icono-nav">🎯</span><span>Lotes</span></button>
-                <button class="item-nav" onclick="cambiarPanel('sltp', this)"><span class="icono-nav">📏</span><span>SL/TP</span></button>
-                <button class="item-nav" onclick="cambiarPanel('pip', this)"><span class="icono-nav">💰</span><span>Pip $</span></button>
-                <button class="item-nav" onclick="cambiarPanel('rr', this)"><span class="icono-nav">⚖️</span><span>R:R</span></button>
-                <button class="item-nav" onclick="cambiarPanel('noticias', this)"><span class="icono-nav">📰</span><span>Noticias</span></button>
+            <!-- Navegación -->
+            <nav class="nav">
+                <button class="nav-item activo" onclick="cambiarPanel('lotes', this)"><span class="nav-icono">🎯</span><span>Lotes</span></button>
+                <button class="nav-item" onclick="cambiarPanel('sltp', this)"><span class="nav-icono">📏</span><span>SL/TP</span></button>
+                <button class="nav-item" onclick="cambiarPanel('pip', this)"><span class="nav-icono">💰</span><span>Pip $</span></button>
+                <button class="nav-item" onclick="cambiarPanel('rr', this)"><span class="nav-icono">⚖️</span><span>R:R</span></button>
+                <button class="nav-item" onclick="cambiarPanel('noticias', this)"><span class="nav-icono">📰</span><span>Noticias</span></button>
             </nav>
         </div>
     </div>
 
     <script>
-        // Telegram WebApp
         const tg = window.Telegram?.WebApp;
         if (tg) {
             tg.ready();
             tg.expand();
         }
 
-        // Configuración
         const API_URL = 'https://dx-botv1-production.up.railway.app';
-        let direccionActual = 'BUY';
+        let direccion = 'BUY';
         
-        // SOLO ORO Y BITCOIN
         const PARES = {
-            'XAUUSD': { pip: 0.1, valor: 10.0, decimales: 2, nombre: 'ORO' },
-            'BTCUSD': { pip: 1.0, valor: 1.0, decimales: 0, nombre: 'BITCOIN' }
+            'XAUUSD': { pip: 0.1, valor: 10.0, decimales: 2 },
+            'BTCUSD': { pip: 1.0, valor: 1.0, decimales: 0 }
         };
 
-        // Variables para noticias
         let noticias = [];
-        let temporizadorNoticias = null;
         let ultimaActualizacion = null;
+        let timerInterval = null;
 
-        // ===== VERIFICACIÓN DE SUSCRIPCIÓN =====
-        async function iniciarApp() {
+        // Verificar suscripción
+        async function iniciar() {
             try {
-                const usuarioId = tg?.initDataUnsafe?.user?.id;
-                
-                if (!usuarioId) {
-                    // Modo demo para pruebas (comentar en producción)
-                    mostrarPrincipal(null);
+                const userId = tg?.initDataUnsafe?.user?.id;
+                if (!userId) {
+                    mostrarPrincipal();
                     cargarNoticias();
-                    iniciarTemporizadorNoticias();
                     return;
                 }
                 
-                const url = `${API_URL}/api/user_info?user_id=${usuarioId}`;
-                const respuesta = await fetch(url);
-                const datos = await respuesta.json();
+                const res = await fetch(`${API_URL}/api/user_info?user_id=${userId}`);
+                const data = await res.json();
                 
-                if (datos.has_membership && !datos.is_expired) {
-                    mostrarPrincipal(datos);
+                if (data.has_membership && !data.is_expired) {
+                    mostrarPrincipal(data);
                     cargarNoticias();
-                    iniciarTemporizadorNoticias();
+                    iniciarTimer();
                 } else {
                     mostrarDenegado();
                 }
-                
-            } catch (error) {
-                console.error("Error:", error);
-                // Si hay error, mostramos la app igual (modo demo)
-                mostrarPrincipal(null);
+            } catch (e) {
+                mostrarPrincipal();
                 cargarNoticias();
-                iniciarTemporizadorNoticias();
+                iniciarTimer();
             }
         }
 
@@ -879,12 +776,11 @@
             document.getElementById('denegado').classList.add('activa');
         }
 
-        function mostrarPrincipal(datosUsuario) {
+        function mostrarPrincipal(user) {
             document.getElementById('carga').classList.remove('activa');
             document.getElementById('principal').classList.add('activa');
-            
-            if (datosUsuario) {
-                const dias = Math.floor((datosUsuario.seconds_left || 0) / 86400);
+            if (user) {
+                const dias = Math.floor((user.seconds_left || 0) / 86400);
                 let nivel = 'VIP';
                 if (dias < 7) nivel = 'PRUEBA';
                 else if (dias < 30) nivel = 'VIP';
@@ -894,242 +790,193 @@
             }
         }
 
-        // ===== CAMBIO DE PANELES =====
-        function cambiarPanel(panelId, boton) {
-            // Ocultar todos los paneles
+        function cambiarPanel(panel, btn) {
             document.querySelectorAll('.panel').forEach(p => p.classList.remove('activo'));
-            document.getElementById(`panel-${panelId}`).classList.add('activo');
+            document.getElementById(`panel-${panel}`).classList.add('activo');
             
-            // Actualizar navegación
-            document.querySelectorAll('.item-nav').forEach(i => i.classList.remove('activo'));
-            boton.classList.add('activo');
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('activo'));
+            btn.classList.add('activo');
             
-            // Scroll al inicio
-            document.getElementById('area-desplazar').scrollTop = 0;
-            
-            // Si vamos a noticias, refrescamos
-            if (panelId === 'noticias') {
-                cargarNoticias();
-            }
+            if (panel === 'noticias') cargarNoticias();
         }
 
-        // ===== CAMBIAR DIRECCIÓN =====
         function cambiarDireccion(dir) {
-            direccionActual = dir;
+            direccion = dir;
             document.getElementById('btn-comprar').classList.remove('activo');
             document.getElementById('btn-vender').classList.remove('activo');
-            document.getElementById(`btn-${dir === 'BUY' ? 'comprar' : 'vender'}`).classList.add('activo');
+            if (dir === 'BUY') {
+                document.getElementById('btn-comprar').classList.add('activo');
+            } else {
+                document.getElementById('btn-vender').classList.add('activo');
+            }
         }
 
-        // ===== CALCULAR LOTES =====
         function calcularLotes() {
             const balance = parseFloat(document.getElementById('lotes-balance').value) || 0;
-            const riesgoPct = parseFloat(document.getElementById('lotes-riesgo').value) || 0;
-            const slPips = parseFloat(document.getElementById('lotes-sl').value) || 0;
+            const riesgo = parseFloat(document.getElementById('lotes-riesgo').value) || 0;
+            const sl = parseFloat(document.getElementById('lotes-sl').value) || 0;
             const par = document.getElementById('lotes-par').value;
             
-            if (balance <= 0 || riesgoPct <= 0 || slPips <= 0) {
-                alert('Completa todos los campos');
-                return;
-            }
+            if (!balance || !riesgo || !sl) return;
 
-            const datosPar = PARES[par];
-            const riesgoDinero = balance * (riesgoPct / 100);
-            const lotesCrudo = riesgoDinero / (slPips * datosPar.valor);
-            const lotes = Math.floor(lotesCrudo * 100) / 100;
-            const valorPip = lotes * datosPar.valor;
+            const data = PARES[par];
+            const riesgoUsd = balance * (riesgo / 100);
+            const lotes = Math.floor((riesgoUsd / (sl * data.valor)) * 100) / 100;
+            const pipValor = lotes * data.valor;
 
             document.getElementById('lotes-valor').textContent = lotes.toFixed(2);
             document.getElementById('lotes-resultado').textContent = lotes.toFixed(2);
-            document.getElementById('lotes-riesgo-dinero').textContent = '$' + riesgoDinero.toFixed(2);
-            document.getElementById('lotes-pip').textContent = '$' + valorPip.toFixed(2);
-            
+            document.getElementById('lotes-riesgo-dinero').textContent = '$' + riesgoUsd.toFixed(2);
+            document.getElementById('lotes-pip').textContent = '$' + pipValor.toFixed(2);
             document.getElementById('resultado-lotes').classList.add('mostrar');
         }
 
-        // ===== CALCULAR SL/TP =====
         function calcularSLTP() {
             const par = document.getElementById('sltp-par').value;
             const entrada = parseFloat(document.getElementById('sltp-entrada').value) || 0;
-            const slPips = parseFloat(document.getElementById('sltp-sl').value) || 0;
-            const tpPips = parseFloat(document.getElementById('sltp-tp').value) || 0;
+            const sl = parseFloat(document.getElementById('sltp-sl').value) || 0;
+            const tp = parseFloat(document.getElementById('sltp-tp').value) || 0;
             
-            if (entrada <= 0 || slPips <= 0 || tpPips <= 0) {
-                alert('Completa entrada, SL y TP');
-                return;
-            }
+            if (!entrada || !sl || !tp) return;
 
-            const datosPar = PARES[par];
-            const tamañoPip = datosPar.pip;
-            const decimales = datosPar.decimales;
-
-            let precioSL, precioTP;
-            if (direccionActual === 'BUY') {
-                precioSL = entrada - (slPips * tamañoPip);
-                precioTP = entrada + (tpPips * tamañoPip);
+            const data = PARES[par];
+            let precioSl, precioTp;
+            
+            if (direccion === 'BUY') {
+                precioSl = entrada - (sl * data.pip);
+                precioTp = entrada + (tp * data.pip);
             } else {
-                precioSL = entrada + (slPips * tamañoPip);
-                precioTP = entrada - (tpPips * tamañoPip);
+                precioSl = entrada + (sl * data.pip);
+                precioTp = entrada - (tp * data.pip);
             }
 
-            document.getElementById('sltp-resultado-sl').textContent = precioSL.toFixed(decimales);
-            document.getElementById('sltp-resultado-tp').textContent = precioTP.toFixed(decimales);
-            document.getElementById('sltp-distancia-sl').textContent = `-${slPips} pips`;
-            document.getElementById('sltp-distancia-tp').textContent = `+${tpPips} pips`;
-            
+            document.getElementById('sltp-sl').textContent = precioSl.toFixed(data.decimales);
+            document.getElementById('sltp-tp').textContent = precioTp.toFixed(data.decimales);
+            document.getElementById('sltp-sl-dist').textContent = `-${sl} pips`;
+            document.getElementById('sltp-tp-dist').textContent = `+${tp} pips`;
             document.getElementById('resultado-sltp').classList.add('mostrar');
         }
 
-        // ===== CALCULAR VALOR DEL PIP =====
         function calcularPip() {
             const par = document.getElementById('pip-par').value;
             const lotes = parseFloat(document.getElementById('pip-lotes').value) || 0;
             const pips = parseFloat(document.getElementById('pip-pips').value) || 0;
             
-            if (lotes <= 0 || pips <= 0) {
-                alert('Completa lotes y pips');
-                return;
-            }
+            if (!lotes || !pips) return;
 
-            const datosPar = PARES[par];
-            const valorPorPip = lotes * datosPar.valor;
-            const total = valorPorPip * pips;
+            const data = PARES[par];
+            const porPip = lotes * data.valor;
+            const total = porPip * pips;
 
-            document.getElementById('pip-valor').textContent = '$' + valorPorPip.toFixed(2);
-            document.getElementById('pip-por-pip').textContent = '$' + valorPorPip.toFixed(2);
+            document.getElementById('pip-valor').textContent = '$' + porPip.toFixed(2);
+            document.getElementById('pip-por-pip').textContent = '$' + porPip.toFixed(2);
             document.getElementById('pip-total').textContent = '$' + total.toFixed(2);
-            
-            // Actualizar el texto de pips
-            document.querySelector('#pip-total').previousElementSibling.textContent = `Total para ${pips} pips`;
-            
             document.getElementById('resultado-pip').classList.add('mostrar');
         }
 
-        // ===== CALCULAR RIESGO/BENEFICIO =====
         function calcularRR() {
-            const slPips = parseFloat(document.getElementById('rr-sl').value) || 0;
-            const tpPips = parseFloat(document.getElementById('rr-tp').value) || 0;
+            const sl = parseFloat(document.getElementById('rr-sl').value) || 0;
+            const tp = parseFloat(document.getElementById('rr-tp').value) || 0;
             const balance = parseFloat(document.getElementById('rr-balance').value) || 0;
-            const riesgoPct = parseFloat(document.getElementById('rr-riesgo').value) || 0;
+            const riesgo = parseFloat(document.getElementById('rr-riesgo').value) || 0;
+            
+            if (!sl || !tp || !balance || !riesgo) return;
 
-            if (slPips <= 0 || tpPips <= 0 || balance <= 0 || riesgoPct <= 0) {
-                alert('Completa todos los campos');
-                return;
-            }
-
-            const ratio = tpPips / slPips;
-            const riesgoDinero = balance * (riesgoPct / 100);
-            const gananciaDinero = riesgoDinero * ratio;
-            const winrateNecesario = (1 / (1 + ratio)) * 100;
+            const ratio = tp / sl;
+            const riesgoUsd = balance * (riesgo / 100);
+            const ganancia = riesgoUsd * ratio;
+            const winrate = (1 / (1 + ratio)) * 100;
 
             document.getElementById('rr-ratio').textContent = `1:${ratio.toFixed(2)}`;
-            document.getElementById('rr-ganancia').textContent = `+$${gananciaDinero.toFixed(2)}`;
-            document.getElementById('rr-perdida').textContent = `-$${riesgoDinero.toFixed(2)}`;
-            document.getElementById('rr-winrate').textContent = winrateNecesario.toFixed(1) + '%';
-
+            document.getElementById('rr-ganancia').textContent = `+$${ganancia.toFixed(2)}`;
+            document.getElementById('rr-perdida').textContent = `-$${riesgoUsd.toFixed(2)}`;
+            document.getElementById('rr-winrate').textContent = winrate.toFixed(1) + '%';
             document.getElementById('resultado-rr').classList.add('mostrar');
         }
 
-        // ===== SISTEMA DE NOTICIAS =====
+        // NOTICIAS - VERSIÓN LIMPIA
         async function cargarNoticias(manual = false) {
-            const contenedor = document.getElementById('contenedor-noticias');
+            const lista = document.getElementById('noticias-lista');
             
             if (manual) {
-                contenedor.innerHTML = '<div class="sin-noticias"><div class="icono-sin-noticias">🔄</div><div>Actualizando...</div></div>';
+                lista.innerHTML = '<div class="noticias-vacio"><div class="vacio-icono">🔄</div><div>Actualizando...</div></div>';
             }
 
             try {
-                // Usar API gratuita de noticias de cripto (Cryptocompare)
-                const respuesta = await fetch('https://min-api.cryptocompare.com/data/v2/news/?lang=ES&categories=BTC,XAU');
-                const datos = await respuesta.json();
+                const res = await fetch('https://min-api.cryptocompare.com/data/v2/news/?lang=ES&categories=BTC,XAU');
+                const data = await res.json();
                 
-                if (datos.Data && datos.Data.length > 0) {
-                    noticias = datos.Data.slice(0, 15); // Últimas 15 noticias
+                if (data.Data && data.Data.length > 0) {
+                    noticias = data.Data.slice(0, 15);
                     ultimaActualizacion = new Date();
                     mostrarNoticias();
-                    actualizarTemporizador();
                 } else {
                     throw new Error('Sin datos');
                 }
-            } catch (error) {
-                console.error('Error cargando noticias:', error);
-                contenedor.innerHTML = `
-                    <div class="sin-noticias">
-                        <div class="icono-sin-noticias">📡</div>
-                        <div>Error al cargar noticias</div>
-                        <button class="btn-actualizar" onclick="cargarNoticias(true)" style="margin-top:16px;">Reintentar</button>
+            } catch (e) {
+                lista.innerHTML = `
+                    <div class="noticias-vacio">
+                        <div class="vacio-icono">📡</div>
+                        <div>Error al cargar</div>
+                        <button onclick="cargarNoticias(true)" style="margin-top:16px; background:var(--input); border:1px solid var(--borde); color:white; padding:8px 20px; border-radius:30px;">Reintentar</button>
                     </div>
                 `;
             }
         }
 
         function mostrarNoticias() {
-            const contenedor = document.getElementById('contenedor-noticias');
+            const lista = document.getElementById('noticias-lista');
             if (!noticias.length) return;
 
             let html = '';
             
-            noticias.forEach(item => {
-                // Detectar si es sobre Oro o Bitcoin
-                const titulo = item.title.toUpperCase();
+            noticias.forEach(n => {
+                const titulo = n.title.toUpperCase();
                 const esOro = titulo.includes('GOLD') || titulo.includes('ORO') || titulo.includes('XAU');
-                const esBTC = titulo.includes('BTC') || titulo.includes('BITCOIN') || titulo.includes('CRYPTO');
+                const esBtc = titulo.includes('BTC') || titulo.includes('BITCOIN');
                 
-                // Formatear fecha
-                const fecha = new Date(item.published_on * 1000);
-                const tiempoAgo = obtenerTiempoAgo(fecha);
+                const fecha = new Date(n.published_on * 1000);
+                const tiempo = tiempoAgo(fecha);
                 
                 html += `
-                    <a href="${item.url}" target="_blank" class="item-noticia" style="text-decoration: none;">
-                        <div class="fuente-noticia">
-                            <span class="icono-fuente">${item.source}</span>
-                            <span class="hora-noticia">${tiempoAgo}</span>
+                    <a href="${n.url}" target="_blank" class="noticia-card">
+                        <div class="noticia-fuente">
+                            <span class="fuente-nombre">${n.source}</span>
+                            <span class="fuente-tiempo">${tiempo}</span>
                         </div>
-                        <div class="titulo-noticia">${item.title}</div>
-                        <div class="etiquetas-noticia">
+                        <div class="noticia-titulo">${n.title}</div>
+                        <div class="noticia-etiquetas">
                             ${esOro ? '<span class="etiqueta oro">🥇 ORO</span>' : ''}
-                            ${esBTC ? '<span class="etiqueta bitcoin">₿ BITCOIN</span>' : ''}
+                            ${esBtc ? '<span class="etiqueta bitcoin">₿ BITCOIN</span>' : ''}
                         </div>
                     </a>
                 `;
             });
 
-            contenedor.innerHTML = html;
+            lista.innerHTML = html;
         }
 
-        function obtenerTiempoAgo(fecha) {
-            const segundos = Math.floor((new Date() - fecha) / 1000);
-            
-            if (segundos < 60) return 'hace 1 min';
-            if (segundos < 3600) return `hace ${Math.floor(segundos / 60)} min`;
-            if (segundos < 86400) return `hace ${Math.floor(segundos / 3600)} h`;
-            return `hace ${Math.floor(segundos / 86400)} d`;
+        function tiempoAgo(fecha) {
+            const seg = Math.floor((new Date() - fecha) / 1000);
+            if (seg < 60) return 'hace 1 min';
+            if (seg < 3600) return `hace ${Math.floor(seg / 60)} min`;
+            if (seg < 86400) return `hace ${Math.floor(seg / 3600)} h`;
+            return `hace ${Math.floor(seg / 86400)} d`;
         }
 
-        function actualizarTemporizador() {
-            const timerEl = document.getElementById('texto-temporizador');
-            if (ultimaActualizacion) {
-                const segundos = Math.floor((new Date() - ultimaActualizacion) / 1000);
-                timerEl.textContent = `Actualizado hace ${segundos} seg`;
-            }
-        }
-
-        function iniciarTemporizadorNoticias() {
-            if (temporizadorNoticias) clearInterval(temporizadorNoticias);
-            
-            // Actualizar timer cada segundo
-            temporizadorNoticias = setInterval(() => {
-                actualizarTemporizador();
+        function iniciarTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                if (ultimaActualizacion) {
+                    const seg = Math.floor((new Date() - ultimaActualizacion) / 1000);
+                    document.getElementById('timer-texto').textContent = `hace ${seg} seg`;
+                }
             }, 1000);
             
-            // Recargar noticias cada 5 minutos
-            setInterval(() => {
-                cargarNoticias();
-            }, 300000);
+            setInterval(() => cargarNoticias(), 300000);
         }
 
-        // Iniciar la aplicación
-        iniciarApp();
+        iniciar();
     </script>
 </body>
 </html>
