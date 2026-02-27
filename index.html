@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DX Gold & Bitcoin Tools</title>
+    <title>DX Oro y Bitcoin · Calculadoras</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        /* ===== RESET Y VARIABLES ===== */
         * {
             margin: 0;
             padding: 0;
@@ -17,41 +16,37 @@
         }
 
         :root {
-            --bg-dark: #0A0C15;
-            --bg-card: #121624;
-            --bg-input: #1A1F2E;
-            --border: #262D3D;
-            --border-light: #333B4F;
-            --text-primary: #FFFFFF;
-            --text-secondary: #9DA9BB;
-            --text-muted: #636F87;
-            --gold: #F0B90B;
-            --gold-light: #FCD535;
-            --gold-dim: rgba(240, 185, 11, 0.1);
-            --btc: #F7931A;
-            --btc-dim: rgba(247, 147, 26, 0.1);
-            --green: #2EB67D;
-            --red: #F05A5A;
-            --blue: #3B7FBD;
-            --gradient-gold: linear-gradient(135deg, #F0B90B 0%, #FCD535 100%);
-            --gradient-btc: linear-gradient(135deg, #F7931A 0%, #FBB450 100%);
-            --shadow-card: 0 12px 24px -8px rgba(0, 0, 0, 0.5);
-            --radius-xl: 28px;
-            --radius-lg: 20px;
-            --radius-md: 14px;
-            --radius-sm: 10px;
-            --font-sans: 'Plus Jakarta Sans', sans-serif;
-            --font-mono: 'JetBrains Mono', monospace;
+            --fondo: #0A0C15;
+            --tarjeta: #121624;
+            --input: #1A1F2E;
+            --borde: #262D3D;
+            --texto: #FFFFFF;
+            --texto-sec: #9DA9BB;
+            --texto-mute: #636F87;
+            --oro: #F0B90B;
+            --oro-claro: #FCD535;
+            --oro-oscuro: #C99400;
+            --bitcoin: #F7931A;
+            --bitcoin-claro: #FBB450;
+            --verde: #2EB67D;
+            --rojo: #F05A5A;
+            --azul: #3B7FBD;
+            --sombra: 0 12px 24px -8px rgba(0, 0, 0, 0.5);
+            --radio-xl: 28px;
+            --radio-lg: 20px;
+            --radio-md: 14px;
+            --radio-sm: 10px;
+            --fuente: 'Plus Jakarta Sans', sans-serif;
+            --mono: 'JetBrains Mono', monospace;
         }
 
         body, html {
             height: 100%;
             width: 100%;
             overflow: hidden;
-            background: var(--bg-dark);
-            color: var(--text-primary);
-            font-family: var(--font-sans);
-            font-size: 16px;
+            background: var(--fondo);
+            color: var(--texto);
+            font-family: var(--fuente);
         }
 
         #app {
@@ -59,182 +54,182 @@
             flex-direction: column;
             height: 100vh;
             height: 100dvh;
-            background: var(--bg-dark);
+            background: var(--fondo);
         }
 
-        /* ===== PANTALLAS ===== */
-        .screen {
+        /* Pantallas */
+        .pantalla {
             display: none;
             flex: 1;
             flex-direction: column;
             height: 100%;
         }
-        .screen.on { display: flex; }
+        .pantalla.activa { display: flex; }
 
-        /* ===== SPLASH ===== */
-        #splash {
+        /* Pantalla de carga */
+        #carga {
             align-items: center;
             justify-content: center;
             gap: 24px;
             background: radial-gradient(circle at 50% 30%, #1A1F2E, #0A0C15 90%);
         }
-        .splash-logo {
+        .logo-carga {
             font-size: 42px;
             font-weight: 800;
-            background: linear-gradient(135deg, #F0B90B 0%, #F7931A 100%);
+            background: linear-gradient(135deg, var(--oro) 0%, var(--bitcoin) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        .splash-spinner {
+        .spinner-carga {
             width: 44px;
             height: 44px;
-            border: 3px solid var(--border);
-            border-top-color: var(--gold);
+            border: 3px solid var(--borde);
+            border-top-color: var(--oro);
             border-radius: 50%;
-            animation: spin 0.8s ease infinite;
+            animation: girar 0.8s ease infinite;
         }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes girar { to { transform: rotate(360deg); } }
 
-        /* ===== DENIED ===== */
-        #denied {
+        /* Pantalla de acceso denegado */
+        #denegado {
             align-items: center;
             justify-content: center;
             padding: 32px;
             text-align: center;
             background: radial-gradient(circle at 50% 30%, #1A1414, #0A0C15 90%);
         }
-        .denied-icon { font-size: 64px; margin-bottom: 20px; }
-        .denied-title { font-size: 28px; font-weight: 700; color: var(--red); margin-bottom: 12px; }
-        .denied-text { color: var(--text-secondary); max-width: 300px; margin-bottom: 32px; }
-        .denied-button {
-            background: var(--bg-input);
-            border: 1px solid var(--border);
-            color: var(--text-primary);
+        .icono-denegado { font-size: 64px; margin-bottom: 20px; }
+        .titulo-denegado { font-size: 28px; font-weight: 700; color: var(--rojo); margin-bottom: 12px; }
+        .texto-denegado { color: var(--texto-sec); max-width: 300px; margin-bottom: 32px; }
+        .boton-denegado {
+            background: var(--input);
+            border: 1px solid var(--borde);
+            color: var(--texto);
             padding: 16px 40px;
             border-radius: 60px;
             font-weight: 600;
             cursor: pointer;
         }
-        .denied-button:active { transform: scale(0.96); }
+        .boton-denegado:active { transform: scale(0.96); }
 
-        /* ===== MAIN ===== */
-        #main {
+        /* Pantalla principal */
+        #principal {
             flex: 1;
             display: none;
             flex-direction: column;
             overflow: hidden;
         }
-        #main.on { display: flex; }
+        #principal.activa { display: flex; }
 
-        /* ===== HEADER ===== */
-        .app-header {
+        /* Encabezado */
+        .encabezado {
             padding: 20px 20px 12px;
             display: flex;
             align-items: center;
             gap: 8px;
             flex-shrink: 0;
         }
-        .header-title {
+        .titulo-encabezado {
             font-size: 24px;
             font-weight: 700;
-            background: linear-gradient(135deg, #F0B90B 0%, #F7931A 100%);
+            background: linear-gradient(135deg, var(--oro) 0%, var(--bitcoin) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        .header-badge {
-            background: var(--gold-dim);
-            border: 1px solid var(--border);
+        .insignia {
+            background: rgba(240, 185, 11, 0.1);
+            border: 1px solid var(--borde);
             border-radius: 40px;
             padding: 6px 16px;
             font-size: 13px;
             font-weight: 600;
-            color: var(--gold);
+            color: var(--oro);
             margin-left: auto;
-            font-family: var(--font-mono);
+            font-family: var(--mono);
         }
 
-        /* ===== SCROLL ===== */
-        .scroll-area {
+        /* Área de desplazamiento */
+        .desplazar {
             flex: 1;
             overflow-y: auto;
             overflow-x: hidden;
             padding: 4px 16px 16px;
             scrollbar-width: thin;
         }
-        .scroll-area::-webkit-scrollbar { width: 4px; }
-        .scroll-area::-webkit-scrollbar-track { background: var(--bg-card); }
-        .scroll-area::-webkit-scrollbar-thumb { background: var(--border-light); }
+        .desplazar::-webkit-scrollbar { width: 4px; }
+        .desplazar::-webkit-scrollbar-track { background: var(--tarjeta); }
+        .desplazar::-webkit-scrollbar-thumb { background: var(--borde); }
 
-        /* ===== PANELES ===== */
-        .pane {
+        /* Paneles de herramientas */
+        .panel {
             display: none;
-            animation: fade 0.3s ease;
+            animation: aparecer 0.3s ease;
         }
-        .pane.on { display: block; }
-        @keyframes fade {
+        .panel.activo { display: block; }
+        @keyframes aparecer {
             from { opacity: 0.5; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* ===== TÍTULOS ===== */
-        .section-title {
+        /* Títulos de sección */
+        .titulo-seccion {
             font-size: 32px;
             font-weight: 800;
             letter-spacing: -0.5px;
             margin: 16px 0 4px;
         }
-        .section-sub {
+        .subtitulo {
             font-size: 14px;
-            color: var(--text-muted);
+            color: var(--texto-mute);
             margin-bottom: 20px;
-            font-family: var(--font-mono);
-            border-left: 3px solid var(--gold);
+            font-family: var(--mono);
+            border-left: 3px solid var(--oro);
             padding-left: 12px;
         }
 
-        /* ===== TARJETAS ===== */
-        .card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-xl);
+        /* Tarjetas de información */
+        .tarjeta {
+            background: var(--tarjeta);
+            border: 1px solid var(--borde);
+            border-radius: var(--radio-xl);
             padding: 20px;
             margin-bottom: 20px;
-            box-shadow: var(--shadow-card);
+            box-shadow: var(--sombra);
         }
-        .card-title {
+        .titulo-tarjeta {
             display: flex;
             align-items: center;
             gap: 8px;
             font-size: 16px;
             font-weight: 600;
-            color: var(--text-muted);
+            color: var(--texto-mute);
             margin-bottom: 20px;
             text-transform: uppercase;
         }
-        .card-title span {
-            background: var(--gold-dim);
-            color: var(--gold);
+        .titulo-tarjeta span {
+            background: rgba(240, 185, 11, 0.1);
+            color: var(--oro);
             padding: 4px 10px;
             border-radius: 30px;
             font-size: 13px;
         }
 
-        /* ===== TIP ===== */
-        .tip-card {
-            background: linear-gradient(135deg, var(--gold-dim) 0%, transparent 100%);
-            border: 1px solid var(--border);
-            border-left: 4px solid var(--gold);
-            border-radius: var(--radius-md);
+        /* Consejos rápidos */
+        .consejo {
+            background: linear-gradient(135deg, rgba(240, 185, 11, 0.1) 0%, transparent 100%);
+            border: 1px solid var(--borde);
+            border-left: 4px solid var(--oro);
+            border-radius: var(--radio-md);
             padding: 16px;
             margin-bottom: 20px;
             display: flex;
             gap: 12px;
         }
-        .tip-icon {
-            background: var(--gold-dim);
-            border: 1px solid var(--border);
+        .icono-consejo {
+            background: rgba(240, 185, 11, 0.1);
+            border: 1px solid var(--borde);
             border-radius: 30px;
             width: 32px;
             height: 32px;
@@ -243,52 +238,52 @@
             justify-content: center;
             font-size: 16px;
         }
-        .tip-content { flex: 1; }
-        .tip-title {
+        .texto-consejo { flex: 1; }
+        .titulo-consejo {
             font-weight: 700;
-            color: var(--gold);
+            color: var(--oro);
             margin-bottom: 4px;
             font-size: 14px;
             text-transform: uppercase;
         }
-        .tip-text {
-            color: var(--text-secondary);
+        .descripcion-consejo {
+            color: var(--texto-sec);
             font-size: 13px;
             line-height: 1.6;
         }
 
-        /* ===== FORMULARIOS ===== */
-        .input-field { margin-bottom: 16px; }
-        .input-label {
+        /* Formularios */
+        .campo { margin-bottom: 16px; }
+        .etiqueta {
             display: flex;
             justify-content: space-between;
             font-size: 13px;
             font-weight: 600;
-            color: var(--text-secondary);
+            color: var(--texto-sec);
             margin-bottom: 6px;
             text-transform: uppercase;
         }
-        .input-label small {
-            color: var(--text-muted);
+        .etiqueta small {
+            color: var(--texto-mute);
             font-weight: 400;
-            font-family: var(--font-mono);
+            font-family: var(--mono);
         }
-        .input-control, .select-control {
+        .control, .selector {
             width: 100%;
-            background: var(--bg-input);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
+            background: var(--input);
+            border: 1px solid var(--borde);
+            border-radius: var(--radio-md);
             padding: 14px 16px;
             font-size: 16px;
-            color: var(--text-primary);
-            font-family: var(--font-mono);
+            color: var(--texto);
+            font-family: var(--mono);
             outline: none;
         }
-        .input-control:focus, .select-control:focus {
-            border-color: var(--gold);
-            box-shadow: 0 0 0 3px var(--gold-dim);
+        .control:focus, .selector:focus {
+            border-color: var(--oro);
+            box-shadow: 0 0 0 3px rgba(240, 185, 11, 0.1);
         }
-        .select-control {
+        .selector {
             appearance: none;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23636F87' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
             background-repeat: no-repeat;
@@ -296,192 +291,192 @@
             padding-right: 44px;
         }
 
-        /* ===== TOGGLE ===== */
-        .toggle-group {
+        /* Botones de compra/venta */
+        .grupo-toggle {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 8px;
             margin-bottom: 16px;
         }
-        .toggle-btn {
-            background: var(--bg-input);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
+        .btn-toggle {
+            background: var(--input);
+            border: 1px solid var(--borde);
+            border-radius: var(--radio-md);
             padding: 14px;
             font-weight: 600;
-            color: var(--text-secondary);
+            color: var(--texto-sec);
             cursor: pointer;
             text-align: center;
         }
-        .toggle-btn.active[data-dir="BUY"] {
+        .btn-toggle.activo[data-dir="BUY"] {
             background: rgba(46, 182, 125, 0.15);
-            border-color: var(--green);
-            color: var(--green);
+            border-color: var(--verde);
+            color: var(--verde);
         }
-        .toggle-btn.active[data-dir="SELL"] {
+        .btn-toggle.activo[data-dir="SELL"] {
             background: rgba(240, 90, 90, 0.15);
-            border-color: var(--red);
-            color: var(--red);
+            border-color: var(--rojo);
+            color: var(--rojo);
         }
 
-        /* ===== BOTÓN ===== */
-        .action-btn {
+        /* Botón principal */
+        .btn-accion {
             width: 100%;
-            background: var(--gradient-gold);
+            background: linear-gradient(135deg, var(--oro) 0%, var(--oro-claro) 100%);
             color: #0A0C15;
             border: none;
-            border-radius: var(--radius-md);
+            border-radius: var(--radio-md);
             padding: 16px;
             font-size: 16px;
             font-weight: 700;
             cursor: pointer;
             margin: 12px 0 8px;
-            transition: all 0.2s ease;
         }
-        .action-btn:active { transform: scale(0.97); }
+        .btn-accion:active { transform: scale(0.97); }
 
-        /* ===== RESULTADOS ===== */
-        .result-box {
+        /* Resultados */
+        .resultado {
             margin-top: 20px;
             padding: 20px;
-            background: var(--bg-input);
-            border-radius: var(--radius-lg);
-            border-left: 4px solid var(--gold);
+            background: var(--input);
+            border-radius: var(--radio-lg);
+            border-left: 4px solid var(--oro);
             display: none;
         }
-        .result-box.show { display: block; }
-        .result-highlight {
+        .resultado.mostrar { display: block; }
+        .destacado {
             font-size: 36px;
             font-weight: 800;
             text-align: center;
-            color: var(--gold);
+            color: var(--oro);
             margin: 8px 0 16px;
-            font-family: var(--font-mono);
+            font-family: var(--mono);
         }
-        .result-row {
+        .fila {
             display: flex;
             justify-content: space-between;
             padding: 12px 0;
-            border-bottom: 1px solid var(--border);
+            border-bottom: 1px solid var(--borde);
             font-size: 14px;
         }
-        .result-row:last-child { border-bottom: none; }
-        .result-label { color: var(--text-muted); }
-        .result-value { font-family: var(--font-mono); font-weight: 600; }
-        .result-value.gold { color: var(--gold); }
-        .result-value.red { color: var(--red); }
-        .result-value.green { color: var(--green); }
+        .fila:last-child { border-bottom: none; }
+        .etiqueta-fila { color: var(--texto-mute); }
+        .valor-fila { font-family: var(--mono); font-weight: 600; }
+        .valor-fila.oro { color: var(--oro); }
+        .valor-fila.rojo { color: var(--rojo); }
+        .valor-fila.verde { color: var(--verde); }
 
-        /* ===== NOTICIAS ===== */
-        .news-header {
+        /* Noticias */
+        .encabezado-noticias {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 16px;
         }
-        .news-timer {
+        .temporizador {
             display: flex;
             align-items: center;
             gap: 8px;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
+            background: var(--tarjeta);
+            border: 1px solid var(--borde);
             border-radius: 40px;
             padding: 6px 14px;
             font-size: 12px;
-            font-family: var(--font-mono);
-            color: var(--text-muted);
+            font-family: var(--mono);
+            color: var(--texto-mute);
         }
-        .timer-dot {
+        .punto-temporizador {
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background: var(--gold);
-            animation: pulse 2s ease infinite;
+            background: var(--oro);
+            animation: latido 2s ease infinite;
         }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } }
+        @keyframes latido { 0% { opacity: 1; } 50% { opacity: 0.3; } }
         
-        .news-refresh {
-            background: var(--gold-dim);
-            border: 1px solid var(--border);
+        .btn-actualizar {
+            background: rgba(240, 185, 11, 0.1);
+            border: 1px solid var(--borde);
             border-radius: 40px;
             padding: 8px 20px;
             font-size: 13px;
             font-weight: 600;
-            color: var(--gold);
+            color: var(--oro);
             cursor: pointer;
         }
-        .news-refresh:active { background: var(--gold-dim); opacity: 0.8; }
+        .btn-actualizar:active { opacity: 0.8; }
 
-        .news-item {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-left: 3px solid var(--gold);
-            border-radius: var(--radius-lg);
+        .item-noticia {
+            background: var(--tarjeta);
+            border: 1px solid var(--borde);
+            border-left: 3px solid var(--oro);
+            border-radius: var(--radio-lg);
             padding: 16px;
             margin-bottom: 12px;
-            transition: all 0.2s ease;
+            text-decoration: none;
+            display: block;
+            color: inherit;
         }
-        .news-item:active { transform: translateX(4px); background: var(--bg-input); }
+        .item-noticia:active { transform: translateX(4px); background: var(--input); }
         
-        .news-source {
+        .fuente-noticia {
             display: flex;
             align-items: center;
             gap: 8px;
             margin-bottom: 8px;
         }
-        .source-icon {
-            background: var(--gold-dim);
+        .icono-fuente {
+            background: rgba(240, 185, 11, 0.1);
             border-radius: 20px;
             padding: 2px 10px;
             font-size: 11px;
             font-weight: 600;
-            color: var(--gold);
-            font-family: var(--font-mono);
+            color: var(--oro);
+            font-family: var(--mono);
         }
-        .source-time {
+        .hora-noticia {
             font-size: 11px;
-            color: var(--text-muted);
-            font-family: var(--font-mono);
+            color: var(--texto-mute);
+            font-family: var(--mono);
         }
-        .news-title {
+        .titulo-noticia {
             font-weight: 600;
             font-size: 15px;
             line-height: 1.5;
             margin-bottom: 8px;
-            color: var(--text-primary);
         }
-        .news-tags {
+        .etiquetas-noticia {
             display: flex;
             gap: 6px;
         }
-        .news-tag {
-            background: var(--bg-input);
-            border: 1px solid var(--border);
+        .etiqueta {
+            background: var(--input);
+            border: 1px solid var(--borde);
             border-radius: 20px;
             padding: 2px 8px;
             font-size: 10px;
             font-weight: 600;
-            color: var(--text-secondary);
+            color: var(--texto-sec);
         }
-        .news-tag.gold { color: var(--gold); border-color: var(--gold-dim); }
-        .news-tag.btc { color: var(--btc); border-color: var(--btc-dim); }
+        .etiqueta.oro { color: var(--oro); border-color: rgba(240, 185, 11, 0.2); }
+        .etiqueta.bitcoin { color: var(--bitcoin); border-color: rgba(247, 147, 26, 0.2); }
 
-        .news-empty {
+        .sin-noticias {
             text-align: center;
             padding: 40px 20px;
-            color: var(--text-muted);
+            color: var(--texto-mute);
         }
-        .news-empty-icon { font-size: 48px; margin-bottom: 12px; opacity: 0.5; }
+        .icono-sin-noticias { font-size: 48px; margin-bottom: 12px; opacity: 0.5; }
 
-        /* ===== NAVEGACIÓN ===== */
-        .bottom-nav {
+        /* Navegación inferior */
+        .nav-inferior {
             display: flex;
-            background: var(--bg-card);
-            border-top: 1px solid var(--border);
+            background: var(--tarjeta);
+            border-top: 1px solid var(--borde);
             padding: 8px 4px;
             flex-shrink: 0;
         }
-        .nav-item {
+        .item-nav {
             flex: 1;
             display: flex;
             flex-direction: column;
@@ -489,336 +484,335 @@
             gap: 4px;
             background: transparent;
             border: none;
-            color: var(--text-muted);
+            color: var(--texto-mute);
             font-size: 11px;
             font-weight: 600;
             padding: 8px 0;
             cursor: pointer;
-            border-radius: var(--radius-sm);
+            border-radius: var(--radio-sm);
         }
-        .nav-item.active {
-            color: var(--gold);
-            background: var(--gold-dim);
+        .item-nav.activo {
+            color: var(--oro);
+            background: rgba(240, 185, 11, 0.1);
         }
-        .nav-icon { font-size: 22px; }
+        .icono-nav { font-size: 22px; }
     </style>
 </head>
 <body>
     <div id="app">
-        <!-- SPLASH -->
-        <div id="splash" class="screen on">
-            <div class="splash-logo">GOLD & BTC</div>
-            <div class="splash-spinner"></div>
+        <!-- PANTALLA DE CARGA -->
+        <div id="carga" class="pantalla activa">
+            <div class="logo-carga">ORO · BTC</div>
+            <div class="spinner-carga"></div>
         </div>
 
-        <!-- DENEGADO -->
-        <div id="denied" class="screen">
-            <div class="denied-icon">🔒</div>
-            <div class="denied-title">Acceso Restringido</div>
-            <div class="denied-text">Solo miembros VIP del canal de Oro y Bitcoin pueden usar estas herramientas.</div>
-            <button class="denied-button" onclick="window.Telegram?.WebApp?.close()">← Volver al Bot</button>
+        <!-- PANTALLA DE ACCESO DENEGADO -->
+        <div id="denegado" class="pantalla">
+            <div class="icono-denegado">🔒</div>
+            <div class="titulo-denegado">Acceso Restringido</div>
+            <div class="texto-denegado">Necesitas una suscripción activa para usar las calculadoras de Oro y Bitcoin.</div>
+            <button class="boton-denegado" onclick="window.Telegram?.WebApp?.close()">← Volver al Bot</button>
         </div>
 
-        <!-- MAIN -->
-        <div id="main" class="screen">
-            <div class="app-header">
-                <div class="header-title">GOLD | BTC</div>
-                <div class="header-badge" id="user-badge">VIP</div>
+        <!-- PANTALLA PRINCIPAL -->
+        <div id="principal" class="pantalla">
+            <div class="encabezado">
+                <div class="titulo-encabezado">ORO | BITCOIN</div>
+                <div class="insignia" id="insignia-usuario">VIP</div>
             </div>
 
-            <div class="scroll-area" id="scroll-area">
-                <!-- PANEL 1: Lotes (solo XAUUSD y BTCUSD) -->
-                <div class="pane on" id="pane-lots">
-                    <div class="section-title">🎯 Tamaño</div>
-                    <div class="section-sub">Calcula tu lote en Oro y Bitcoin</div>
+            <div class="desplazar" id="area-desplazar">
+                <!-- PANEL 1: TAMAÑO (LOTES) -->
+                <div class="panel activo" id="panel-lotes">
+                    <div class="titulo-seccion">🎯 Tamaño</div>
+                    <div class="subtitulo">Calcula tu lote según el riesgo</div>
                     
-                    <div class="tip-card">
-                        <div class="tip-icon">🥇</div>
-                        <div class="tip-content">
-                            <div class="tip-title">Oro (XAUUSD)</div>
-                            <div class="tip-text">1 lote = 100 onzas · 1 pip = $10 · SL mínimo recomendado: 100-150 pips</div>
+                    <div class="consejo">
+                        <div class="icono-consejo">🥇</div>
+                        <div class="texto-consejo">
+                            <div class="titulo-consejo">ORO (XAUUSD)</div>
+                            <div class="descripcion-consejo">1 lote estándar = $10 por pip · Usa SL de 100-150 pips por la volatilidad</div>
                         </div>
                     </div>
 
-                    <div class="tip-card">
-                        <div class="tip-icon">₿</div>
-                        <div class="tip-content">
-                            <div class="tip-title">Bitcoin (BTCUSD)</div>
-                            <div class="tip-text">1 lote = 1 BTC · 1 pip = $1 · Alta volatilidad, usa SL más amplios</div>
+                    <div class="consejo">
+                        <div class="icono-consejo">₿</div>
+                        <div class="texto-consejo">
+                            <div class="titulo-consejo">BITCOIN (BTCUSD)</div>
+                            <div class="descripcion-consejo">1 lote = $1 por pip · El BTC es muy volátil, SL mínimo 500-1000 pips</div>
                         </div>
                     </div>
 
-                    <div class="card">
-                        <div class="card-title"><span>1</span> Datos</div>
+                    <div class="tarjeta">
+                        <div class="titulo-tarjeta"><span>1</span> Datos de la operación</div>
                         
-                        <div class="input-field">
-                            <div class="input-label">Activo</div>
-                            <select id="lots-pair" class="select-control">
-                                <option value="XAUUSD" selected>🥇 ORO (XAUUSD)</option>
-                                <option value="BTCUSD">₿ BITCOIN (BTCUSD)</option>
-                            </select>
-                        </div>
-
-                        <div class="input-grid">
-                            <div class="input-field">
-                                <div class="input-label">Balance <small>USD</small></div>
-                                <input type="number" id="lots-balance" class="input-control" value="10000" step="any">
-                            </div>
-                            <div class="input-field">
-                                <div class="input-label">Riesgo <small>%</small></div>
-                                <input type="number" id="lots-risk" class="input-control" value="1" step="0.1" min="0.1" max="5">
-                            </div>
-                        </div>
-
-                        <div class="input-field">
-                            <div class="input-label">Stop Loss <small>pips</small></div>
-                            <input type="number" id="lots-sl" class="input-control" value="100" step="any" placeholder="Oro: 100-150 | BTC: 500-1000">
-                        </div>
-
-                        <button class="action-btn" onclick="calculateLots()">Calcular Lote</button>
-
-                        <div class="result-box" id="result-lots">
-                            <div class="result-highlight" id="lots-result-value">0.00</div>
-                            <div class="result-row">
-                                <span class="result-label">Lotes recomendados</span>
-                                <span class="result-value gold" id="lots-result-lots">0.00</span>
-                            </div>
-                            <div class="result-row">
-                                <span class="result-label">Dinero en riesgo</span>
-                                <span class="result-value red" id="lots-result-risk">$0</span>
-                            </div>
-                            <div class="result-row">
-                                <span class="result-label">Valor por pip</span>
-                                <span class="result-value" id="lots-result-pip">$0</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- PANEL 2: SL/TP (solo XAUUSD y BTCUSD) -->
-                <div class="pane" id="pane-sltp">
-                    <div class="section-title">📏 SL / TP</div>
-                    <div class="section-sub">Precios exactos para tus órdenes</div>
-
-                    <div class="tip-card">
-                        <div class="tip-icon">🥇</div>
-                        <div class="tip-content">
-                            <div class="tip-title">ORO (XAUUSD)</div>
-                            <div class="tip-text">1 pip = 0.10 · Ej: Entrada 1950.50, SL 100 pips = 1949.50</div>
-                        </div>
-                    </div>
-
-                    <div class="tip-card">
-                        <div class="tip-icon">₿</div>
-                        <div class="tip-content">
-                            <div class="tip-title">BITCOIN (BTCUSD)</div>
-                            <div class="tip-text">1 pip = 1.0 · Ej: Entrada 45000, SL 500 pips = 44500</div>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-title"><span>1</span> Señal</div>
-
-                        <div class="input-field">
-                            <div class="input-label">Activo</div>
-                            <select id="sltp-pair" class="select-control">
+                        <div class="campo">
+                            <div class="etiqueta">Activo</div>
+                            <select id="lotes-par" class="selector">
                                 <option value="XAUUSD">🥇 ORO (XAUUSD)</option>
                                 <option value="BTCUSD">₿ BITCOIN (BTCUSD)</option>
                             </select>
                         </div>
 
-                        <div class="input-field">
-                            <div class="input-label">Precio de entrada</div>
-                            <input type="number" id="sltp-entry" class="input-control" step="any" placeholder="Ej: 1950.50 o 45000">
-                        </div>
-
-                        <div class="toggle-group">
-                            <div class="toggle-btn active" data-dir="BUY" id="btn-buy" onclick="setDir('BUY')">📈 COMPRA (BUY)</div>
-                            <div class="toggle-btn" data-dir="SELL" id="btn-sell" onclick="setDir('SELL')">📉 VENTA (SELL)</div>
-                        </div>
-
-                        <div class="input-grid">
-                            <div class="input-field">
-                                <div class="input-label">SL <small>pips</small></div>
-                                <input type="number" id="sltp-sl" class="input-control" step="any" placeholder="Oro: 100 | BTC: 500">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <div class="campo">
+                                <div class="etiqueta">Balance <small>USD</small></div>
+                                <input type="number" id="lotes-balance" class="control" value="10000" step="any">
                             </div>
-                            <div class="input-field">
-                                <div class="input-label">TP <small>pips</small></div>
-                                <input type="number" id="sltp-tp" class="input-control" step="any" placeholder="Oro: 200 | BTC: 1000">
+                            <div class="campo">
+                                <div class="etiqueta">Riesgo <small>%</small></div>
+                                <input type="number" id="lotes-riesgo" class="control" value="1" step="0.1" min="0.1" max="5">
                             </div>
                         </div>
 
-                        <button class="action-btn" onclick="calculateSLTP()">Calcular Precios</button>
+                        <div class="campo">
+                            <div class="etiqueta">Stop Loss <small>pips</small></div>
+                            <input type="number" id="lotes-sl" class="control" value="100" step="any" placeholder="Oro: 100-150 | BTC: 500-1000">
+                        </div>
 
-                        <div class="result-box" id="result-sltp">
-                            <div class="result-row">
-                                <span class="result-label">Stop Loss</span>
-                                <span class="result-value red" id="sltp-result-sl">—</span>
+                        <button class="btn-accion" onclick="calcularLotes()">Calcular Lote</button>
+
+                        <div class="resultado" id="resultado-lotes">
+                            <div class="destacado" id="lotes-valor">0.00</div>
+                            <div class="fila">
+                                <span class="etiqueta-fila">Lotes recomendados</span>
+                                <span class="valor-fila oro" id="lotes-resultado">0.00</span>
                             </div>
-                            <div class="result-row">
-                                <span class="result-label">Take Profit</span>
-                                <span class="result-value green" id="sltp-result-tp">—</span>
+                            <div class="fila">
+                                <span class="etiqueta-fila">Dinero en riesgo</span>
+                                <span class="valor-fila rojo" id="lotes-riesgo-dinero">$0</span>
                             </div>
-                            <div class="result-row">
-                                <span class="result-label">Distancia SL</span>
-                                <span class="result-value" id="sltp-result-sl-dist">0 pips</span>
-                            </div>
-                            <div class="result-row">
-                                <span class="result-label">Distancia TP</span>
-                                <span class="result-value" id="sltp-result-tp-dist">0 pips</span>
+                            <div class="fila">
+                                <span class="etiqueta-fila">Valor por pip</span>
+                                <span class="valor-fila" id="lotes-pip">$0</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- PANEL 3: Pip Value (solo XAUUSD y BTCUSD) -->
-                <div class="pane" id="pane-pip">
-                    <div class="section-title">💰 Valor del Pip</div>
-                    <div class="section-sub">Cuánto dinero por cada pip</div>
+                <!-- PANEL 2: SL / TP -->
+                <div class="panel" id="panel-sltp">
+                    <div class="titulo-seccion">📏 SL / TP</div>
+                    <div class="subtitulo">Convierte pips a precios exactos</div>
 
-                    <div class="tip-card">
-                        <div class="tip-icon">🥇</div>
-                        <div class="tip-content">
-                            <div class="tip-title">ORO (XAUUSD)</div>
-                            <div class="tip-text">1 lote estándar = $10 por pip · 0.10 lote = $1 por pip</div>
+                    <div class="consejo">
+                        <div class="icono-consejo">🥇</div>
+                        <div class="texto-consejo">
+                            <div class="titulo-consejo">ORO (XAUUSD)</div>
+                            <div class="descripcion-consejo">1 pip = 0.10 · Ej: Entrada 1950.50, SL 100 pips = 1949.50</div>
                         </div>
                     </div>
 
-                    <div class="tip-card">
-                        <div class="tip-icon">₿</div>
-                        <div class="tip-content">
-                            <div class="tip-title">BITCOIN (BTCUSD)</div>
-                            <div class="tip-text">1 lote = $1 por pip · 10 lotes = $10 por pip</div>
+                    <div class="consejo">
+                        <div class="icono-consejo">₿</div>
+                        <div class="texto-consejo">
+                            <div class="titulo-consejo">BITCOIN (BTCUSD)</div>
+                            <div class="descripcion-consejo">1 pip = 1.0 · Ej: Entrada 45000, SL 500 pips = 44500</div>
                         </div>
                     </div>
 
-                    <div class="card">
-                        <div class="card-title"><span>1</span> Calculadora</div>
+                    <div class="tarjeta">
+                        <div class="titulo-tarjeta"><span>1</span> Datos de la señal</div>
 
-                        <div class="input-grid">
-                            <div class="input-field">
-                                <div class="input-label">Activo</div>
-                                <select id="pip-pair" class="select-control">
+                        <div class="campo">
+                            <div class="etiqueta">Activo</div>
+                            <select id="sltp-par" class="selector">
+                                <option value="XAUUSD">🥇 ORO (XAUUSD)</option>
+                                <option value="BTCUSD">₿ BITCOIN (BTCUSD)</option>
+                            </select>
+                        </div>
+
+                        <div class="campo">
+                            <div class="etiqueta">Precio de entrada</div>
+                            <input type="number" id="sltp-entrada" class="control" step="any" placeholder="Ej: 1950.50 o 45000">
+                        </div>
+
+                        <div class="grupo-toggle">
+                            <div class="btn-toggle activo" data-dir="BUY" id="btn-comprar" onclick="cambiarDireccion('BUY')">📈 COMPRAR (BUY)</div>
+                            <div class="btn-toggle" data-dir="SELL" id="btn-vender" onclick="cambiarDireccion('SELL')">📉 VENDER (SELL)</div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <div class="campo">
+                                <div class="etiqueta">SL <small>pips</small></div>
+                                <input type="number" id="sltp-sl" class="control" step="any" placeholder="Oro: 100 | BTC: 500">
+                            </div>
+                            <div class="campo">
+                                <div class="etiqueta">TP <small>pips</small></div>
+                                <input type="number" id="sltp-tp" class="control" step="any" placeholder="Oro: 200 | BTC: 1000">
+                            </div>
+                        </div>
+
+                        <button class="btn-accion" onclick="calcularSLTP()">Calcular Precios</button>
+
+                        <div class="resultado" id="resultado-sltp">
+                            <div class="fila">
+                                <span class="etiqueta-fila">Stop Loss</span>
+                                <span class="valor-fila rojo" id="sltp-resultado-sl">—</span>
+                            </div>
+                            <div class="fila">
+                                <span class="etiqueta-fila">Take Profit</span>
+                                <span class="valor-fila verde" id="sltp-resultado-tp">—</span>
+                            </div>
+                            <div class="fila">
+                                <span class="etiqueta-fila">Distancia SL</span>
+                                <span class="valor-fila" id="sltp-distancia-sl">0 pips</span>
+                            </div>
+                            <div class="fila">
+                                <span class="etiqueta-fila">Distancia TP</span>
+                                <span class="valor-fila" id="sltp-distancia-tp">0 pips</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PANEL 3: VALOR DEL PIP -->
+                <div class="panel" id="panel-pip">
+                    <div class="titulo-seccion">💰 Valor del Pip</div>
+                    <div class="subtitulo">Cuánto dinero por cada pip</div>
+
+                    <div class="consejo">
+                        <div class="icono-consejo">🥇</div>
+                        <div class="texto-consejo">
+                            <div class="titulo-consejo">ORO (XAUUSD)</div>
+                            <div class="descripcion-consejo">1 lote = $10 por pip · 0.10 lotes = $1 por pip · 0.01 lotes = $0.10 por pip</div>
+                        </div>
+                    </div>
+
+                    <div class="consejo">
+                        <div class="icono-consejo">₿</div>
+                        <div class="texto-consejo">
+                            <div class="titulo-consejo">BITCOIN (BTCUSD)</div>
+                            <div class="descripcion-consejo">1 lote = $1 por pip · 10 lotes = $10 por pip · 0.10 lotes = $0.10 por pip</div>
+                        </div>
+                    </div>
+
+                    <div class="tarjeta">
+                        <div class="titulo-tarjeta"><span>1</span> Calculadora</div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <div class="campo">
+                                <div class="etiqueta">Activo</div>
+                                <select id="pip-par" class="selector">
                                     <option value="XAUUSD">🥇 ORO (XAUUSD)</option>
                                     <option value="BTCUSD">₿ BITCOIN (BTCUSD)</option>
                                 </select>
                             </div>
-                            <div class="input-field">
-                                <div class="input-label">Lotes</div>
-                                <input type="number" id="pip-lot" class="input-control" value="0.10" step="0.01" min="0.01">
+                            <div class="campo">
+                                <div class="etiqueta">Lotes</div>
+                                <input type="number" id="pip-lotes" class="control" value="0.10" step="0.01" min="0.01">
                             </div>
                         </div>
 
-                        <div class="input-field">
-                            <div class="input-label">Pips</div>
-                            <input type="number" id="pip-pips" class="input-control" value="100" step="any">
+                        <div class="campo">
+                            <div class="etiqueta">Cantidad de pips</div>
+                            <input type="number" id="pip-pips" class="control" value="100" step="any">
                         </div>
 
-                        <button class="action-btn" onclick="calculatePip()">Calcular</button>
+                        <button class="btn-accion" onclick="calcularPip()">Calcular</button>
 
-                        <div class="result-box" id="result-pip">
-                            <div class="result-highlight" id="pip-result-value">$0.00</div>
-                            <div class="result-row">
-                                <span class="result-label">Valor por pip</span>
-                                <span class="result-value gold" id="pip-result-perpip">$0.00</span>
+                        <div class="resultado" id="resultado-pip">
+                            <div class="destacado" id="pip-valor">$0.00</div>
+                            <div class="fila">
+                                <span class="etiqueta-fila">Valor por pip</span>
+                                <span class="valor-fila oro" id="pip-por-pip">$0.00</span>
                             </div>
-                            <div class="result-row">
-                                <span class="result-label">Total en pips</span>
-                                <span class="result-value" id="pip-result-total">$0.00</span>
+                            <div class="fila">
+                                <span class="etiqueta-fila">Total para {100} pips</span>
+                                <span class="valor-fila" id="pip-total">$0.00</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- PANEL 4: Risk/Reward -->
-                <div class="pane" id="pane-rr">
-                    <div class="section-title">⚖️ R:R Ratio</div>
-                    <div class="section-sub">¿Vale la pena la operación?</div>
+                <!-- PANEL 4: RIESGO / BENEFICIO -->
+                <div class="panel" id="panel-rr">
+                    <div class="titulo-seccion">⚖️ R:R Ratio</div>
+                    <div class="subtitulo">¿Vale la pena la operación?</div>
 
-                    <div class="tip-card">
-                        <div class="tip-icon">🎯</div>
-                        <div class="tip-content">
-                            <div class="tip-title">Regla de oro</div>
-                            <div class="tip-text">Busca siempre 1:2 o superior. Si arriesgas $100, busca ganar $200.</div>
+                    <div class="consejo">
+                        <div class="icono-consejo">🎯</div>
+                        <div class="texto-consejo">
+                            <div class="titulo-consejo">Regla de oro del trading</div>
+                            <div class="descripcion-consejo">Busca siempre 1:2 o superior. Si arriesgas $100, busca ganar $200. 1:1.5 es aceptable, menos de 1:1 es mala operación.</div>
                         </div>
                     </div>
 
-                    <div class="card">
-                        <div class="card-title"><span>1</span> Análisis</div>
+                    <div class="tarjeta">
+                        <div class="titulo-tarjeta"><span>1</span> Análisis</div>
 
-                        <div class="input-grid">
-                            <div class="input-field">
-                                <div class="input-label">SL <small>pips</small></div>
-                                <input type="number" id="rr-sl" class="input-control" step="any" placeholder="Ej: 100">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <div class="campo">
+                                <div class="etiqueta">SL <small>pips</small></div>
+                                <input type="number" id="rr-sl" class="control" step="any" placeholder="Ej: 100">
                             </div>
-                            <div class="input-field">
-                                <div class="input-label">TP <small>pips</small></div>
-                                <input type="number" id="rr-tp" class="input-control" step="any" placeholder="Ej: 200">
-                            </div>
-                        </div>
-
-                        <div class="input-grid">
-                            <div class="input-field">
-                                <div class="input-label">Balance <small>USD</small></div>
-                                <input type="number" id="rr-balance" class="input-control" value="10000" step="any">
-                            </div>
-                            <div class="input-field">
-                                <div class="input-label">Riesgo <small>%</small></div>
-                                <input type="number" id="rr-risk" class="input-control" value="1" step="0.1">
+                            <div class="campo">
+                                <div class="etiqueta">TP <small>pips</small></div>
+                                <input type="number" id="rr-tp" class="control" step="any" placeholder="Ej: 200">
                             </div>
                         </div>
 
-                        <button class="action-btn" onclick="calculateRR()">Analizar</button>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <div class="campo">
+                                <div class="etiqueta">Balance <small>USD</small></div>
+                                <input type="number" id="rr-balance" class="control" value="10000" step="any">
+                            </div>
+                            <div class="campo">
+                                <div class="etiqueta">Riesgo <small>%</small></div>
+                                <input type="number" id="rr-riesgo" class="control" value="1" step="0.1">
+                            </div>
+                        </div>
 
-                        <div class="result-box" id="result-rr">
-                            <div class="result-highlight" id="rr-ratio">1:0.0</div>
+                        <button class="btn-accion" onclick="calcularRR()">Analizar Operación</button>
+
+                        <div class="resultado" id="resultado-rr">
+                            <div class="destacado" id="rr-ratio">1:0.0</div>
                             
-                            <div class="result-row">
-                                <span class="result-label">Ganancia</span>
-                                <span class="result-value green" id="rr-gain">+$0</span>
+                            <div class="fila">
+                                <span class="etiqueta-fila">Ganancia potencial</span>
+                                <span class="valor-fila verde" id="rr-ganancia">+$0</span>
                             </div>
-                            <div class="result-row">
-                                <span class="result-label">Pérdida</span>
-                                <span class="result-value red" id="rr-loss">-$0</span>
+                            <div class="fila">
+                                <span class="etiqueta-fila">Pérdida máxima</span>
+                                <span class="valor-fila rojo" id="rr-perdida">-$0</span>
                             </div>
-                            <div class="result-row">
-                                <span class="result-label">Winrate necesario</span>
-                                <span class="result-value" id="rr-winrate">0%</span>
+                            <div class="fila">
+                                <span class="etiqueta-fila">% aciertos necesario</span>
+                                <span class="valor-fila" id="rr-winrate">0%</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- PANEL 5: NOTICIAS (NUEVO) -->
-                <div class="pane" id="pane-news">
-                    <div class="section-title">📰 Noticias</div>
-                    <div class="section-sub">Oro y Bitcoin en tiempo real</div>
+                <!-- PANEL 5: NOTICIAS -->
+                <div class="panel" id="panel-noticias">
+                    <div class="titulo-seccion">📰 Noticias</div>
+                    <div class="subtitulo">Últimas noticias de Oro y Bitcoin</div>
 
-                    <div class="news-header">
-                        <div class="news-timer">
-                            <span class="timer-dot"></span>
-                            <span id="news-timer">Actualizando...</span>
+                    <div class="encabezado-noticias">
+                        <div class="temporizador">
+                            <span class="punto-temporizador"></span>
+                            <span id="texto-temporizador">Actualizando...</span>
                         </div>
-                        <button class="news-refresh" onclick="loadNews(true)">↻ Actualizar</button>
+                        <button class="btn-actualizar" onclick="cargarNoticias(true)">↻ Actualizar</button>
                     </div>
 
-                    <div id="news-container">
-                        <!-- Las noticias se cargan aquí -->
-                        <div class="news-empty">
-                            <div class="news-empty-icon">📡</div>
+                    <div id="contenedor-noticias">
+                        <div class="sin-noticias">
+                            <div class="icono-sin-noticias">📡</div>
                             <div>Cargando noticias...</div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- NAVEGACIÓN (5 PESTAÑAS) -->
-            <nav class="bottom-nav">
-                <button class="nav-item active" onclick="switchPane('lots', this)"><span class="nav-icon">🎯</span><span>Lotes</span></button>
-                <button class="nav-item" onclick="switchPane('sltp', this)"><span class="nav-icon">📏</span><span>SL/TP</span></button>
-                <button class="nav-item" onclick="switchPane('pip', this)"><span class="nav-icon">💰</span><span>Pip $</span></button>
-                <button class="nav-item" onclick="switchPane('rr', this)"><span class="nav-icon">⚖️</span><span>R:R</span></button>
-                <button class="nav-item" onclick="switchPane('news', this)"><span class="nav-icon">📰</span><span>Noticias</span></button>
+            <!-- NAVEGACIÓN INFERIOR -->
+            <nav class="nav-inferior">
+                <button class="item-nav activo" onclick="cambiarPanel('lotes', this)"><span class="icono-nav">🎯</span><span>Lotes</span></button>
+                <button class="item-nav" onclick="cambiarPanel('sltp', this)"><span class="icono-nav">📏</span><span>SL/TP</span></button>
+                <button class="item-nav" onclick="cambiarPanel('pip', this)"><span class="icono-nav">💰</span><span>Pip $</span></button>
+                <button class="item-nav" onclick="cambiarPanel('rr', this)"><span class="icono-nav">⚖️</span><span>R:R</span></button>
+                <button class="item-nav" onclick="cambiarPanel('noticias', this)"><span class="icono-nav">📰</span><span>Noticias</span></button>
             </nav>
         </div>
     </div>
@@ -832,298 +826,310 @@
         }
 
         // Configuración
-        const API_BASE = 'https://dx-botv1-production.up.railway.app';
-        let currentDir = 'BUY';
+        const API_URL = 'https://dx-botv1-production.up.railway.app';
+        let direccionActual = 'BUY';
         
         // SOLO ORO Y BITCOIN
-        const PAIRS = {
-            'XAUUSD': { pip: 0.1, value: 10.0, digits: 2, name: 'ORO' },
-            'BTCUSD': { pip: 1.0, value: 1.0, digits: 0, name: 'BITCOIN' }
+        const PARES = {
+            'XAUUSD': { pip: 0.1, valor: 10.0, decimales: 2, nombre: 'ORO' },
+            'BTCUSD': { pip: 1.0, valor: 1.0, decimales: 0, nombre: 'BITCOIN' }
         };
 
-        // Estado de noticias
-        let newsItems = [];
-        let newsTimer = null;
-        let lastUpdate = null;
+        // Variables para noticias
+        let noticias = [];
+        let temporizadorNoticias = null;
+        let ultimaActualizacion = null;
 
-        // Inicialización
-        async function initApp() {
+        // ===== VERIFICACIÓN DE SUSCRIPCIÓN =====
+        async function iniciarApp() {
             try {
-                const userId = tg?.initDataUnsafe?.user?.id;
+                const usuarioId = tg?.initDataUnsafe?.user?.id;
                 
-                if (!userId) {
-                    showMainApp(null);
+                if (!usuarioId) {
+                    // Modo demo para pruebas (comentar en producción)
+                    mostrarPrincipal(null);
+                    cargarNoticias();
+                    iniciarTemporizadorNoticias();
                     return;
                 }
                 
-                const url = `${API_BASE}/api/user_info?user_id=${userId}`;
-                const response = await fetch(url);
-                const data = await response.json();
+                const url = `${API_URL}/api/user_info?user_id=${usuarioId}`;
+                const respuesta = await fetch(url);
+                const datos = await respuesta.json();
                 
-                if (data.has_membership && !data.is_expired) {
-                    showMainApp(data);
-                    loadNews(); // Cargar noticias al inicio
-                    startNewsTimer(); // Iniciar actualización automática
+                if (datos.has_membership && !datos.is_expired) {
+                    mostrarPrincipal(datos);
+                    cargarNoticias();
+                    iniciarTemporizadorNoticias();
                 } else {
-                    showDeniedScreen();
+                    mostrarDenegado();
                 }
                 
             } catch (error) {
                 console.error("Error:", error);
-                showMainApp(null);
+                // Si hay error, mostramos la app igual (modo demo)
+                mostrarPrincipal(null);
+                cargarNoticias();
+                iniciarTemporizadorNoticias();
             }
         }
 
-        function showDeniedScreen() {
-            document.getElementById('splash').classList.remove('on');
-            document.getElementById('denied').classList.add('on');
+        function mostrarDenegado() {
+            document.getElementById('carga').classList.remove('activa');
+            document.getElementById('denegado').classList.add('activa');
         }
 
-        function showMainApp(userData) {
-            document.getElementById('splash').classList.remove('on');
-            document.getElementById('main').classList.add('on');
+        function mostrarPrincipal(datosUsuario) {
+            document.getElementById('carga').classList.remove('activa');
+            document.getElementById('principal').classList.add('activa');
             
-            if (userData) {
-                const days = Math.floor((userData.seconds_left || 0) / 86400);
-                let badge = 'VIP';
-                if (days < 7) badge = 'TRIAL';
-                else if (days < 30) badge = 'VIP';
-                else if (days < 90) badge = 'PREMIUM';
-                else badge = 'DIAMOND';
-                document.getElementById('user-badge').textContent = badge;
+            if (datosUsuario) {
+                const dias = Math.floor((datosUsuario.seconds_left || 0) / 86400);
+                let nivel = 'VIP';
+                if (dias < 7) nivel = 'PRUEBA';
+                else if (dias < 30) nivel = 'VIP';
+                else if (dias < 90) nivel = 'PREMIUM';
+                else nivel = 'DIAMANTE';
+                document.getElementById('insignia-usuario').textContent = nivel;
             }
         }
 
-        // Cambio de pestañas
-        function switchPane(paneId, btn) {
-            document.querySelectorAll('.pane').forEach(p => p.classList.remove('on'));
-            document.getElementById(`pane-${paneId}`).classList.add('on');
+        // ===== CAMBIO DE PANELES =====
+        function cambiarPanel(panelId, boton) {
+            // Ocultar todos los paneles
+            document.querySelectorAll('.panel').forEach(p => p.classList.remove('activo'));
+            document.getElementById(`panel-${panelId}`).classList.add('activo');
             
-            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-            btn.classList.add('active');
+            // Actualizar navegación
+            document.querySelectorAll('.item-nav').forEach(i => i.classList.remove('activo'));
+            boton.classList.add('activo');
             
-            document.getElementById('scroll-area').scrollTop = 0;
+            // Scroll al inicio
+            document.getElementById('area-desplazar').scrollTop = 0;
             
             // Si vamos a noticias, refrescamos
-            if (paneId === 'news') {
-                loadNews();
+            if (panelId === 'noticias') {
+                cargarNoticias();
             }
         }
 
-        // Dirección
-        function setDir(dir) {
-            currentDir = dir;
-            document.getElementById('btn-buy').classList.remove('active');
-            document.getElementById('btn-sell').classList.remove('active');
-            document.getElementById(`btn-${dir.toLowerCase()}`).classList.add('active');
+        // ===== CAMBIAR DIRECCIÓN =====
+        function cambiarDireccion(dir) {
+            direccionActual = dir;
+            document.getElementById('btn-comprar').classList.remove('activo');
+            document.getElementById('btn-vender').classList.remove('activo');
+            document.getElementById(`btn-${dir === 'BUY' ? 'comprar' : 'vender'}`).classList.add('activo');
         }
 
-        // Calcular Lotes (solo Oro y Bitcoin)
-        function calculateLots() {
-            const balance = parseFloat(document.getElementById('lots-balance').value) || 0;
-            const riskPct = parseFloat(document.getElementById('lots-risk').value) || 0;
-            const slPips = parseFloat(document.getElementById('lots-sl').value) || 0;
-            const pair = document.getElementById('lots-pair').value;
+        // ===== CALCULAR LOTES =====
+        function calcularLotes() {
+            const balance = parseFloat(document.getElementById('lotes-balance').value) || 0;
+            const riesgoPct = parseFloat(document.getElementById('lotes-riesgo').value) || 0;
+            const slPips = parseFloat(document.getElementById('lotes-sl').value) || 0;
+            const par = document.getElementById('lotes-par').value;
             
-            if (balance <= 0 || riskPct <= 0 || slPips <= 0) {
+            if (balance <= 0 || riesgoPct <= 0 || slPips <= 0) {
                 alert('Completa todos los campos');
                 return;
             }
 
-            const pairData = PAIRS[pair];
-            const riskAmount = balance * (riskPct / 100);
-            const rawLots = riskAmount / (slPips * pairData.value);
-            const lots = Math.floor(rawLots * 100) / 100;
-            const pipValue = lots * pairData.value;
+            const datosPar = PARES[par];
+            const riesgoDinero = balance * (riesgoPct / 100);
+            const lotesCrudo = riesgoDinero / (slPips * datosPar.valor);
+            const lotes = Math.floor(lotesCrudo * 100) / 100;
+            const valorPip = lotes * datosPar.valor;
 
-            document.getElementById('lots-result-value').textContent = lots.toFixed(2);
-            document.getElementById('lots-result-lots').textContent = lots.toFixed(2);
-            document.getElementById('lots-result-risk').textContent = '$' + riskAmount.toFixed(2);
-            document.getElementById('lots-result-pip').textContent = '$' + pipValue.toFixed(2);
+            document.getElementById('lotes-valor').textContent = lotes.toFixed(2);
+            document.getElementById('lotes-resultado').textContent = lotes.toFixed(2);
+            document.getElementById('lotes-riesgo-dinero').textContent = '$' + riesgoDinero.toFixed(2);
+            document.getElementById('lotes-pip').textContent = '$' + valorPip.toFixed(2);
             
-            document.getElementById('result-lots').classList.add('show');
+            document.getElementById('resultado-lotes').classList.add('mostrar');
         }
 
-        // Calcular SL/TP
-        function calculateSLTP() {
-            const pair = document.getElementById('sltp-pair').value;
-            const entry = parseFloat(document.getElementById('sltp-entry').value) || 0;
+        // ===== CALCULAR SL/TP =====
+        function calcularSLTP() {
+            const par = document.getElementById('sltp-par').value;
+            const entrada = parseFloat(document.getElementById('sltp-entrada').value) || 0;
             const slPips = parseFloat(document.getElementById('sltp-sl').value) || 0;
             const tpPips = parseFloat(document.getElementById('sltp-tp').value) || 0;
             
-            if (entry <= 0 || slPips <= 0 || tpPips <= 0) {
+            if (entrada <= 0 || slPips <= 0 || tpPips <= 0) {
                 alert('Completa entrada, SL y TP');
                 return;
             }
 
-            const pairData = PAIRS[pair];
-            const pipSize = pairData.pip;
-            const digits = pairData.digits;
+            const datosPar = PARES[par];
+            const tamañoPip = datosPar.pip;
+            const decimales = datosPar.decimales;
 
-            let slPrice, tpPrice;
-            if (currentDir === 'BUY') {
-                slPrice = entry - (slPips * pipSize);
-                tpPrice = entry + (tpPips * pipSize);
+            let precioSL, precioTP;
+            if (direccionActual === 'BUY') {
+                precioSL = entrada - (slPips * tamañoPip);
+                precioTP = entrada + (tpPips * tamañoPip);
             } else {
-                slPrice = entry + (slPips * pipSize);
-                tpPrice = entry - (tpPips * pipSize);
+                precioSL = entrada + (slPips * tamañoPip);
+                precioTP = entrada - (tpPips * tamañoPip);
             }
 
-            document.getElementById('sltp-result-sl').textContent = slPrice.toFixed(digits);
-            document.getElementById('sltp-result-tp').textContent = tpPrice.toFixed(digits);
-            document.getElementById('sltp-result-sl-dist').textContent = `-${slPips} pips`;
-            document.getElementById('sltp-result-tp-dist').textContent = `+${tpPips} pips`;
+            document.getElementById('sltp-resultado-sl').textContent = precioSL.toFixed(decimales);
+            document.getElementById('sltp-resultado-tp').textContent = precioTP.toFixed(decimales);
+            document.getElementById('sltp-distancia-sl').textContent = `-${slPips} pips`;
+            document.getElementById('sltp-distancia-tp').textContent = `+${tpPips} pips`;
             
-            document.getElementById('result-sltp').classList.add('show');
+            document.getElementById('resultado-sltp').classList.add('mostrar');
         }
 
-        // Calcular Pip Value
-        function calculatePip() {
-            const pair = document.getElementById('pip-pair').value;
-            const lot = parseFloat(document.getElementById('pip-lot').value) || 0;
+        // ===== CALCULAR VALOR DEL PIP =====
+        function calcularPip() {
+            const par = document.getElementById('pip-par').value;
+            const lotes = parseFloat(document.getElementById('pip-lotes').value) || 0;
             const pips = parseFloat(document.getElementById('pip-pips').value) || 0;
             
-            if (lot <= 0 || pips <= 0) {
+            if (lotes <= 0 || pips <= 0) {
                 alert('Completa lotes y pips');
                 return;
             }
 
-            const pairData = PAIRS[pair];
-            const perPip = lot * pairData.value;
-            const total = perPip * pips;
+            const datosPar = PARES[par];
+            const valorPorPip = lotes * datosPar.valor;
+            const total = valorPorPip * pips;
 
-            document.getElementById('pip-result-value').textContent = '$' + perPip.toFixed(2);
-            document.getElementById('pip-result-perpip').textContent = '$' + perPip.toFixed(2);
-            document.getElementById('pip-result-total').textContent = '$' + total.toFixed(2);
+            document.getElementById('pip-valor').textContent = '$' + valorPorPip.toFixed(2);
+            document.getElementById('pip-por-pip').textContent = '$' + valorPorPip.toFixed(2);
+            document.getElementById('pip-total').textContent = '$' + total.toFixed(2);
             
-            document.getElementById('result-pip').classList.add('show');
+            // Actualizar el texto de pips
+            document.querySelector('#pip-total').previousElementSibling.textContent = `Total para ${pips} pips`;
+            
+            document.getElementById('resultado-pip').classList.add('mostrar');
         }
 
-        // Calcular R:R
-        function calculateRR() {
+        // ===== CALCULAR RIESGO/BENEFICIO =====
+        function calcularRR() {
             const slPips = parseFloat(document.getElementById('rr-sl').value) || 0;
             const tpPips = parseFloat(document.getElementById('rr-tp').value) || 0;
             const balance = parseFloat(document.getElementById('rr-balance').value) || 0;
-            const riskPct = parseFloat(document.getElementById('rr-risk').value) || 0;
+            const riesgoPct = parseFloat(document.getElementById('rr-riesgo').value) || 0;
 
-            if (slPips <= 0 || tpPips <= 0 || balance <= 0 || riskPct <= 0) {
+            if (slPips <= 0 || tpPips <= 0 || balance <= 0 || riesgoPct <= 0) {
                 alert('Completa todos los campos');
                 return;
             }
 
             const ratio = tpPips / slPips;
-            const riskAmount = balance * (riskPct / 100);
-            const gainAmount = riskAmount * ratio;
-            const winrateNeeded = (1 / (1 + ratio)) * 100;
+            const riesgoDinero = balance * (riesgoPct / 100);
+            const gananciaDinero = riesgoDinero * ratio;
+            const winrateNecesario = (1 / (1 + ratio)) * 100;
 
             document.getElementById('rr-ratio').textContent = `1:${ratio.toFixed(2)}`;
-            document.getElementById('rr-gain').textContent = `+$${gainAmount.toFixed(2)}`;
-            document.getElementById('rr-loss').textContent = `-$${riskAmount.toFixed(2)}`;
-            document.getElementById('rr-winrate').textContent = winrateNeeded.toFixed(1) + '%';
+            document.getElementById('rr-ganancia').textContent = `+$${gananciaDinero.toFixed(2)}`;
+            document.getElementById('rr-perdida').textContent = `-$${riesgoDinero.toFixed(2)}`;
+            document.getElementById('rr-winrate').textContent = winrateNecesario.toFixed(1) + '%';
 
-            document.getElementById('result-rr').classList.add('show');
+            document.getElementById('resultado-rr').classList.add('mostrar');
         }
 
         // ===== SISTEMA DE NOTICIAS =====
-        async function loadNews(manual = false) {
-            const container = document.getElementById('news-container');
+        async function cargarNoticias(manual = false) {
+            const contenedor = document.getElementById('contenedor-noticias');
             
             if (manual) {
-                container.innerHTML = '<div class="news-empty"><div class="news-empty-icon">🔄</div><div>Actualizando...</div></div>';
+                contenedor.innerHTML = '<div class="sin-noticias"><div class="icono-sin-noticias">🔄</div><div>Actualizando...</div></div>';
             }
 
             try {
-                // Usar API gratuita de noticias de cripto
-                const response = await fetch('https://min-api.cryptocompare.com/data/v2/news/?lang=EN&categories=BTC,XAU');
-                const data = await response.json();
+                // Usar API gratuita de noticias de cripto (Cryptocompare)
+                const respuesta = await fetch('https://min-api.cryptocompare.com/data/v2/news/?lang=ES&categories=BTC,XAU');
+                const datos = await respuesta.json();
                 
-                if (data.Data && data.Data.length > 0) {
-                    newsItems = data.Data.slice(0, 15); // Últimas 15 noticias
-                    lastUpdate = new Date();
-                    renderNews();
-                    updateTimer();
+                if (datos.Data && datos.Data.length > 0) {
+                    noticias = datos.Data.slice(0, 15); // Últimas 15 noticias
+                    ultimaActualizacion = new Date();
+                    mostrarNoticias();
+                    actualizarTemporizador();
                 } else {
                     throw new Error('Sin datos');
                 }
             } catch (error) {
                 console.error('Error cargando noticias:', error);
-                container.innerHTML = `
-                    <div class="news-empty">
-                        <div class="news-empty-icon">📡</div>
+                contenedor.innerHTML = `
+                    <div class="sin-noticias">
+                        <div class="icono-sin-noticias">📡</div>
                         <div>Error al cargar noticias</div>
-                        <button class="news-refresh" onclick="loadNews(true)" style="margin-top:16px;">Reintentar</button>
+                        <button class="btn-actualizar" onclick="cargarNoticias(true)" style="margin-top:16px;">Reintentar</button>
                     </div>
                 `;
             }
         }
 
-        function renderNews() {
-            const container = document.getElementById('news-container');
-            if (!newsItems.length) return;
+        function mostrarNoticias() {
+            const contenedor = document.getElementById('contenedor-noticias');
+            if (!noticias.length) return;
 
             let html = '';
             
-            newsItems.forEach(item => {
+            noticias.forEach(item => {
                 // Detectar si es sobre Oro o Bitcoin
-                const title = item.title.toUpperCase();
-                const isGold = title.includes('GOLD') || title.includes('XAU');
-                const isBTC = title.includes('BTC') || title.includes('BITCOIN') || title.includes('CRYPTO');
+                const titulo = item.title.toUpperCase();
+                const esOro = titulo.includes('GOLD') || titulo.includes('ORO') || titulo.includes('XAU');
+                const esBTC = titulo.includes('BTC') || titulo.includes('BITCOIN') || titulo.includes('CRYPTO');
                 
                 // Formatear fecha
-                const date = new Date(item.published_on * 1000);
-                const timeAgo = getTimeAgo(date);
+                const fecha = new Date(item.published_on * 1000);
+                const tiempoAgo = obtenerTiempoAgo(fecha);
                 
                 html += `
-                    <a href="${item.url}" target="_blank" class="news-item" style="text-decoration: none;">
-                        <div class="news-source">
-                            <span class="source-icon">${item.source}</span>
-                            <span class="source-time">${timeAgo}</span>
+                    <a href="${item.url}" target="_blank" class="item-noticia" style="text-decoration: none;">
+                        <div class="fuente-noticia">
+                            <span class="icono-fuente">${item.source}</span>
+                            <span class="hora-noticia">${tiempoAgo}</span>
                         </div>
-                        <div class="news-title">${item.title}</div>
-                        <div class="news-tags">
-                            ${isGold ? '<span class="news-tag gold">🥇 ORO</span>' : ''}
-                            ${isBTC ? '<span class="news-tag btc">₿ BITCOIN</span>' : ''}
+                        <div class="titulo-noticia">${item.title}</div>
+                        <div class="etiquetas-noticia">
+                            ${esOro ? '<span class="etiqueta oro">🥇 ORO</span>' : ''}
+                            ${esBTC ? '<span class="etiqueta bitcoin">₿ BITCOIN</span>' : ''}
                         </div>
                     </a>
                 `;
             });
 
-            container.innerHTML = html;
+            contenedor.innerHTML = html;
         }
 
-        function getTimeAgo(date) {
-            const seconds = Math.floor((new Date() - date) / 1000);
+        function obtenerTiempoAgo(fecha) {
+            const segundos = Math.floor((new Date() - fecha) / 1000);
             
-            if (seconds < 60) return 'hace 1 min';
-            if (seconds < 3600) return `hace ${Math.floor(seconds / 60)} min`;
-            if (seconds < 86400) return `hace ${Math.floor(seconds / 3600)} h`;
-            return `hace ${Math.floor(seconds / 86400)} d`;
+            if (segundos < 60) return 'hace 1 min';
+            if (segundos < 3600) return `hace ${Math.floor(segundos / 60)} min`;
+            if (segundos < 86400) return `hace ${Math.floor(segundos / 3600)} h`;
+            return `hace ${Math.floor(segundos / 86400)} d`;
         }
 
-        function updateTimer() {
-            const timerEl = document.getElementById('news-timer');
-            if (lastUpdate) {
-                const seconds = Math.floor((new Date() - lastUpdate) / 1000);
-                timerEl.textContent = `Actualizado hace ${seconds} seg`;
+        function actualizarTemporizador() {
+            const timerEl = document.getElementById('texto-temporizador');
+            if (ultimaActualizacion) {
+                const segundos = Math.floor((new Date() - ultimaActualizacion) / 1000);
+                timerEl.textContent = `Actualizado hace ${segundos} seg`;
             }
         }
 
-        function startNewsTimer() {
-            if (newsTimer) clearInterval(newsTimer);
+        function iniciarTemporizadorNoticias() {
+            if (temporizadorNoticias) clearInterval(temporizadorNoticias);
             
             // Actualizar timer cada segundo
-            newsTimer = setInterval(() => {
-                updateTimer();
+            temporizadorNoticias = setInterval(() => {
+                actualizarTemporizador();
             }, 1000);
             
             // Recargar noticias cada 5 minutos
             setInterval(() => {
-                loadNews();
+                cargarNoticias();
             }, 300000);
         }
 
-        // Iniciar
-        initApp();
+        // Iniciar la aplicación
+        iniciarApp();
     </script>
 </body>
 </html>
