@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DX Trade Calculator</title>
+    <title>DX Copy Trading Assistant</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
+        /* ===== RESET Y VARIABLES ===== */
         * {
             margin: 0;
             padding: 0;
@@ -16,35 +17,40 @@
         }
 
         :root {
-            --bg-primary: #0A0C10;
-            --bg-secondary: #14171C;
-            --bg-tertiary: #1E2329;
-            --bg-card: #1A1E24;
-            --border-subtle: #2A2F38;
-            --border-accent: #3A4050;
-            --text-primary: #F0F3F8;
-            --text-secondary: #A0A8BA;
-            --text-muted: #5D6879;
-            --accent-gold: #C9A84C;
-            --accent-gold-dim: rgba(201, 168, 76, 0.15);
-            --accent-green: #2EB67D;
-            --accent-red: #E05A5A;
+            --bg-dark: #0B0E14;
+            --bg-card: #141A24;
+            --bg-input: #1E2635;
+            --border: #2A3442;
+            --border-light: #3A4557;
+            --text-primary: #FFFFFF;
+            --text-secondary: #9AA8B9;
+            --text-muted: #5F6C80;
+            --accent-gold: #D4AF37;
+            --accent-gold-light: #F0C45A;
+            --accent-gold-dim: rgba(212, 175, 55, 0.1);
+            --accent-green: #2EBD85;
+            --accent-red: #F05A5A;
             --accent-blue: #3B7FBD;
-            --font-sans: 'Inter', sans-serif;
-            --font-mono: 'JetBrains Mono', monospace;
+            --accent-purple: #8A6DE9;
+            --gradient-gold: linear-gradient(135deg, #D4AF37 0%, #F0C45A 100%);
+            --shadow-card: 0 12px 24px -8px rgba(0, 0, 0, 0.5);
+            --radius-xl: 28px;
             --radius-lg: 20px;
             --radius-md: 14px;
             --radius-sm: 10px;
-            --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.5);
+            --font-sans: 'Plus Jakarta Sans', -apple-system, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
         }
 
         body, html {
             height: 100%;
             width: 100%;
             overflow: hidden;
-            background-color: var(--bg-primary);
+            background: var(--bg-dark);
             color: var(--text-primary);
             font-family: var(--font-sans);
+            font-size: 16px;
+            line-height: 1.5;
         }
 
         #app {
@@ -52,320 +58,522 @@
             flex-direction: column;
             height: 100vh;
             height: 100dvh;
-            background-color: var(--bg-primary);
+            background: var(--bg-dark);
         }
 
-        /* Pantallas */
-        .screen { display: none; flex: 1; flex-direction: column; height: 100%; }
+        /* ===== PANTALLAS ===== */
+        .screen {
+            display: none;
+            flex: 1;
+            flex-direction: column;
+            height: 100%;
+            background: var(--bg-dark);
+        }
         .screen.on { display: flex; }
 
-        /* Splash */
+        /* ===== SPLASH SCREEN ===== */
         #splash {
             align-items: center;
             justify-content: center;
-            background: radial-gradient(circle at 50% 30%, #1A1E2A, #0A0C10 80%);
             gap: 24px;
+            background: radial-gradient(circle at 50% 30%, #1E2635, #0B0E14 90%);
         }
         .splash-logo {
-            font-size: 42px;
+            font-size: 44px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-family: var(--font-sans);
+        }
+        .splash-spinner {
+            width: 44px;
+            height: 44px;
+            border: 3px solid var(--border);
+            border-top-color: var(--accent-gold);
+            border-radius: 50%;
+            animation: spin 0.8s cubic-bezier(0.4, 0.0, 0.2, 1) infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ===== DENIED SCREEN ===== */
+        #denied {
+            align-items: center;
+            justify-content: center;
+            padding: 32px 24px;
+            text-align: center;
+            background: radial-gradient(circle at 50% 30%, #1A1414, #0B0E14 90%);
+        }
+        .denied-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 8px 16px rgba(240, 90, 90, 0.2));
+        }
+        .denied-title {
+            font-size: 28px;
             font-weight: 700;
-            background: linear-gradient(135deg, #F0F3F8 0%, #C9A84C 80%);
+            color: var(--accent-red);
+            margin-bottom: 12px;
+        }
+        .denied-text {
+            color: var(--text-secondary);
+            max-width: 300px;
+            margin-bottom: 32px;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+        .denied-button {
+            background: var(--bg-input);
+            border: 1px solid var(--border-light);
+            color: var(--text-primary);
+            padding: 16px 40px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-card);
+        }
+        .denied-button:active {
+            transform: scale(0.96);
+            background: #2A3442;
+        }
+
+        /* ===== MAIN APP ===== */
+        #main {
+            flex: 1;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        #main.on { display: flex; }
+
+        /* ===== HEADER ===== */
+        .app-header {
+            padding: 20px 20px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+            background: linear-gradient(180deg, var(--bg-dark) 0%, transparent 100%);
+        }
+        .header-title {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            background: var(--gradient-gold);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        .splash-spinner {
-            width: 36px;
-            height: 36px;
-            border: 3px solid var(--border-subtle);
-            border-top-color: var(--accent-gold);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        /* Denegado */
-        #denied {
-            align-items: center;
-            justify-content: center;
-            padding: 28px;
-            text-align: center;
-            background: radial-gradient(circle at 50% 30%, #1E1A1A, #0A0C10 90%);
-        }
-        .denied-icon { font-size: 48px; margin-bottom: 16px; }
-        .denied-title { font-size: 22px; font-weight: 600; color: var(--accent-red); margin-bottom: 8px; }
-        .denied-text { color: var(--text-secondary); max-width: 280px; margin-bottom: 32px; }
-        .denied-button {
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-accent);
-            color: var(--text-primary);
-            padding: 14px 32px;
-            border-radius: 40px;
-            font-weight: 500;
-            cursor: pointer;
-        }
-        .denied-button:active { background: #2A2F38; transform: scale(0.97); }
-
-        /* Main */
-        #main { flex: 1; display: none; flex-direction: column; overflow: hidden; }
-        #main.on { display: flex; }
-
-        /* Header */
-        .app-header {
-            padding: 18px 18px 8px 18px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-shrink: 0;
-        }
-        .header-title {
-            font-size: 20px;
-            font-weight: 600;
-            color: var(--accent-gold);
-        }
         .header-badge {
             background: var(--accent-gold-dim);
-            border: 1px solid var(--border-accent);
-            border-radius: 30px;
-            padding: 4px 12px;
-            font-size: 12px;
+            border: 1px solid var(--border);
+            border-radius: 40px;
+            padding: 6px 16px;
+            font-size: 13px;
+            font-weight: 600;
             color: var(--accent-gold);
             margin-left: auto;
             font-family: var(--font-mono);
+            letter-spacing: 0.5px;
         }
 
-        /* Scroll */
+        /* ===== SCROLL AREA ===== */
         .scroll-area {
             flex: 1;
             overflow-y: auto;
             overflow-x: hidden;
-            padding: 4px 16px 12px 16px;
+            padding: 4px 16px 16px;
             scrollbar-width: thin;
+            scrollbar-color: var(--border-light) var(--bg-card);
         }
-        .scroll-area::-webkit-scrollbar { width: 3px; }
-        .scroll-area::-webkit-scrollbar-track { background: var(--bg-secondary); }
-        .scroll-area::-webkit-scrollbar-thumb { background: var(--border-accent); }
+        .scroll-area::-webkit-scrollbar {
+            width: 4px;
+        }
+        .scroll-area::-webkit-scrollbar-track {
+            background: var(--bg-card);
+            border-radius: 4px;
+        }
+        .scroll-area::-webkit-scrollbar-thumb {
+            background: var(--border-light);
+            border-radius: 4px;
+        }
 
-        /* Paneles */
-        .pane { display: none; animation: fadeIn 0.25s ease; }
+        /* ===== PANELES ===== */
+        .pane {
+            display: none;
+            animation: fadeSlide 0.3s ease;
+        }
         .pane.on { display: block; }
-        @keyframes fadeIn { from { opacity: 0.5; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeSlide {
+            from { opacity: 0.5; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-        /* Títulos */
+        /* ===== TÍTULOS DE SECCIÓN ===== */
         .section-title {
-            font-size: 24px;
-            font-weight: 600;
-            margin: 16px 0 4px 0;
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin: 16px 0 4px;
+            background: linear-gradient(135deg, #FFFFFF 0%, #9AA8B9 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         .section-sub {
-            font-size: 13px;
+            font-size: 14px;
             color: var(--text-muted);
             margin-bottom: 20px;
             font-family: var(--font-mono);
-            border-left: 2px solid var(--accent-gold);
-            padding-left: 10px;
+            border-left: 3px solid var(--accent-gold);
+            padding-left: 12px;
+            line-height: 1.5;
         }
 
-        /* Cards */
+        /* ===== TARJETAS ===== */
         .card {
             background: var(--bg-card);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-lg);
-            padding: 18px 16px;
-            margin-bottom: 16px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: 20px;
+            margin-bottom: 20px;
             box-shadow: var(--shadow-card);
+            backdrop-filter: blur(10px);
         }
         .card-title {
-            font-size: 14px;
-            font-weight: 600;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            margin-bottom: 18px;
             display: flex;
             align-items: center;
             gap: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
         }
-        .card-title span { color: var(--accent-gold); }
+        .card-title span {
+            background: var(--accent-gold-dim);
+            color: var(--accent-gold);
+            padding: 4px 10px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 700;
+        }
 
-        /* Formularios */
+        /* ===== TIP / CONSEJO ===== */
+        .tip-card {
+            background: linear-gradient(135deg, var(--accent-gold-dim) 0%, transparent 100%);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent-gold);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+        .tip-icon {
+            background: var(--accent-gold-dim);
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+        .tip-content {
+            flex: 1;
+        }
+        .tip-title {
+            font-weight: 700;
+            color: var(--accent-gold);
+            margin-bottom: 4px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .tip-text {
+            color: var(--text-secondary);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        /* ===== FORMULARIOS ===== */
         .input-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
-        .input-field { margin-bottom: 14px; }
+        .input-field {
+            margin-bottom: 16px;
+        }
         .input-label {
             display: flex;
             justify-content: space-between;
-            font-size: 12px;
-            font-weight: 500;
+            align-items: center;
+            font-size: 13px;
+            font-weight: 600;
             color: var(--text-secondary);
-            margin-bottom: 4px;
+            margin-bottom: 6px;
             text-transform: uppercase;
+            letter-spacing: 0.3px;
         }
-        .input-label small { color: var(--text-muted); }
+        .input-label small {
+            color: var(--text-muted);
+            font-weight: 400;
+            font-size: 11px;
+            font-family: var(--font-mono);
+        }
         .input-control, .select-control {
             width: 100%;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-sm);
-            padding: 12px 14px;
-            font-size: 15px;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 14px 16px;
+            font-size: 16px;
             color: var(--text-primary);
             font-family: var(--font-mono);
             outline: none;
+            transition: all 0.2s ease;
         }
         .input-control:focus, .select-control:focus {
             border-color: var(--accent-gold);
+            box-shadow: 0 0 0 3px var(--accent-gold-dim);
         }
         .select-control {
             appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%235D6879' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235F6C80' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
             background-repeat: no-repeat;
-            background-position: right 14px center;
+            background-position: right 16px center;
+            background-size: 16px;
+            padding-right: 44px;
+        }
+        .select-control option {
+            background: var(--bg-card);
+            color: var(--text-primary);
         }
 
-        /* Botón */
+        /* ===== BOTONES ===== */
         .action-btn {
             width: 100%;
-            background: var(--accent-gold);
-            color: #0A0C10;
+            background: var(--gradient-gold);
+            color: #0B0E14;
             border: none;
-            border-radius: var(--radius-sm);
-            padding: 14px;
+            border-radius: var(--radius-md);
+            padding: 16px;
             font-size: 16px;
             font-weight: 700;
             cursor: pointer;
-            margin: 8px 0 6px 0;
-            box-shadow: 0 4px 14px rgba(201, 168, 76, 0.25);
+            margin: 12px 0 8px;
+            transition: all 0.2s ease;
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.2);
+            letter-spacing: 0.5px;
         }
-        .action-btn:active { transform: scale(0.98); opacity: 0.9; }
+        .action-btn:active {
+            transform: scale(0.97);
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+        }
 
-        /* Toggle BUY/SELL */
+        /* ===== TOGGLE BUY/SELL ===== */
         .toggle-group {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 8px;
-            margin-bottom: 14px;
+            margin-bottom: 16px;
         }
         .toggle-btn {
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-sm);
-            padding: 12px;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 14px;
             font-weight: 600;
             color: var(--text-secondary);
             cursor: pointer;
             text-align: center;
+            transition: all 0.2s ease;
+            font-size: 15px;
         }
         .toggle-btn.active[data-dir="BUY"] {
-            background: rgba(46, 182, 125, 0.15);
+            background: rgba(46, 189, 133, 0.15);
             border-color: var(--accent-green);
             color: var(--accent-green);
         }
         .toggle-btn.active[data-dir="SELL"] {
-            background: rgba(224, 90, 90, 0.15);
+            background: rgba(240, 90, 90, 0.15);
             border-color: var(--accent-red);
             color: var(--accent-red);
         }
 
-        /* Resultados */
+        /* ===== RESULTADOS ===== */
         .result-box {
-            margin-top: 18px;
-            padding: 16px;
-            background: var(--bg-tertiary);
-            border-radius: var(--radius-md);
-            border-left: 3px solid var(--accent-gold);
+            margin-top: 20px;
+            padding: 20px;
+            background: var(--bg-input);
+            border-radius: var(--radius-lg);
+            border-left: 4px solid var(--accent-gold);
             display: none;
         }
         .result-box.show { display: block; }
+        .result-highlight {
+            font-size: 36px;
+            font-weight: 800;
+            text-align: center;
+            color: var(--accent-gold);
+            margin: 8px 0 16px;
+            font-family: var(--font-mono);
+            letter-spacing: -1px;
+        }
         .result-row {
             display: flex;
             justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid var(--border-subtle);
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
             font-size: 14px;
         }
         .result-row:last-child { border-bottom: none; }
-        .result-label { color: var(--text-muted); }
-        .result-value { font-family: var(--font-mono); font-weight: 500; color: var(--accent-gold); }
+        .result-label {
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        .result-value {
+            font-family: var(--font-mono);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        .result-value.gold { color: var(--accent-gold); }
         .result-value.red { color: var(--accent-red); }
         .result-value.green { color: var(--accent-green); }
-        .result-highlight {
-            font-size: 28px;
-            font-weight: 700;
-            text-align: center;
+
+        /* ===== GUÍA RÁPIDA ===== */
+        .quick-guide {
+            background: var(--bg-input);
+            border-radius: var(--radius-lg);
+            padding: 16px;
+            margin-top: 16px;
+        }
+        .guide-item {
+            display: flex;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .guide-item:last-child { border-bottom: none; }
+        .guide-badge {
+            background: var(--accent-gold-dim);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 4px 10px;
+            font-size: 11px;
+            font-weight: 600;
             color: var(--accent-gold);
-            margin: 10px 0 5px;
+            font-family: var(--font-mono);
+            height: fit-content;
+        }
+        .guide-text {
+            flex: 1;
+            color: var(--text-secondary);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        .guide-text strong {
+            color: var(--accent-gold);
         }
 
-        /* Navegación */
+        /* ===== NAVEGACIÓN ===== */
         .bottom-nav {
             display: flex;
-            background: var(--bg-secondary);
-            border-top: 1px solid var(--border-subtle);
+            background: var(--bg-card);
+            border-top: 1px solid var(--border);
             padding: 8px 4px;
             flex-shrink: 0;
+            backdrop-filter: blur(10px);
         }
         .nav-item {
             flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 2px;
+            gap: 4px;
             background: transparent;
             border: none;
             color: var(--text-muted);
             font-size: 11px;
-            font-weight: 500;
-            padding: 6px 0;
+            font-weight: 600;
+            padding: 8px 0;
             cursor: pointer;
+            transition: all 0.2s ease;
+            border-radius: var(--radius-sm);
         }
-        .nav-item.active { color: var(--accent-gold); }
-        .nav-icon { font-size: 20px; margin-bottom: 2px; }
+        .nav-item.active {
+            color: var(--accent-gold);
+            background: var(--accent-gold-dim);
+        }
+        .nav-icon {
+            font-size: 22px;
+            margin-bottom: 2px;
+        }
     </style>
 </head>
 <body>
     <div id="app">
-        <!-- SPLASH -->
+        <!-- SPLASH SCREEN -->
         <div id="splash" class="screen on">
-            <div class="splash-logo">DX TOOLS</div>
+            <div class="splash-logo">COPY TRADER</div>
             <div class="splash-spinner"></div>
         </div>
 
-        <!-- DENEGADO -->
+        <!-- ACCESO DENEGADO -->
         <div id="denied" class="screen">
             <div class="denied-icon">🔒</div>
-            <div class="denied-title">Acceso Restringido</div>
-            <div class="denied-text">Necesitas una membresía activa para usar estas herramientas.</div>
-            <button class="denied-button" onclick="window.Telegram?.WebApp?.close()">Volver al Bot</button>
+            <div class="denied-title">Sin Acceso</div>
+            <div class="denied-text">Necesitas una membresía activa para usar las herramientas de copy trading.</div>
+            <button class="denied-button" onclick="window.Telegram?.WebApp?.close()">← Volver al Bot</button>
         </div>
 
         <!-- MAIN APP -->
         <div id="main" class="screen">
             <div class="app-header">
-                <div class="header-title">Trade Calculator</div>
+                <div class="header-title">Copy Assistant</div>
                 <div class="header-badge" id="user-badge">VIP</div>
             </div>
 
             <div class="scroll-area" id="scroll-area">
-                <!-- PANEL 1: Lotes -->
+                <!-- PANEL 1: LOT SIZE (Tamaño de posición) -->
                 <div class="pane on" id="pane-lots">
-                    <div class="section-title">🎯 Lotes</div>
-                    <div class="section-sub">Tamaño de posición exacto</div>
+                    <div class="section-title">🎯 Tamaño</div>
+                    <div class="section-sub">Calcula tu lote exacto según riesgo</div>
+                    
+                    <div class="tip-card">
+                        <div class="tip-icon">💡</div>
+                        <div class="tip-content">
+                            <div class="tip-title">Consejo del Trader</div>
+                            <div class="tip-text">Nunca arriesgues más del 1-2% de tu cuenta en una sola operación. Así proteges tu capital en rachas malas.</div>
+                        </div>
+                    </div>
+
                     <div class="card">
-                        <div class="card-title"><span>1.</span> Datos de cuenta</div>
+                        <div class="card-title"><span>1</span> Datos de tu cuenta</div>
+                        
                         <div class="input-grid">
                             <div class="input-field">
                                 <div class="input-label">Balance <small>USD</small></div>
-                                <input type="number" id="lots-balance" class="input-control" value="10000">
+                                <input type="number" id="lots-balance" class="input-control" value="10000" step="any">
                             </div>
                             <div class="input-field">
                                 <div class="input-label">Riesgo <small>%</small></div>
-                                <input type="number" id="lots-risk" class="input-control" value="1">
+                                <input type="number" id="lots-risk" class="input-control" value="1" step="0.1" min="0.1" max="5">
                             </div>
                         </div>
+
                         <div class="input-grid">
                             <div class="input-field">
                                 <div class="input-label">Par</div>
@@ -373,67 +581,146 @@
                                     <option value="EURUSD">EUR/USD</option>
                                     <option value="GBPUSD">GBP/USD</option>
                                     <option value="USDJPY">USD/JPY</option>
+                                    <option value="USDCAD">USD/CAD</option>
+                                    <option value="AUDUSD">AUD/USD</option>
+                                    <option value="XAUUSD">XAU/USD (Oro)</option>
                                 </select>
                             </div>
                             <div class="input-field">
                                 <div class="input-label">SL <small>pips</small></div>
-                                <input type="number" id="lots-sl" class="input-control" value="30">
+                                <input type="number" id="lots-sl" class="input-control" value="30" step="any">
                             </div>
                         </div>
+
                         <button class="action-btn" onclick="calculateLots()">Calcular Lote</button>
+
                         <div class="result-box" id="result-lots">
                             <div class="result-highlight" id="lots-result-value">0.00</div>
-                            <div class="result-row"><span>Lotes</span><span id="lots-result-lots">0.00</span></div>
-                            <div class="result-row"><span>Riesgo $</span><span class="red" id="lots-result-risk">$0</span></div>
+                            <div class="result-row">
+                                <span class="result-label">Lotes recomendados</span>
+                                <span class="result-value gold" id="lots-result-lots">0.00</span>
+                            </div>
+                            <div class="result-row">
+                                <span class="result-label">Dinero en riesgo</span>
+                                <span class="result-value red" id="lots-result-risk">$0</span>
+                            </div>
+                            <div class="result-row">
+                                <span class="result-label">Valor por pip</span>
+                                <span class="result-value" id="lots-result-pip">$0</span>
+                            </div>
+                        </div>
+
+                        <div class="quick-guide">
+                            <div class="guide-item">
+                                <span class="guide-badge">SEÑAL</span>
+                                <span class="guide-text">Si la señal dice "SL 30 pips", aquí pones 30</span>
+                            </div>
+                            <div class="guide-item">
+                                <span class="guide-badge">REGLA</span>
+                                <span class="guide-text"><strong>1% regla:</strong> Si balance $1000 → riesgo máx $10</span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- PANEL 2: SL/TP -->
+                <!-- PANEL 2: SL/TP PRECISOS -->
                 <div class="pane" id="pane-sltp">
-                    <div class="section-title">📏 SL/TP</div>
-                    <div class="section-sub">Precios exactos</div>
+                    <div class="section-title">📏 SL / TP</div>
+                    <div class="section-sub">Convierte pips a precios exactos</div>
+
+                    <div class="tip-card">
+                        <div class="tip-icon">⚡</div>
+                        <div class="tip-content">
+                            <div class="tip-title">Para Copy Trading</div>
+                            <div class="tip-text">La señal da entrada y pips. Esta calculadora te da el precio exacto donde poner SL y TP en MT4/MT5.</div>
+                        </div>
+                    </div>
+
                     <div class="card">
-                        <div class="card-title"><span>1.</span> Señal</div>
+                        <div class="card-title"><span>1</span> Datos de la señal</div>
+
                         <div class="input-field">
                             <div class="input-label">Par</div>
                             <select id="sltp-pair" class="select-control">
                                 <option value="EURUSD">EUR/USD</option>
                                 <option value="GBPUSD">GBP/USD</option>
                                 <option value="USDJPY">USD/JPY</option>
+                                <option value="XAUUSD">XAU/USD (Oro)</option>
                             </select>
                         </div>
+
                         <div class="input-field">
-                            <div class="input-label">Entrada</div>
-                            <input type="number" id="sltp-entry" class="input-control" step="0.00001">
+                            <div class="input-label">Precio de entrada</div>
+                            <input type="number" id="sltp-entry" class="input-control" step="any" placeholder="1.08500">
                         </div>
+
+                        <div class="input-label">Dirección</div>
                         <div class="toggle-group">
-                            <div class="toggle-btn active" data-dir="BUY" id="btn-buy" onclick="setDir('BUY')">📈 BUY</div>
-                            <div class="toggle-btn" data-dir="SELL" id="btn-sell" onclick="setDir('SELL')">📉 SELL</div>
+                            <div class="toggle-btn active" data-dir="BUY" id="btn-buy" onclick="setDir('BUY')">📈 COMPRA (BUY)</div>
+                            <div class="toggle-btn" data-dir="SELL" id="btn-sell" onclick="setDir('SELL')">📉 VENTA (SELL)</div>
                         </div>
+
                         <div class="input-grid">
                             <div class="input-field">
-                                <div class="input-label">SL pips</div>
-                                <input type="number" id="sltp-sl" class="input-control">
+                                <div class="input-label">SL <small>pips</small></div>
+                                <input type="number" id="sltp-sl" class="input-control" step="any" placeholder="30">
                             </div>
                             <div class="input-field">
-                                <div class="input-label">TP pips</div>
-                                <input type="number" id="sltp-tp" class="input-control">
+                                <div class="input-label">TP <small>pips</small></div>
+                                <input type="number" id="sltp-tp" class="input-control" step="any" placeholder="60">
                             </div>
                         </div>
-                        <button class="action-btn" onclick="calculateSLTP()">Calcular</button>
+
+                        <button class="action-btn" onclick="calculateSLTP()">Calcular Precios</button>
+
                         <div class="result-box" id="result-sltp">
-                            <div class="result-row"><span>SL</span><span class="red" id="sltp-result-sl">—</span></div>
-                            <div class="result-row"><span>TP</span><span class="green" id="sltp-result-tp">—</span></div>
+                            <div class="result-row">
+                                <span class="result-label">Stop Loss</span>
+                                <span class="result-value red" id="sltp-result-sl">—</span>
+                            </div>
+                            <div class="result-row">
+                                <span class="result-label">Take Profit</span>
+                                <span class="result-value green" id="sltp-result-tp">—</span>
+                            </div>
+                            <div class="result-row">
+                                <span class="result-label">Distancia SL</span>
+                                <span class="result-value" id="sltp-result-sl-dist">0 pips</span>
+                            </div>
+                            <div class="result-row">
+                                <span class="result-label">Distancia TP</span>
+                                <span class="result-value" id="sltp-result-tp-dist">0 pips</span>
+                            </div>
+                        </div>
+
+                        <div class="quick-guide">
+                            <div class="guide-item">
+                                <span class="guide-badge">BUY</span>
+                                <span class="guide-text">SL = Entrada - (pips × 0.0001) | TP = Entrada + (pips × 0.0001)</span>
+                            </div>
+                            <div class="guide-item">
+                                <span class="guide-badge">SELL</span>
+                                <span class="guide-text">SL = Entrada + (pips × 0.0001) | TP = Entrada - (pips × 0.0001)</span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- PANEL 3: Pip Value -->
+                <!-- PANEL 3: PIP VALUE -->
                 <div class="pane" id="pane-pip">
-                    <div class="section-title">💰 Pip Value</div>
-                    <div class="section-sub">Valor por pip</div>
+                    <div class="section-title">💰 Valor del Pip</div>
+                    <div class="section-sub">Cuánto ganas/pierdes por pip</div>
+
+                    <div class="tip-card">
+                        <div class="tip-icon">📊</div>
+                        <div class="tip-content">
+                            <div class="tip-title">Antes de entrar</div>
+                            <div class="tip-text">Saber el valor por pip te ayuda a dimensionar si la operación vale la pena para tu cuenta.</div>
+                        </div>
+                    </div>
+
                     <div class="card">
+                        <div class="card-title"><span>1</span> Configuración</div>
+
                         <div class="input-grid">
                             <div class="input-field">
                                 <div class="input-label">Par</div>
@@ -445,44 +732,122 @@
                             </div>
                             <div class="input-field">
                                 <div class="input-label">Lote</div>
-                                <input type="number" id="pip-lot" class="input-control" value="0.10" step="0.01">
+                                <input type="number" id="pip-lot" class="input-control" value="0.10" step="0.01" min="0.01">
                             </div>
                         </div>
+
+                        <div class="input-field">
+                            <div class="input-label">Número de pips</div>
+                            <input type="number" id="pip-pips" class="input-control" value="50" step="any">
+                        </div>
+
                         <button class="action-btn" onclick="calculatePip()">Calcular</button>
+
                         <div class="result-box" id="result-pip">
-                            <div class="result-highlight" id="pip-result">$0.00</div>
+                            <div class="result-highlight" id="pip-result-value">$0.00</div>
+                            <div class="result-row">
+                                <span class="result-label">Valor por pip</span>
+                                <span class="result-value gold" id="pip-result-perpip">$0.00</span>
+                            </div>
+                            <div class="result-row">
+                                <span class="result-label">Total {50} pips</span>
+                                <span class="result-value" id="pip-result-total">$0.00</span>
+                            </div>
+                        </div>
+
+                        <div class="quick-guide">
+                            <div class="guide-item">
+                                <span class="guide-badge">1 LOTE</span>
+                                <span class="guide-text">EUR/USD: $10 por pip | USD/JPY: ~$9.30 por pip</span>
+                            </div>
+                            <div class="guide-item">
+                                <span class="guide-badge">0.10 LOTE</span>
+                                <span class="guide-text">EUR/USD: $1 por pip | 50 pips = $50</span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- PANEL 4: R:R -->
+                <!-- PANEL 4: RISK/REWARD -->
                 <div class="pane" id="pane-rr">
-                    <div class="section-title">⚖️ R:R</div>
-                    <div class="section-sub">Risk/Reward</div>
+                    <div class="section-title">⚖️ R:R Ratio</div>
+                    <div class="section-sub">¿La señal vale la pena?</div>
+
+                    <div class="tip-card">
+                        <div class="tip-icon">🎯</div>
+                        <div class="tip-content">
+                            <div class="tip-title">La clave del éxito</div>
+                            <div class="tip-text">Busca siempre R:R de 1:2 o superior. 1:1.5 mínimo. Menos de 1:1 es mala operación.</div>
+                        </div>
+                    </div>
+
                     <div class="card">
+                        <div class="card-title"><span>1</span> Análisis de la señal</div>
+
                         <div class="input-grid">
                             <div class="input-field">
-                                <div class="input-label">SL pips</div>
-                                <input type="number" id="rr-sl" class="input-control">
+                                <div class="input-label">SL <small>pips</small></div>
+                                <input type="number" id="rr-sl" class="input-control" step="any" placeholder="30">
                             </div>
                             <div class="input-field">
-                                <div class="input-label">TP pips</div>
-                                <input type="number" id="rr-tp" class="input-control">
+                                <div class="input-label">TP <small>pips</small></div>
+                                <input type="number" id="rr-tp" class="input-control" step="any" placeholder="60">
                             </div>
                         </div>
-                        <button class="action-btn" onclick="calculateRR()">Calcular</button>
+
+                        <div class="input-grid">
+                            <div class="input-field">
+                                <div class="input-label">Balance <small>USD</small></div>
+                                <input type="number" id="rr-balance" class="input-control" value="10000" step="any">
+                            </div>
+                            <div class="input-field">
+                                <div class="input-label">Riesgo <small>%</small></div>
+                                <input type="number" id="rr-risk" class="input-control" value="1" step="0.1">
+                            </div>
+                        </div>
+
+                        <button class="action-btn" onclick="calculateRR()">Analizar Trade</button>
+
                         <div class="result-box" id="result-rr">
-                            <div class="result-highlight" id="rr-ratio">1:0</div>
+                            <div class="result-highlight" id="rr-ratio">1:0.0</div>
+                            
+                            <div class="result-row">
+                                <span class="result-label">Ganancia potencial</span>
+                                <span class="result-value green" id="rr-gain">+$0</span>
+                            </div>
+                            <div class="result-row">
+                                <span class="result-label">Pérdida máxima</span>
+                                <span class="result-value red" id="rr-loss">-$0</span>
+                            </div>
+                            <div class="result-row">
+                                <span class="result-label">Winrate necesario</span>
+                                <span class="result-value" id="rr-winrate">0%</span>
+                            </div>
+                        </div>
+
+                        <div class="quick-guide">
+                            <div class="guide-item">
+                                <span class="guide-badge" style="background: rgba(46, 189, 133, 0.15); color: #2EBD85;">✅ 1:2</span>
+                                <span class="guide-text">Excelente. Ganas el doble de lo que arriesgas.</span>
+                            </div>
+                            <div class="guide-item">
+                                <span class="guide-badge" style="background: rgba(240, 90, 90, 0.15); color: #F05A5A;">⚠️ 1:1</span>
+                                <span class="guide-text">Necesitas 50% de aciertos solo para no perder.</span>
+                            </div>
+                            <div class="guide-item">
+                                <span class="guide-badge" style="background: rgba(212, 175, 55, 0.15); color: #D4AF37;">💎 1:3+</span>
+                                <span class="guide-text">Señal élite. Vale la pena arriesgar.</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Navegación -->
+            <!-- NAVEGACIÓN -->
             <nav class="bottom-nav">
                 <button class="nav-item active" onclick="switchPane('lots', this)"><span class="nav-icon">🎯</span><span>Lotes</span></button>
                 <button class="nav-item" onclick="switchPane('sltp', this)"><span class="nav-icon">📏</span><span>SL/TP</span></button>
-                <button class="nav-item" onclick="switchPane('pip', this)"><span class="nav-icon">💰</span><span>Pip</span></button>
+                <button class="nav-item" onclick="switchPane('pip', this)"><span class="nav-icon">💰</span><span>Pip $</span></button>
                 <button class="nav-item" onclick="switchPane('rr', this)"><span class="nav-icon">⚖️</span><span>R:R</span></button>
             </nav>
         </div>
@@ -494,19 +859,21 @@
         if (tg) {
             tg.ready();
             tg.expand();
+            tg.enableClosingConfirmation();
         }
 
-        // Configuración - API de Railway
+        // Configuración
         const API_BASE = 'https://dx-botv1-production.up.railway.app';
-        
-        // Estado
         let currentDir = 'BUY';
         
-        // Datos de pares
+        // Base de datos de pares
         const PAIRS = {
             'EURUSD': { pip: 0.0001, value: 10.0, digits: 5 },
             'GBPUSD': { pip: 0.0001, value: 10.0, digits: 5 },
-            'USDJPY': { pip: 0.01, value: 9.3, digits: 3 }
+            'USDJPY': { pip: 0.01, value: 9.3, digits: 3 },
+            'USDCAD': { pip: 0.0001, value: 7.5, digits: 5 },
+            'AUDUSD': { pip: 0.0001, value: 10.0, digits: 5 },
+            'XAUUSD': { pip: 0.1, value: 10.0, digits: 2 }
         };
 
         // Inicialización
@@ -515,7 +882,7 @@
                 const userId = tg?.initDataUnsafe?.user?.id;
                 
                 if (!userId) {
-                    console.log("No hay usuario, modo demo");
+                    console.log("Modo demo");
                     showMainApp(null);
                     return;
                 }
@@ -551,29 +918,23 @@
                 if (days < 7) badge = 'TRIAL';
                 else if (days < 30) badge = 'VIP';
                 else if (days < 90) badge = 'PREMIUM';
-                else badge = 'DIAMANTE';
+                else badge = 'DIAMOND';
                 document.getElementById('user-badge').textContent = badge;
             }
         }
 
-        // Funciones de cálculo
-        function calculateLots() {
-            const balance = parseFloat(document.getElementById('lots-balance').value) || 0;
-            const riskPct = parseFloat(document.getElementById('lots-risk').value) || 0;
-            const slPips = parseFloat(document.getElementById('lots-sl').value) || 0;
-            const pair = document.getElementById('lots-pair').value;
+        // Cambio de pestañas
+        function switchPane(paneId, btn) {
+            document.querySelectorAll('.pane').forEach(p => p.classList.remove('on'));
+            document.getElementById(`pane-${paneId}`).classList.add('on');
             
-            const pairData = PAIRS[pair] || PAIRS['EURUSD'];
-            const riskAmount = balance * (riskPct / 100);
-            const lots = riskAmount / (slPips * pairData.value);
-            const roundedLots = Math.floor(lots * 100) / 100;
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            btn.classList.add('active');
             
-            document.getElementById('lots-result-value').textContent = roundedLots.toFixed(2);
-            document.getElementById('lots-result-lots').textContent = roundedLots.toFixed(2);
-            document.getElementById('lots-result-risk').textContent = '$' + riskAmount.toFixed(2);
-            document.getElementById('result-lots').classList.add('show');
+            document.getElementById('scroll-area').scrollTop = 0;
         }
 
+        // Dirección
         function setDir(dir) {
             currentDir = dir;
             document.getElementById('btn-buy').classList.remove('active');
@@ -581,16 +942,48 @@
             document.getElementById(`btn-${dir.toLowerCase()}`).classList.add('active');
         }
 
+        // Cálculo de Lotes
+        function calculateLots() {
+            const balance = parseFloat(document.getElementById('lots-balance').value) || 0;
+            const riskPct = parseFloat(document.getElementById('lots-risk').value) || 0;
+            const slPips = parseFloat(document.getElementById('lots-sl').value) || 0;
+            const pair = document.getElementById('lots-pair').value;
+            
+            if (balance <= 0 || riskPct <= 0 || slPips <= 0) {
+                alert('Completa todos los campos');
+                return;
+            }
+
+            const pairData = PAIRS[pair] || PAIRS['EURUSD'];
+            const riskAmount = balance * (riskPct / 100);
+            const rawLots = riskAmount / (slPips * pairData.value);
+            const lots = Math.floor(rawLots * 100) / 100;
+            const pipValue = lots * pairData.value;
+
+            document.getElementById('lots-result-value').textContent = lots.toFixed(2);
+            document.getElementById('lots-result-lots').textContent = lots.toFixed(2);
+            document.getElementById('lots-result-risk').textContent = '$' + riskAmount.toFixed(2);
+            document.getElementById('lots-result-pip').textContent = '$' + pipValue.toFixed(2);
+            
+            document.getElementById('result-lots').classList.add('show');
+        }
+
+        // Cálculo SL/TP
         function calculateSLTP() {
             const pair = document.getElementById('sltp-pair').value;
             const entry = parseFloat(document.getElementById('sltp-entry').value) || 0;
             const slPips = parseFloat(document.getElementById('sltp-sl').value) || 0;
             const tpPips = parseFloat(document.getElementById('sltp-tp').value) || 0;
             
+            if (entry <= 0 || slPips <= 0 || tpPips <= 0) {
+                alert('Completa todos los campos');
+                return;
+            }
+
             const pairData = PAIRS[pair] || PAIRS['EURUSD'];
             const pipSize = pairData.pip;
             const digits = pairData.digits;
-            
+
             let slPrice, tpPrice;
             if (currentDir === 'BUY') {
                 slPrice = entry - (slPips * pipSize);
@@ -599,34 +992,60 @@
                 slPrice = entry + (slPips * pipSize);
                 tpPrice = entry - (tpPips * pipSize);
             }
-            
+
             document.getElementById('sltp-result-sl').textContent = slPrice.toFixed(digits);
             document.getElementById('sltp-result-tp').textContent = tpPrice.toFixed(digits);
+            document.getElementById('sltp-result-sl-dist').textContent = `-${slPips} pips`;
+            document.getElementById('sltp-result-tp-dist').textContent = `+${tpPips} pips`;
+            
             document.getElementById('result-sltp').classList.add('show');
         }
 
+        // Cálculo Pip Value
         function calculatePip() {
             const pair = document.getElementById('pip-pair').value;
             const lot = parseFloat(document.getElementById('pip-lot').value) || 0;
+            const pips = parseFloat(document.getElementById('pip-pips').value) || 0;
+            
+            if (lot <= 0 || pips <= 0) {
+                alert('Completa todos los campos');
+                return;
+            }
+
             const pairData = PAIRS[pair] || PAIRS['EURUSD'];
-            const value = lot * pairData.value;
-            document.getElementById('pip-result').textContent = '$' + value.toFixed(2);
+            const perPip = lot * pairData.value;
+            const total = perPip * pips;
+
+            document.getElementById('pip-result-value').textContent = '$' + perPip.toFixed(2);
+            document.getElementById('pip-result-perpip').textContent = '$' + perPip.toFixed(2);
+            document.getElementById('pip-result-total').textContent = '$' + total.toFixed(2);
+            
             document.getElementById('result-pip').classList.add('show');
         }
 
+        // Cálculo Risk/Reward
         function calculateRR() {
-            const sl = parseFloat(document.getElementById('rr-sl').value) || 0;
-            const tp = parseFloat(document.getElementById('rr-tp').value) || 0;
-            const ratio = tp / sl;
-            document.getElementById('rr-ratio').textContent = '1:' + (ratio || 0).toFixed(2);
-            document.getElementById('result-rr').classList.add('show');
-        }
+            const slPips = parseFloat(document.getElementById('rr-sl').value) || 0;
+            const tpPips = parseFloat(document.getElementById('rr-tp').value) || 0;
+            const balance = parseFloat(document.getElementById('rr-balance').value) || 0;
+            const riskPct = parseFloat(document.getElementById('rr-risk').value) || 0;
 
-        function switchPane(paneId, btn) {
-            document.querySelectorAll('.pane').forEach(p => p.classList.remove('on'));
-            document.getElementById(`pane-${paneId}`).classList.add('on');
-            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-            btn.classList.add('active');
+            if (slPips <= 0 || tpPips <= 0 || balance <= 0 || riskPct <= 0) {
+                alert('Completa todos los campos');
+                return;
+            }
+
+            const ratio = tpPips / slPips;
+            const riskAmount = balance * (riskPct / 100);
+            const gainAmount = riskAmount * ratio;
+            const winrateNeeded = (1 / (1 + ratio)) * 100;
+
+            document.getElementById('rr-ratio').textContent = `1:${ratio.toFixed(2)}`;
+            document.getElementById('rr-gain').textContent = `+$${gainAmount.toFixed(2)}`;
+            document.getElementById('rr-loss').textContent = `-$${riskAmount.toFixed(2)}`;
+            document.getElementById('rr-winrate').textContent = winrateNeeded.toFixed(1) + '%';
+
+            document.getElementById('result-rr').classList.add('show');
         }
 
         // Iniciar
