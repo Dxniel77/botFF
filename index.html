@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ORO · BITCOIN · TRADER</title>
+    <title>ORO · BITCOIN · CALCULADORAS</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -172,89 +172,7 @@
             margin-bottom: 16px;
         }
 
-        /* ===== PERFIL ===== */
-        .perfil-header {
-            background: linear-gradient(135deg, var(--oro), var(--bitcoin));
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            color: #0B0E14;
-        }
-        .perfil-avatar {
-            width: 64px;
-            height: 64px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            overflow: hidden;
-        }
-        .perfil-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .perfil-nombre {
-            font-size: 20px;
-            font-weight: 700;
-        }
-        .perfil-rango {
-            font-size: 14px;
-            opacity: 0.8;
-            font-weight: 600;
-        }
-
-        .progreso-info {
-            display: flex;
-            justify-content: space-between;
-            font-size: 13px;
-            color: var(--texto-sec);
-            margin-bottom: 8px;
-        }
-        .progreso-barra {
-            height: 8px;
-            background: var(--input);
-            border-radius: 4px;
-            overflow: hidden;
-            margin-bottom: 20px;
-        }
-        .progreso-llenado {
-            height: 100%;
-            background: var(--oro);
-            transition: width 0.3s ease;
-        }
-
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-        .stat-card {
-            background: var(--input);
-            border: 1px solid var(--borde);
-            border-radius: 12px;
-            padding: 16px;
-            text-align: center;
-        }
-        .stat-valor {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--oro);
-            font-family: var(--mono);
-        }
-        .stat-etiqueta {
-            font-size: 11px;
-            color: var(--texto-sec);
-            margin-top: 4px;
-        }
-
-        /* ===== FORMULARIOS ===== */
+        /* Formularios */
         .campo { margin-bottom: 16px; }
         .etiqueta {
             font-size: 12px;
@@ -282,6 +200,13 @@
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%235F6C80' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: right 16px center;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
         }
 
         /* Toggle */
@@ -354,6 +279,7 @@
         .fila:last-child { border-bottom: none; }
         .rojo { color: var(--rojo); }
         .verde { color: var(--verde); }
+        .oro { color: var(--oro); }
 
         /* Navegación */
         .nav {
@@ -409,50 +335,6 @@
             </div>
 
             <div class="contenido" id="contenido">
-                <!-- PANEL PERFIL -->
-                <div class="panel" id="panel-perfil">
-                    <div class="titulo-panel">👤 Mi Perfil</div>
-                    <div class="subtitulo-panel">Tu membresía VIP</div>
-
-                    <div class="perfil-header">
-                        <div class="perfil-avatar" id="perfil-avatar">👤</div>
-                        <div>
-                            <div class="perfil-nombre" id="perfil-nombre">Cargando...</div>
-                            <div class="perfil-rango" id="perfil-rango">—</div>
-                        </div>
-                    </div>
-
-                    <div class="progreso-info">
-                        <span>Progreso a próximo nivel</span>
-                        <span id="progreso-porcentaje">0%</span>
-                    </div>
-                    <div class="progreso-barra">
-                        <div class="progreso-llenado" id="progreso-barra" style="width:0%"></div>
-                    </div>
-
-                    <div class="grid-2">
-                        <div class="stat-card">
-                            <div class="stat-valor" id="perfil-dias-restantes">—</div>
-                            <div class="stat-etiqueta">Días restantes</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-valor" id="perfil-dias-totales">—</div>
-                            <div class="stat-etiqueta">Días totales</div>
-                        </div>
-                    </div>
-
-                    <div class="grid-2">
-                        <div class="stat-card">
-                            <div class="stat-valor" id="perfil-vencimiento">—</div>
-                            <div class="stat-etiqueta">Vence</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-valor" id="perfil-ingreso">—</div>
-                            <div class="stat-etiqueta">Miembro desde</div>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- PANEL LOTES -->
                 <div class="panel activo" id="panel-lotes">
                     <div class="titulo-panel">🎯 Tamaño</div>
@@ -651,9 +533,8 @@
                 </div>
             </div>
 
-            <!-- Navegación -->
+            <!-- Navegación (SOLO 4 CALCULADORAS) -->
             <nav class="nav">
-                <button class="nav-item" onclick="cambiarPanel('perfil', this)"><span class="nav-icono">👤</span><span>Perfil</span></button>
                 <button class="nav-item activo" onclick="cambiarPanel('lotes', this)"><span class="nav-icono">🎯</span><span>Lotes</span></button>
                 <button class="nav-item" onclick="cambiarPanel('sltp', this)"><span class="nav-icono">📏</span><span>SL/TP</span></button>
                 <button class="nav-item" onclick="cambiarPanel('pip', this)"><span class="nav-icono">💰</span><span>Pip $</span></button>
@@ -663,23 +544,6 @@
     </div>
 
     <script>
-        // ===== CONFIGURACIÓN =====
-        const CONFIG = {
-            API_URL: 'https://dx-botv1-production.up.railway.app'
-        };
-
-        // ===== DATOS DE PARES =====
-        const PARES = {
-            'XAUUSD': { pip: 0.1, valor: 10.0, decimales: 2 },
-            'BTCUSD': { pip: 1.0, valor: 1.0, decimales: 0 }
-        };
-
-        // ===== ESTADO GLOBAL =====
-        let estado = {
-            usuario: null,
-            direccion: 'BUY'
-        };
-
         // ===== TELEGRAM =====
         const tg = window.Telegram?.WebApp;
         if (tg) {
@@ -687,56 +551,46 @@
             tg.expand();
         }
 
-        // ===== INICIALIZACIÓN =====
+        // ===== CONFIGURACIÓN =====
+        const API_URL = 'https://dx-botv1-production.up.railway.app';
+
+        // ===== DATOS DE PARES =====
+        const PARES = {
+            'XAUUSD': { pip: 0.1, valor: 10.0, decimales: 2 },
+            'BTCUSD': { pip: 1.0, valor: 1.0, decimales: 0 }
+        };
+
+        // ===== ESTADO =====
+        let direccion = 'BUY';
+        let datosUsuario = null;
+
+        // ===== INICIALIZACIÓN CON VERIFICACIÓN =====
         async function iniciar() {
             try {
-                // Mostrar LOTES por defecto
-                document.getElementById('panel-lotes').classList.add('activo');
-                
                 const userId = tg?.initDataUnsafe?.user?.id;
                 
                 if (!userId) {
-                    console.log('Modo demo: sin usuario');
-                    mostrarPrincipal(null);
+                    mostrarDenegado();
                     return;
                 }
                 
-                // Obtener datos del usuario
-                console.log('Obteniendo datos para usuario:', userId);
-                const data = await obtenerDatosUsuario(userId);
-                console.log('Datos recibidos:', data);
+                // Verificar membresía con el bot
+                const response = await fetch(`${API_URL}/api/user_info?user_id=${userId}`);
+                const data = await response.json();
                 
                 if (data && data.has_membership && !data.is_expired) {
-                    estado.usuario = data;
+                    datosUsuario = data;
                     mostrarPrincipal(data);
-                    // Actualizar perfil inmediatamente
-                    actualizarPerfil(data);
                 } else {
                     mostrarDenegado();
                 }
                 
             } catch (error) {
                 console.error('Error:', error);
-                mostrarPrincipal(null);
+                mostrarDenegado();
             }
         }
 
-        // ===== OBTENER DATOS DEL BOT =====
-        async function obtenerDatosUsuario(userId) {
-            try {
-                const response = await fetch(`${CONFIG.API_URL}/api/user_info?user_id=${userId}`);
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}`);
-                }
-                const data = await response.json();
-                return data;
-            } catch (error) {
-                console.error('Error fetching user data:', error);
-                return null;
-            }
-        }
-
-        // ===== MOSTRAR PANTALLAS =====
         function mostrarDenegado() {
             document.getElementById('carga').classList.remove('activa');
             document.getElementById('denegado').classList.add('activa');
@@ -746,72 +600,15 @@
             document.getElementById('carga').classList.remove('activa');
             document.getElementById('principal').classList.add('activa');
             
+            // Actualizar insignia
             if (userData) {
-                actualizarInsignia(userData);
-            }
-        }
-
-        // ===== ACTUALIZAR INSIGNIA =====
-        function actualizarInsignia(userData) {
-            const dias = Math.floor((userData.seconds_left || 0) / 86400);
-            let nivel = 'VIP';
-            if (dias < 7) nivel = 'PRUEBA';
-            else if (dias < 30) nivel = 'VIP';
-            else if (ias < 90) nivel = 'PREMIUM';
-            else nivel = 'DIAMANTE';
-            document.getElementById('insignia-usuario').textContent = nivel;
-        }
-
-        // ===== PERFIL =====
-        function calcularNivel(diasTotales) {
-            if (diasTotales < 30) return { nombre: 'BRONCE', icono: '🥉', progreso: (diasTotales / 30) * 100 };
-            if (diasTotales < 90) return { nombre: 'PLATA', icono: '🥈', progreso: ((diasTotales - 30) / 60) * 100 };
-            if (diasTotales < 180) return { nombre: 'ORO', icono: '🥇', progreso: ((diasTotales - 90) / 90) * 100 };
-            return { nombre: 'DIAMANTE', icono: '💎', progreso: 100 };
-        }
-
-        function actualizarPerfil(data) {
-            if (!data) {
-                console.log('No hay datos para actualizar perfil');
-                return;
-            }
-            
-            console.log('Actualizando perfil con:', data);
-            
-            // Nombre de Telegram
-            const user = tg?.initDataUnsafe?.user;
-            if (user) {
-                document.getElementById('perfil-nombre').textContent = user.first_name || 'Usuario';
-                
-                if (user.photo_url) {
-                    document.getElementById('perfil-avatar').innerHTML = `<img src="${user.photo_url}" alt="avatar">`;
-                }
-            }
-            
-            // Calcular días
-            const diasRestantes = Math.floor((data.seconds_left || 0) / 86400);
-            const diasTotales = data.total_days || 0;
-            
-            document.getElementById('perfil-dias-restantes').textContent = diasRestantes;
-            document.getElementById('perfil-dias-totales').textContent = diasTotales;
-            
-            // Calcular nivel y progreso
-            const nivel = calcularNivel(diasTotales);
-            document.getElementById('perfil-rango').innerHTML = `${nivel.icono} ${nivel.nombre}`;
-            document.getElementById('progreso-barra').style.width = nivel.progreso + '%';
-            document.getElementById('progreso-porcentaje').textContent = Math.round(nivel.progreso) + '%';
-            
-            // Fecha de vencimiento
-            if (data.expiry) {
-                const fecha = new Date(data.expiry);
-                document.getElementById('perfil-vencimiento').textContent = fecha.toLocaleDateString('es-ES');
-            }
-            
-            // Fecha de ingreso aproximada
-            if (diasTotales > 0) {
-                const fechaIngreso = new Date();
-                fechaIngreso.setDate(fechaIngreso.getDate() - (diasTotales - diasRestantes));
-                document.getElementById('perfil-ingreso').textContent = fechaIngreso.toLocaleDateString('es-ES');
+                const dias = Math.floor((userData.seconds_left || 0) / 86400);
+                let nivel = 'VIP';
+                if (dias < 7) nivel = 'PRUEBA';
+                else if (dias < 30) nivel = 'VIP';
+                else if (dias < 90) nivel = 'PREMIUM';
+                else nivel = 'DIAMANTE';
+                document.getElementById('insignia-usuario').textContent = nivel;
             }
         }
 
@@ -822,16 +619,11 @@
             
             document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('activo'));
             btn.classList.add('activo');
-            
-            // Si vamos a perfil, actualizamos datos
-            if (panelId === 'perfil' && estado.usuario) {
-                actualizarPerfil(estado.usuario);
-            }
         }
 
         // ===== DIRECCIÓN =====
         function setDireccion(dir) {
-            estado.direccion = dir;
+            direccion = dir;
             document.getElementById('btn-comprar').classList.remove('activo');
             document.getElementById('btn-vender').classList.remove('activo');
             if (dir === 'BUY') {
@@ -880,7 +672,7 @@
             const data = PARES[par];
             let precioSl, precioTp;
             
-            if (estado.direccion === 'BUY') {
+            if (direccion === 'BUY') {
                 precioSl = entrada - (sl * data.pip);
                 precioTp = entrada + (tp * data.pip);
             } else {
