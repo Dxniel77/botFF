@@ -498,15 +498,15 @@
 
             <div class="contenido" id="contenido">
                 <!-- PANEL PERFIL -->
-                <div class="panel activo" id="panel-perfil">
+                <div class="panel" id="panel-perfil">
                     <div class="titulo-panel">👤 Mi Perfil</div>
                     <div class="subtitulo-panel">Tu membresía VIP</div>
 
-                    <div class="perfil-header" id="perfil-header">
+                    <div class="perfil-header">
                         <div class="perfil-avatar" id="perfil-avatar">👤</div>
                         <div>
                             <div class="perfil-nombre" id="perfil-nombre">Cargando...</div>
-                            <div class="perfil-rango" id="perfil-rango">VIP</div>
+                            <div class="perfil-rango" id="perfil-rango">—</div>
                         </div>
                     </div>
 
@@ -520,32 +520,32 @@
 
                     <div class="grid-2">
                         <div class="stat-card">
-                            <div class="stat-valor" id="perfil-dias-restantes">0</div>
+                            <div class="stat-valor" id="perfil-dias-restantes">—</div>
                             <div class="stat-etiqueta">Días restantes</div>
                         </div>
                         <div class="stat-card">
-                            <div class="stat-valor" id="perfil-dias-totales">0</div>
+                            <div class="stat-valor" id="perfil-dias-totales">—</div>
                             <div class="stat-etiqueta">Días totales</div>
                         </div>
                     </div>
 
                     <div class="grid-2">
                         <div class="stat-card">
-                            <div class="stat-valor" id="perfil-vencimiento">--/--/----</div>
+                            <div class="stat-valor" id="perfil-vencimiento">—</div>
                             <div class="stat-etiqueta">Vence</div>
                         </div>
                         <div class="stat-card">
-                            <div class="stat-valor" id="perfil-ingreso">--/--/----</div>
+                            <div class="stat-valor" id="perfil-ingreso">—</div>
                             <div class="stat-etiqueta">Miembro desde</div>
                         </div>
                     </div>
                 </div>
 
                 <!-- PANEL LOTES -->
-                <div class="panel" id="panel-lotes">
+                <div class="panel activo" id="panel-lotes">
                     <div class="titulo-panel">🎯 Tamaño</div>
-                    <div class="subtitulo-panel">Calcula tu lote por riesgo</div>
-                    
+                    <div class="subtitulo-panel">Calcula tu lote según riesgo</div>
+
                     <div class="tarjeta">
                         <div class="campo">
                             <div class="etiqueta">Activo</div>
@@ -557,21 +557,21 @@
 
                         <div class="grid-2">
                             <div class="campo">
-                                <div class="etiqueta">Balance $</div>
-                                <input type="number" id="lotes-balance" class="control" value="10000">
+                                <div class="etiqueta">Balance ($)</div>
+                                <input type="number" id="lotes-balance" class="control" value="10000" step="any">
                             </div>
                             <div class="campo">
-                                <div class="etiqueta">Riesgo %</div>
+                                <div class="etiqueta">Riesgo (%)</div>
                                 <input type="number" id="lotes-riesgo" class="control" value="1" step="0.1">
                             </div>
                         </div>
 
                         <div class="campo">
                             <div class="etiqueta">SL (pips)</div>
-                            <input type="number" id="lotes-sl" class="control" value="100">
+                            <input type="number" id="lotes-sl" class="control" value="100" step="any">
                         </div>
 
-                        <button class="btn-principal" onclick="calcularLotes()">Calcular</button>
+                        <button class="btn-principal" onclick="calcularLotes()">Calcular Lote</button>
 
                         <div class="resultado" id="resultado-lotes">
                             <div class="valor-destacado" id="lotes-valor">0.00</div>
@@ -594,7 +594,7 @@
                 <!-- PANEL SL/TP -->
                 <div class="panel" id="panel-sltp">
                     <div class="titulo-panel">📏 SL / TP</div>
-                    <div class="subtitulo-panel">Precios exactos</div>
+                    <div class="subtitulo-panel">Convierte pips a precios</div>
 
                     <div class="tarjeta">
                         <div class="campo">
@@ -617,16 +617,16 @@
 
                         <div class="grid-2">
                             <div class="campo">
-                                <div class="etiqueta">SL pips</div>
-                                <input type="number" id="sltp-sl" class="control" placeholder="100">
+                                <div class="etiqueta">SL (pips)</div>
+                                <input type="number" id="sltp-sl" class="control" placeholder="100" step="any">
                             </div>
                             <div class="campo">
-                                <div class="etiqueta">TP pips</div>
-                                <input type="number" id="sltp-tp" class="control" placeholder="200">
+                                <div class="etiqueta">TP (pips)</div>
+                                <input type="number" id="sltp-tp" class="control" placeholder="200" step="any">
                             </div>
                         </div>
 
-                        <button class="btn-principal" onclick="calcularSLTP()">Calcular</button>
+                        <button class="btn-principal" onclick="calcularSLTP()">Calcular Precios</button>
 
                         <div class="resultado" id="resultado-sltp">
                             <div class="fila">
@@ -649,7 +649,7 @@
                     </div>
                 </div>
 
-                <!-- PANEL PIP VALUE -->
+                <!-- PANEL VALOR DEL PIP -->
                 <div class="panel" id="panel-pip">
                     <div class="titulo-panel">💰 Valor del Pip</div>
                     <div class="subtitulo-panel">Cuánto dinero por pip</div>
@@ -671,7 +671,7 @@
 
                         <div class="campo">
                             <div class="etiqueta">Pips</div>
-                            <input type="number" id="pip-pips" class="control" value="100">
+                            <input type="number" id="pip-pips" class="control" value="100" step="any">
                         </div>
 
                         <button class="btn-principal" onclick="calcularPip()">Calcular</button>
@@ -690,7 +690,7 @@
                     </div>
                 </div>
 
-                <!-- PANEL R:R -->
+                <!-- PANEL RIESGO/BENEFICIO -->
                 <div class="panel" id="panel-rr">
                     <div class="titulo-panel">⚖️ R:R Ratio</div>
                     <div class="subtitulo-panel">Análisis riesgo/beneficio</div>
@@ -698,22 +698,22 @@
                     <div class="tarjeta">
                         <div class="grid-2">
                             <div class="campo">
-                                <div class="etiqueta">SL pips</div>
-                                <input type="number" id="rr-sl" class="control" placeholder="100">
+                                <div class="etiqueta">SL (pips)</div>
+                                <input type="number" id="rr-sl" class="control" placeholder="100" step="any">
                             </div>
                             <div class="campo">
-                                <div class="etiqueta">TP pips</div>
-                                <input type="number" id="rr-tp" class="control" placeholder="200">
+                                <div class="etiqueta">TP (pips)</div>
+                                <input type="number" id="rr-tp" class="control" placeholder="200" step="any">
                             </div>
                         </div>
 
                         <div class="grid-2">
                             <div class="campo">
-                                <div class="etiqueta">Balance $</div>
-                                <input type="number" id="rr-balance" class="control" value="10000">
+                                <div class="etiqueta">Balance ($)</div>
+                                <input type="number" id="rr-balance" class="control" value="10000" step="any">
                             </div>
                             <div class="campo">
-                                <div class="etiqueta">Riesgo %</div>
+                                <div class="etiqueta">Riesgo (%)</div>
                                 <input type="number" id="rr-riesgo" class="control" value="1" step="0.1">
                             </div>
                         </div>
@@ -748,7 +748,7 @@
                             <span class="timer-dot"></span>
                             <span id="timer-texto">actualizando</span>
                         </div>
-                        <button class="noticias-refresh" onclick="cargarNoticias(true)" style="background:var(--input); border:1px solid var(--borde); border-radius:30px; padding:6px 16px; color:var(--texto-sec); cursor:pointer;">↻</button>
+                        <button class="btn-actualizar" onclick="cargarNoticias(true)" style="background:var(--input); border:1px solid var(--borde); border-radius:30px; padding:6px 16px; color:var(--texto-sec); cursor:pointer;">↻</button>
                     </div>
 
                     <div id="noticias-lista">
@@ -759,8 +759,8 @@
 
             <!-- Navegación -->
             <nav class="nav">
-                <button class="nav-item activo" onclick="cambiarPanel('perfil', this)"><span class="nav-icono">👤</span><span>Perfil</span></button>
-                <button class="nav-item" onclick="cambiarPanel('lotes', this)"><span class="nav-icono">🎯</span><span>Lotes</span></button>
+                <button class="nav-item" onclick="cambiarPanel('perfil', this)"><span class="nav-icono">👤</span><span>Perfil</span></button>
+                <button class="nav-item activo" onclick="cambiarPanel('lotes', this)"><span class="nav-icono">🎯</span><span>Lotes</span></button>
                 <button class="nav-item" onclick="cambiarPanel('sltp', this)"><span class="nav-icono">📏</span><span>SL/TP</span></button>
                 <button class="nav-item" onclick="cambiarPanel('pip', this)"><span class="nav-icono">💰</span><span>Pip</span></button>
                 <button class="nav-item" onclick="cambiarPanel('rr', this)"><span class="nav-icono">⚖️</span><span>R:R</span></button>
@@ -800,26 +800,36 @@
         // ===== INICIALIZACIÓN =====
         async function iniciar() {
             try {
+                // Mostrar LOTES por defecto
+                document.getElementById('panel-lotes').classList.add('activo');
+                
                 const userId = tg?.initDataUnsafe?.user?.id;
                 
                 if (!userId) {
+                    // Modo demo
                     mostrarPrincipal(null);
+                    cargarNoticias();
                     return;
                 }
                 
-                // Intentar obtener datos (con caché)
+                // Intentar obtener datos
                 const data = await obtenerDatosUsuario(userId);
                 
                 if (data && data.has_membership && !data.is_expired) {
                     estado.usuario = data;
                     mostrarPrincipal(data);
+                    actualizarPerfil(data);
                 } else {
                     mostrarDenegado();
                 }
                 
+                // Cargar noticias siempre
+                cargarNoticias();
+                
             } catch (error) {
                 console.error('Error:', error);
-                mostrarDenegado();
+                mostrarPrincipal(null);
+                cargarNoticias();
             }
         }
 
@@ -863,7 +873,6 @@
             
             if (userData) {
                 actualizarInsignia(userData);
-                actualizarPerfil(userData);
             }
         }
 
@@ -887,6 +896,8 @@
         }
 
         function actualizarPerfil(data) {
+            if (!data) return;
+            
             // Nombre y avatar
             const user = tg?.initDataUnsafe?.user;
             if (user) {
@@ -1098,7 +1109,6 @@
 
             lista.innerHTML = html;
             
-            // Actualizar timer
             if (estado.ultimaActualizacion) {
                 const seg = Math.floor((new Date() - estado.ultimaActualizacion) / 1000);
                 document.getElementById('timer-texto').textContent = `hace ${seg} seg`;
@@ -1107,10 +1117,10 @@
 
         function tiempoAgo(fecha) {
             const seg = Math.floor((new Date() - fecha) / 1000);
-            if (seg < 60) return 'hace 1 min';
-            if (seg < 3600) return `hace ${Math.floor(seg / 60)} min`;
-            if (seg < 86400) return `hace ${Math.floor(seg / 3600)} h`;
-            return `hace ${Math.floor(seg / 86400)} d`;
+            if (seg < 60) return 'hace 1m';
+            if (seg < 3600) return `hace ${Math.floor(seg / 60)}m`;
+            if (seg < 86400) return `hace ${Math.floor(seg / 3600)}h`;
+            return `hace ${Math.floor(seg / 86400)}d`;
         }
 
         // ===== AUTO-ACTUALIZACIÓN =====
