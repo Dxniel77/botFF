@@ -731,14 +731,14 @@
   async function init() {
     try {
       const initData = tg?.initData || '';
+      const tgUser   = tg?.initDataUnsafe?.user;
+      const uid      = tgUser?.id || 0;
+
       let url = `${API_BASE}/api/user_info`;
-      if (initData) {
-        url += `?initData=${encodeURIComponent(initData)}`;
-      } else {
-        // Modo desarrollo: usar user_id del initDataUnsafe
-        const uid = tg?.initDataUnsafe?.user?.id;
-        if (uid) url += `?user_id=${uid}`;
-      }
+      const params = new URLSearchParams();
+      if (initData) params.set('initData', initData);
+      if (uid)      params.set('user_id', uid);
+      url += '?' + params.toString();
 
       const res  = await fetch(url);
       const data = await res.json();
