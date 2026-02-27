@@ -29,7 +29,8 @@
             --accent-gold-dim: rgba(201, 168, 76, 0.15);
             --accent-green: #2EB67D;
             --accent-red: #E05A5A;
-            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --accent-blue: #3B7FBD;
+            --font-sans: 'Inter', sans-serif;
             --font-mono: 'JetBrains Mono', monospace;
             --radius-lg: 20px;
             --radius-md: 14px;
@@ -54,7 +55,7 @@
             background-color: var(--bg-primary);
         }
 
-        /* --- Pantallas --- */
+        /* Pantallas */
         .screen { display: none; flex: 1; flex-direction: column; height: 100%; }
         .screen.on { display: flex; }
 
@@ -68,7 +69,6 @@
         .splash-logo {
             font-size: 42px;
             font-weight: 700;
-            letter-spacing: -0.5px;
             background: linear-gradient(135deg, #F0F3F8 0%, #C9A84C 80%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -103,7 +103,6 @@
             border-radius: 40px;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.15s;
         }
         .denied-button:active { background: #2A2F38; transform: scale(0.97); }
 
@@ -122,7 +121,6 @@
         .header-title {
             font-size: 20px;
             font-weight: 600;
-            letter-spacing: -0.3px;
             color: var(--accent-gold);
         }
         .header-badge {
@@ -131,7 +129,6 @@
             border-radius: 30px;
             padding: 4px 12px;
             font-size: 12px;
-            font-weight: 500;
             color: var(--accent-gold);
             margin-left: auto;
             font-family: var(--font-mono);
@@ -158,7 +155,6 @@
         .section-title {
             font-size: 24px;
             font-weight: 600;
-            letter-spacing: -0.5px;
             margin: 16px 0 4px 0;
         }
         .section-sub {
@@ -183,7 +179,6 @@
             font-size: 14px;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.8px;
             color: var(--text-muted);
             margin-bottom: 18px;
             display: flex;
@@ -208,7 +203,6 @@
             color: var(--text-secondary);
             margin-bottom: 4px;
             text-transform: uppercase;
-            letter-spacing: 0.3px;
         }
         .input-label small { color: var(--text-muted); }
         .input-control, .select-control {
@@ -221,7 +215,6 @@
             color: var(--text-primary);
             font-family: var(--font-mono);
             outline: none;
-            transition: border 0.15s;
         }
         .input-control:focus, .select-control:focus {
             border-color: var(--accent-gold);
@@ -245,12 +238,11 @@
             font-weight: 700;
             cursor: pointer;
             margin: 8px 0 6px 0;
-            transition: all 0.15s;
             box-shadow: 0 4px 14px rgba(201, 168, 76, 0.25);
         }
         .action-btn:active { transform: scale(0.98); opacity: 0.9; }
 
-        /* Toggle */
+        /* Toggle BUY/SELL */
         .toggle-group {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -504,7 +496,7 @@
             tg.expand();
         }
 
-        // Configuración - ¡ESTA ES LA URL CORRECTA!
+        // Configuración - API de Railway
         const API_BASE = 'https://dx-botv1-production.up.railway.app';
         
         // Estado
@@ -517,32 +509,20 @@
             'USDJPY': { pip: 0.01, value: 9.3, digits: 3 }
         };
 
-        // ===== INICIALIZACIÓN CORREGIDA =====
+        // Inicialización
         async function initApp() {
             try {
-                // Mostrar splash
-                document.getElementById('splash').classList.add('on');
-                
-                // Obtener datos de Telegram
                 const userId = tg?.initDataUnsafe?.user?.id;
                 
                 if (!userId) {
-                    console.log("No hay usuario de Telegram, modo demo");
+                    console.log("No hay usuario, modo demo");
                     showMainApp(null);
                     return;
                 }
                 
-                console.log("User ID:", userId);
-                
-                // CONSTRUIR URL CORRECTAMENTE
                 const url = `${API_BASE}/api/user_info?user_id=${userId}`;
-                
-                console.log("Fetching:", url);
-                
                 const response = await fetch(url);
                 const data = await response.json();
-                
-                console.log("Respuesta:", data);
                 
                 if (data.has_membership && !data.is_expired) {
                     showMainApp(data);
@@ -552,7 +532,6 @@
                 
             } catch (error) {
                 console.error("Error:", error);
-                // Si hay error, mostramos la app igual (modo demo)
                 showMainApp(null);
             }
         }
@@ -577,7 +556,7 @@
             }
         }
 
-        // ===== FUNCIONES DE CÁLCULO =====
+        // Funciones de cálculo
         function calculateLots() {
             const balance = parseFloat(document.getElementById('lots-balance').value) || 0;
             const riskPct = parseFloat(document.getElementById('lots-risk').value) || 0;
@@ -639,7 +618,7 @@
             const sl = parseFloat(document.getElementById('rr-sl').value) || 0;
             const tp = parseFloat(document.getElementById('rr-tp').value) || 0;
             const ratio = tp / sl;
-            document.getElementById('rr-ratio').textContent = '1:' + ratio.toFixed(2);
+            document.getElementById('rr-ratio').textContent = '1:' + (ratio || 0).toFixed(2);
             document.getElementById('result-rr').classList.add('show');
         }
 
