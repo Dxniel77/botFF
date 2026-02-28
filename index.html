@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Pro Trader · Simulador + Calculadora</title>
-    <!-- Lightweight Charts (TradingView) -->
-    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+    <title>Trader Toolkit · Oro & Bitcoin</title>
+    <!-- Fuentes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -44,7 +43,9 @@
             display: flex;
             flex-direction: column;
             height: 100vh;
+            background: var(--fondo);
         }
+        /* Header con selector de idioma */
         .header {
             padding: 16px 20px;
             display: flex;
@@ -60,43 +61,93 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .header-badge {
-            background: rgba(240,185,11,0.1);
+        .idioma-selector {
+            display: flex;
+            gap: 8px;
+            background: var(--input);
             border: 1px solid var(--borde);
             border-radius: 30px;
-            padding: 4px 14px;
-            font-size: 12px;
+            padding: 4px;
+        }
+        .idioma-option {
+            padding: 6px 12px;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 30px;
+            cursor: pointer;
+            color: var(--texto-mute);
+            transition: all 0.2s;
+        }
+        .idioma-option.activo {
+            background: var(--oro);
+            color: #0B0E14;
+        }
+        /* Contenido principal con pestañas */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            padding: 16px 16px 0;
+        }
+        .tab {
+            flex: 1;
+            background: var(--tarjeta);
+            border: 1px solid var(--borde);
+            border-radius: 30px;
+            padding: 12px;
+            text-align: center;
+            font-weight: 600;
+            color: var(--texto-mute);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .tab.activo {
+            background: rgba(240,185,11,0.1);
+            border-color: var(--oro);
             color: var(--oro);
         }
         .contenido {
             flex: 1;
             overflow-y: auto;
             padding: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
+            scrollbar-width: thin;
         }
-        /* Panel de calculadora */
-        .panel-calc {
+        .contenido::-webkit-scrollbar { width: 4px; }
+        .contenido::-webkit-scrollbar-track { background: var(--tarjeta); }
+        .contenido::-webkit-scrollbar-thumb { background: var(--borde); }
+        /* Panel Calculadora */
+        .panel {
+            display: none;
+        }
+        .panel.activo { display: block; }
+        .consejo {
+            background: rgba(46,189,133,0.08);
+            border-left: 3px solid var(--verde);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 16px;
+            font-size: 13px;
+            color: var(--texto-sec);
+            line-height: 1.5;
+        }
+        .tarjeta {
             background: var(--tarjeta);
             border: 1px solid var(--borde);
             border-radius: 20px;
             padding: 20px;
+            margin-bottom: 20px;
         }
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
         }
-        .campo {
-            margin-bottom: 12px;
-        }
+        .campo { margin-bottom: 16px; }
         .etiqueta {
             font-size: 12px;
             font-weight: 600;
             color: var(--texto-sec);
-            margin-bottom: 4px;
+            margin-bottom: 6px;
             text-transform: uppercase;
             display: flex;
             justify-content: space-between;
@@ -111,7 +162,7 @@
             background: var(--input);
             border: 1px solid var(--borde);
             border-radius: 12px;
-            padding: 12px 14px;
+            padding: 14px;
             font-size: 15px;
             color: var(--texto);
             font-family: var(--mono);
@@ -136,7 +187,7 @@
             background: var(--input);
             border: 1px solid var(--borde);
             border-radius: 12px;
-            padding: 12px;
+            padding: 14px;
             font-weight: 600;
             color: var(--texto-sec);
             text-align: center;
@@ -192,13 +243,11 @@
         .fila {
             display: flex;
             justify-content: space-between;
-            padding: 8px 0;
+            padding: 10px 0;
             border-bottom: 1px solid var(--borde);
             font-size: 14px;
         }
-        .fila:last-child {
-            border-bottom: none;
-        }
+        .fila:last-child { border-bottom: none; }
         .rojo { color: var(--rojo); }
         .verde { color: var(--verde); }
         .oro { color: var(--oro); }
@@ -207,244 +256,339 @@
             font-weight: 700;
             font-family: var(--mono);
         }
-        /* Panel gráfico */
-        .panel-grafico {
+        /* Noticias */
+        .noticias-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+        .noticias-timer {
+            display: flex;
+            align-items: center;
+            gap: 8px;
             background: var(--tarjeta);
             border: 1px solid var(--borde);
-            border-radius: 20px;
-            padding: 16px;
+            border-radius: 30px;
+            padding: 6px 16px;
+            font-size: 13px;
+            color: var(--texto-sec);
         }
-        #chart-container {
-            width: 100%;
-            height: 250px;
-            margin-bottom: 12px;
+        .timer-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--verde);
+            animation: pulse 2s infinite;
         }
-        .simulacion-control {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            justify-content: center;
-            margin-top: 10px;
-        }
-        .simulacion-btn {
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } }
+        .noticias-refresh {
             background: var(--input);
             border: 1px solid var(--borde);
             border-radius: 30px;
-            padding: 8px 20px;
+            padding: 6px 20px;
             font-size: 13px;
             color: var(--texto-sec);
             cursor: pointer;
         }
-        .simulacion-result {
-            font-family: var(--mono);
-            font-size: 14px;
-            background: var(--input);
-            padding: 8px 16px;
-            border-radius: 20px;
+        .noticia-item {
+            background: var(--tarjeta);
+            border: 1px solid var(--borde);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            text-decoration: none;
+            color: inherit;
+            display: block;
         }
-        .nota {
+        .noticia-fuente {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        .fuente-nombre {
+            background: var(--input);
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--texto-sec);
+        }
+        .fuente-tiempo {
             font-size: 12px;
             color: var(--texto-mute);
-            text-align: center;
-            margin-top: 8px;
         }
+        .noticia-titulo {
+            font-size: 15px;
+            font-weight: 600;
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+        .noticia-etiquetas {
+            display: flex;
+            gap: 8px;
+        }
+        .etiqueta {
+            background: var(--input);
+            border-radius: 20px;
+            padding: 2px 10px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .etiqueta.oro { color: var(--oro); border: 1px solid rgba(240,185,11,0.3); }
+        .etiqueta.bitcoin { color: var(--bitcoin); border: 1px solid rgba(247,147,26,0.3); }
+        .noticias-vacio {
+            text-align: center;
+            padding: 40px;
+            color: var(--texto-mute);
+        }
+        .vacio-icono { font-size: 48px; margin-bottom: 12px; opacity: 0.5; }
     </style>
 </head>
 <body>
     <div id="app">
+        <!-- Header con selector de idioma -->
         <div class="header">
-            <div class="header-titulo">SIMULADOR PROFESIONAL</div>
-            <div class="header-badge">ORO/BTC</div>
+            <div class="header-titulo" id="header-title">TRADER TOOLKIT</div>
+            <div class="idioma-selector">
+                <span class="idioma-option activo" data-lang="es" onclick="cambiarIdioma('es')">ES</span>
+                <span class="idioma-option" data-lang="en" onclick="cambiarIdioma('en')">EN</span>
+            </div>
         </div>
-        <div class="contenido">
-            <!-- Panel de calculadora -->
-            <div class="panel-calc">
-                <div class="grid-2">
-                    <div class="campo">
-                        <div class="etiqueta">Activo</div>
-                        <select id="activo" class="selector">
-                            <option value="XAUUSD">🥇 ORO (XAUUSD)</option>
-                            <option value="BTCUSD">₿ BITCOIN (BTCUSD)</option>
-                        </select>
-                    </div>
-                    <div class="campo">
-                        <div class="etiqueta">Entrada</div>
-                        <input type="number" id="entrada" class="control" step="any" value="64251">
-                    </div>
-                </div>
 
-                <div class="toggle-group">
-                    <div class="toggle-btn comprar activo" id="btnCompra" onclick="setDireccion('BUY')">📈 COMPRA</div>
-                    <div class="toggle-btn vender" id="btnVenta" onclick="setDireccion('SELL')">📉 VENTA</div>
-                </div>
+        <!-- Pestañas -->
+        <div class="tabs">
+            <div class="tab activo" id="tab-calc" onclick="cambiarPanel('calc')">📊 Calculadora</div>
+            <div class="tab" id="tab-news" onclick="cambiarPanel('news')">📰 Noticias</div>
+        </div>
 
-                <div class="grid-2">
-                    <div class="campo">
-                        <div class="etiqueta">Balance ($)</div>
-                        <input type="number" id="balance" class="control" value="10000">
-                    </div>
-                    <div class="campo">
-                        <div class="etiqueta">Riesgo %</div>
-                        <input type="number" id="riesgo" class="control" value="1" step="0.1">
-                    </div>
+        <!-- Contenido -->
+        <div class="contenido" id="contenido">
+            <!-- Panel Calculadora -->
+            <div class="panel activo" id="panel-calc">
+                <div class="consejo" id="consejo-calc">
+                    💡 Ingresa el precio de entrada, elige dirección, tu capital y % de riesgo. Luego selecciona SL y TP en pips.
                 </div>
-
-                <div class="grid-2">
-                    <div class="campo">
-                        <div class="etiqueta">SL (pips)</div>
-                        <input type="number" id="slPips" class="control" value="300">
-                        <div class="pips-rapidos">
-                            <span class="pip-btn" onclick="document.getElementById('slPips').value=100">100</span>
-                            <span class="pip-btn" onclick="document.getElementById('slPips').value=200">200</span>
-                            <span class="pip-btn" onclick="document.getElementById('slPips').value=300">300</span>
-                            <span class="pip-btn" onclick="document.getElementById('slPips').value=500">500</span>
-                            <span class="pip-btn" onclick="document.getElementById('slPips').value=1000">1000</span>
+                <div class="tarjeta">
+                    <div class="grid-2">
+                        <div class="campo">
+                            <div class="etiqueta" data-i18n="asset">Activo</div>
+                            <select id="activo" class="selector">
+                                <option value="XAUUSD">🥇 ORO (XAUUSD)</option>
+                                <option value="BTCUSD">₿ BITCOIN (BTCUSD)</option>
+                            </select>
+                        </div>
+                        <div class="campo">
+                            <div class="etiqueta" data-i18n="entry">Entrada</div>
+                            <input type="number" id="entrada" class="control" step="any" value="64251">
                         </div>
                     </div>
-                    <div class="campo">
-                        <div class="etiqueta">TP (pips)</div>
-                        <input type="number" id="tpPips" class="control" value="600">
-                        <div class="pips-rapidos">
-                            <span class="pip-btn" onclick="document.getElementById('tpPips').value=200">200</span>
-                            <span class="pip-btn" onclick="document.getElementById('tpPips').value=400">400</span>
-                            <span class="pip-btn" onclick="document.getElementById('tpPips').value=600">600</span>
-                            <span class="pip-btn" onclick="document.getElementById('tpPips').value=1000">1000</span>
-                            <span class="pip-btn" onclick="document.getElementById('tpPips').value=1500">1500</span>
+                    <div class="toggle-group">
+                        <div class="toggle-btn comprar activo" id="btnCompra" onclick="setDireccion('BUY')">📈 <span data-i18n="buy">COMPRA</span></div>
+                        <div class="toggle-btn vender" id="btnVenta" onclick="setDireccion('SELL')">📉 <span data-i18n="sell">VENTA</span></div>
+                    </div>
+                    <div class="grid-2">
+                        <div class="campo">
+                            <div class="etiqueta" data-i18n="balance">Balance ($)</div>
+                            <input type="number" id="balance" class="control" value="10000">
+                        </div>
+                        <div class="campo">
+                            <div class="etiqueta" data-i18n="risk">Riesgo %</div>
+                            <input type="number" id="riesgo" class="control" value="1" step="0.1">
                         </div>
                     </div>
-                </div>
-
-                <button class="btn-principal" onclick="calcularTodo()">Actualizar cálculo</button>
-
-                <div class="resultados" id="resultados">
-                    <div class="fila">
-                        <span>Stop Loss</span>
-                        <span class="rojo precio-destacado" id="slPrecio">—</span>
+                    <div class="grid-2">
+                        <div class="campo">
+                            <div class="etiqueta" data-i18n="sl">SL (pips)</div>
+                            <input type="number" id="slPips" class="control" value="300">
+                            <div class="pips-rapidos">
+                                <span class="pip-btn" onclick="document.getElementById('slPips').value=100">100</span>
+                                <span class="pip-btn" onclick="document.getElementById('slPips').value=200">200</span>
+                                <span class="pip-btn" onclick="document.getElementById('slPips').value=300">300</span>
+                                <span class="pip-btn" onclick="document.getElementById('slPips').value=500">500</span>
+                                <span class="pip-btn" onclick="document.getElementById('slPips').value=1000">1000</span>
+                            </div>
+                        </div>
+                        <div class="campo">
+                            <div class="etiqueta" data-i18n="tp">TP (pips)</div>
+                            <input type="number" id="tpPips" class="control" value="600">
+                            <div class="pips-rapidos">
+                                <span class="pip-btn" onclick="document.getElementById('tpPips').value=200">200</span>
+                                <span class="pip-btn" onclick="document.getElementById('tpPips').value=400">400</span>
+                                <span class="pip-btn" onclick="document.getElementById('tpPips').value=600">600</span>
+                                <span class="pip-btn" onclick="document.getElementById('tpPips').value=1000">1000</span>
+                                <span class="pip-btn" onclick="document.getElementById('tpPips').value=1500">1500</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="fila">
-                        <span>Take Profit</span>
-                        <span class="verde precio-destacado" id="tpPrecio">—</span>
-                    </div>
-                    <div class="fila">
-                        <span>Lotes</span>
-                        <span class="oro" id="loteResultado">0.00</span>
-                    </div>
-                    <div class="fila">
-                        <span>Riesgo USD</span>
-                        <span class="rojo" id="riesgoUsd">$0</span>
-                    </div>
-                    <div class="fila">
-                        <span>Valor por pip</span>
-                        <span id="valorPip">$0</span>
-                    </div>
-                    <div class="fila">
-                        <span>Ratio R:R</span>
-                        <span class="oro" id="rrRatio">1:0</span>
+                    <button class="btn-principal" onclick="calcularTodo()" data-i18n="calculate">Calcular operación</button>
+                    <div class="resultados" id="resultados">
+                        <div class="fila">
+                            <span data-i18n="stop_loss">Stop Loss</span>
+                            <span class="rojo precio-destacado" id="slPrecio">—</span>
+                        </div>
+                        <div class="fila">
+                            <span data-i18n="take_profit">Take Profit</span>
+                            <span class="verde precio-destacado" id="tpPrecio">—</span>
+                        </div>
+                        <div class="fila">
+                            <span data-i18n="lots">Lotes</span>
+                            <span class="oro" id="loteResultado">0.00</span>
+                        </div>
+                        <div class="fila">
+                            <span data-i18n="risk_usd">Riesgo USD</span>
+                            <span class="rojo" id="riesgoUsd">$0</span>
+                        </div>
+                        <div class="fila">
+                            <span data-i18n="pip_value">Valor por pip</span>
+                            <span id="valorPip">$0</span>
+                        </div>
+                        <div class="fila">
+                            <span data-i18n="rr_ratio">Ratio R:R</span>
+                            <span class="oro" id="rrRatio">1:0</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Panel gráfico y simulador -->
-            <div class="panel-grafico">
-                <div id="chart-container"></div>
-                <div class="simulacion-control">
-                    <button class="simulacion-btn" onclick="simularMovimiento('abajo')">⬇️ Bajar</button>
-                    <button class="simulacion-btn" onclick="simularMovimiento('arriba')">⬆️ Subir</button>
-                    <button class="simulacion-btn" onclick="resetSimulacion()">↺ Reset</button>
+            <!-- Panel Noticias -->
+            <div class="panel" id="panel-news">
+                <div class="noticias-header">
+                    <div class="noticias-timer">
+                        <span class="timer-dot"></span>
+                        <span id="news-timer">actualizando</span>
+                    </div>
+                    <button class="noticias-refresh" onclick="cargarNoticias(true)" data-i18n="refresh">Actualizar</button>
                 </div>
-                <div class="simulacion-result" id="simulacionResult">
-                    Precio actual: <span id="precioActual">—</span>
+                <div id="news-container" class="noticias-lista">
+                    <div class="noticias-vacio">
+                        <div class="vacio-icono">📡</div>
+                        <div data-i18n="loading">Cargando noticias...</div>
+                    </div>
                 </div>
-                <div class="nota">⚡ Usa los botones para simular movimiento del precio y ver cuándo toca SL/TP.</div>
             </div>
         </div>
     </div>
 
     <script>
-        // Configuración de pares
+        // ===== CONFIGURACIÓN DE PARES =====
         const PARES = {
             'XAUUSD': { pip: 0.1, valor: 10.0, decimales: 2 },
             'BTCUSD': { pip: 1.0, valor: 1.0, decimales: 0 }
         };
 
-        // Variables globales
+        // ===== IDIOMAS =====
+        const traducciones = {
+            es: {
+                'header-title': 'TRADER TOOLKIT',
+                'asset': 'Activo',
+                'entry': 'Entrada',
+                'buy': 'COMPRA',
+                'sell': 'VENTA',
+                'balance': 'Balance ($)',
+                'risk': 'Riesgo %',
+                'sl': 'SL (pips)',
+                'tp': 'TP (pips)',
+                'calculate': 'Calcular operación',
+                'stop_loss': 'Stop Loss',
+                'take_profit': 'Take Profit',
+                'lots': 'Lotes',
+                'risk_usd': 'Riesgo USD',
+                'pip_value': 'Valor por pip',
+                'rr_ratio': 'Ratio R:R',
+                'consejo-calc': '💡 Ingresa el precio de entrada, elige dirección, tu capital y % de riesgo. Luego selecciona SL y TP en pips.',
+                'refresh': 'Actualizar',
+                'loading': 'Cargando noticias...',
+                'news_error': 'Error al cargar noticias',
+                'news_empty': 'No hay noticias disponibles',
+                'tab_calc': '📊 Calculadora',
+                'tab_news': '📰 Noticias',
+                'idioma_es': 'ES',
+                'idioma_en': 'EN',
+            },
+            en: {
+                'header-title': 'TRADER TOOLKIT',
+                'asset': 'Asset',
+                'entry': 'Entry',
+                'buy': 'BUY',
+                'sell': 'SELL',
+                'balance': 'Balance ($)',
+                'risk': 'Risk %',
+                'sl': 'SL (pips)',
+                'tp': 'TP (pips)',
+                'calculate': 'Calculate trade',
+                'stop_loss': 'Stop Loss',
+                'take_profit': 'Take Profit',
+                'lots': 'Lots',
+                'risk_usd': 'Risk USD',
+                'pip_value': 'Pip value',
+                'rr_ratio': 'R:R Ratio',
+                'consejo-calc': '💡 Enter entry price, choose direction, your capital and risk %. Then select SL and TP in pips.',
+                'refresh': 'Refresh',
+                'loading': 'Loading news...',
+                'news_error': 'Error loading news',
+                'news_empty': 'No news available',
+                'tab_calc': '📊 Calculator',
+                'tab_news': '📰 News',
+                'idioma_es': 'ES',
+                'idioma_en': 'EN',
+            }
+        };
+
+        let idiomaActual = 'es';
+
+        function cambiarIdioma(lang) {
+            idiomaActual = lang;
+            document.querySelectorAll('.idioma-option').forEach(opt => opt.classList.remove('activo'));
+            document.querySelector(`.idioma-option[data-lang="${lang}"]`).classList.add('activo');
+
+            // Actualizar todos los elementos con data-i18n
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (traducciones[lang][key]) {
+                    el.textContent = traducciones[lang][key];
+                }
+            });
+
+            // Actualizar títulos de pestañas (no tienen data-i18n, se actualizan manualmente)
+            document.getElementById('tab-calc').innerHTML = traducciones[lang]['tab_calc'];
+            document.getElementById('tab-news').innerHTML = traducciones[lang]['tab_news'];
+
+            // Actualizar consejo
+            document.getElementById('consejo-calc').innerHTML = traducciones[lang]['consejo-calc'];
+
+            // Actualizar placeholders (no se usan en este diseño)
+        }
+
+        // ===== ESTADO =====
         let direccion = 'BUY';
-        let chart, lineSeries, markerSeries;
-        let slPrice = 0, tpPrice = 0, entryPrice = 0;
-        let currentPrice = 0;
-        let activoActual = 'XAUUSD';
+        let noticias = [];
+        let ultimaActualizacion = null;
 
-        // Inicializar gráfico
-        function initChart() {
-            const container = document.getElementById('chart-container');
-            container.innerHTML = ''; // Limpiar
-            chart = LightweightCharts.createChart(container, {
-                width: container.clientWidth,
-                height: 250,
-                layout: {
-                    backgroundColor: '#141A24',
-                    textColor: '#9AA8B9',
-                },
-                grid: {
-                    vertLines: { color: '#2A3442' },
-                    horzLines: { color: '#2A3442' },
-                },
-                crosshair: {
-                    mode: LightweightCharts.CrosshairMode.Normal,
-                },
-                rightPriceScale: {
-                    borderColor: '#2A3442',
-                },
-                timeScale: {
-                    borderColor: '#2A3442',
-                },
-            });
-            lineSeries = chart.addLineSeries({
-                color: '#F0B90B',
-                lineWidth: 2,
-            });
-            // Datos iniciales falsos (solo para tener algo)
-            const data = [];
-            const basePrice = entryPrice || 64251;
-            for (let i = 0; i < 20; i++) {
-                data.push({ time: i, value: basePrice + (Math.random() - 0.5) * 100 });
-            }
-            lineSeries.setData(data);
-            currentPrice = data[data.length-1].value;
-            updatePrecioActual();
+        // ===== FUNCIONES DE INTERFAZ =====
+        function setDireccion(dir) {
+            direccion = dir;
+            document.getElementById('btnCompra').classList.toggle('activo', dir === 'BUY');
+            document.getElementById('btnVenta').classList.toggle('activo', dir === 'SELL');
         }
 
-        // Actualizar líneas de SL/TP en el gráfico
-        function updateMarkers() {
-            if (!chart) return;
-            // Eliminar marcadores anteriores
-            lineSeries.setMarkers([]);
-            const markers = [];
-            if (slPrice) {
-                markers.push({
-                    time: 19, // último índice
-                    position: 'aboveBar',
-                    color: '#F05A5A',
-                    shape: 'arrowDown',
-                    text: 'SL',
-                });
+        function cambiarPanel(panel) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('activo'));
+            document.querySelectorAll('.panel').forEach(p => p.classList.remove('activo'));
+            if (panel === 'calc') {
+                document.getElementById('tab-calc').classList.add('activo');
+                document.getElementById('panel-calc').classList.add('activo');
+            } else {
+                document.getElementById('tab-news').classList.add('activo');
+                document.getElementById('panel-news').classList.add('activo');
+                if (noticias.length === 0) cargarNoticias();
             }
-            if (tpPrice) {
-                markers.push({
-                    time: 19,
-                    position: 'aboveBar',
-                    color: '#2EBD85',
-                    shape: 'arrowUp',
-                    text: 'TP',
-                });
-            }
-            lineSeries.setMarkers(markers);
         }
 
-        // Calcular todo
+        // ===== CALCULADORA =====
         function calcularTodo() {
             const activo = document.getElementById('activo').value;
-            activoActual = activo;
             const entrada = parseFloat(document.getElementById('entrada').value);
             const balance = parseFloat(document.getElementById('balance').value);
             const riesgoPct = parseFloat(document.getElementById('riesgo').value);
@@ -452,123 +596,121 @@
             const tpPips = parseFloat(document.getElementById('tpPips').value);
 
             if (!entrada || !balance || !riesgoPct || !slPips || !tpPips) {
-                alert('Completa todos los campos');
+                alert(idiomaActual === 'es' ? 'Completa todos los campos' : 'Complete all fields');
                 return;
             }
 
             const data = PARES[activo];
-            entryPrice = entrada;
+            let slPrecio, tpPrecio;
 
-            // Precios SL/TP
             if (direccion === 'BUY') {
-                slPrice = entrada - slPips * data.pip;
-                tpPrice = entrada + tpPips * data.pip;
+                slPrecio = entrada - slPips * data.pip;
+                tpPrecio = entrada + tpPips * data.pip;
             } else {
-                slPrice = entrada + slPips * data.pip;
-                tpPrice = entrada - tpPips * data.pip;
+                slPrecio = entrada + slPips * data.pip;
+                tpPrecio = entrada - tpPips * data.pip;
             }
 
-            // Lote
             const riesgoUsd = balance * (riesgoPct / 100);
             const lotes = riesgoUsd / (slPips * data.valor);
             const lotesRedondeados = Math.floor(lotes * 100) / 100;
             const valorPorPip = lotesRedondeados * data.valor;
             const ratio = (tpPips / slPips).toFixed(2);
 
-            // Mostrar en UI
-            document.getElementById('slPrecio').textContent = slPrice.toFixed(data.decimales);
-            document.getElementById('tpPrecio').textContent = tpPrice.toFixed(data.decimales);
+            document.getElementById('slPrecio').textContent = slPrecio.toFixed(data.decimales);
+            document.getElementById('tpPrecio').textContent = tpPrecio.toFixed(data.decimales);
             document.getElementById('loteResultado').textContent = lotesRedondeados.toFixed(2);
             document.getElementById('riesgoUsd').textContent = '$' + riesgoUsd.toFixed(2);
             document.getElementById('valorPip').textContent = '$' + valorPorPip.toFixed(2);
             document.getElementById('rrRatio').textContent = '1:' + ratio;
+        }
 
-            // Reiniciar gráfico con nuevo precio base
-            if (chart) {
-                const newData = [];
-                for (let i = 0; i < 20; i++) {
-                    newData.push({ time: i, value: entrada + (Math.random() - 0.5) * (slPips * data.pip * 2) });
+        // ===== NOTICIAS =====
+        async function cargarNoticias(manual = false) {
+            const container = document.getElementById('news-container');
+            if (manual) {
+                container.innerHTML = `<div class="noticias-vacio"><div class="vacio-icono">🔄</div><div>${traducciones[idiomaActual]['loading']}</div></div>`;
+            }
+            try {
+                // Usamos una API gratuita de noticias de cripto (CryptoCompare)
+                const response = await fetch('https://min-api.cryptocompare.com/data/v2/news/?lang=ES&categories=BTC,XAU');
+                const data = await response.json();
+                if (data.Data && data.Data.length > 0) {
+                    noticias = data.Data.slice(0, 15);
+                    ultimaActualizacion = new Date();
+                    mostrarNoticias();
+                } else {
+                    throw new Error('No data');
                 }
-                lineSeries.setData(newData);
-                currentPrice = newData[newData.length-1].value;
-                updatePrecioActual();
-                updateMarkers();
-            } else {
-                initChart();
+            } catch (error) {
+                console.error('Error cargando noticias:', error);
+                container.innerHTML = `
+                    <div class="noticias-vacio">
+                        <div class="vacio-icono">📡</div>
+                        <div>${traducciones[idiomaActual]['news_error']}</div>
+                        <button class="noticias-refresh" onclick="cargarNoticias(true)" style="margin-top:16px;">↻ ${traducciones[idiomaActual]['refresh']}</button>
+                    </div>
+                `;
             }
         }
 
-        // Simular movimiento
-        function simularMovimiento(dir) {
-            if (!lineSeries) return;
-            const data = lineSeries.data();
-            if (data.length === 0) return;
-            const last = data[data.length-1];
-            const dataAtual = PARES[activoActual];
-            const step = dataAtual.pip * 10; // mover 10 pips por click
-            let newValue = last.value;
-            if (dir === 'arriba') newValue += step;
-            else newValue -= step;
+        function mostrarNoticias() {
+            const container = document.getElementById('news-container');
+            if (!noticias.length) return;
 
-            // Agregar nuevo punto y desplazar ventana
-            const newTime = last.time + 1;
-            const newData = [...data.slice(1), { time: newTime, value: newValue }];
-            lineSeries.setData(newData);
-            currentPrice = newValue;
-            updatePrecioActual();
+            let html = '';
+            noticias.forEach(item => {
+                const titulo = item.title.toUpperCase();
+                const esOro = titulo.includes('GOLD') || titulo.includes('ORO') || titulo.includes('XAU');
+                const esBtc = titulo.includes('BTC') || titulo.includes('BITCOIN');
 
-            // Verificar si tocó SL o TP
-            const dataAtualPreco = PARES[activoActual];
-            const sl = parseFloat(document.getElementById('slPrecio').textContent);
-            const tp = parseFloat(document.getElementById('tpPrecio').textContent);
-            const resultadoDiv = document.getElementById('simulacionResult');
-            if (direccion === 'BUY') {
-                if (newValue <= sl) {
-                    resultadoDiv.innerHTML = '🔴 <span style="color:var(--rojo)">SL alcanzado! Pérdida: ' + document.getElementById('riesgoUsd').textContent + '</span>';
-                } else if (newValue >= tp) {
-                    const ganancia = (tp - entryPrice) / (slPips * dataAtualPreco.pip) * parseFloat(document.getElementById('riesgoUsd').textContent.slice(1));
-                    resultadoDiv.innerHTML = '🟢 <span style="color:var(--verde)">TP alcanzado! Ganancia: +$' + ganancia.toFixed(2) + '</span>';
-                } else {
-                    resultadoDiv.innerHTML = 'Precio actual: <span id="precioActual">' + newValue.toFixed(dataAtualPreco.decimales) + '</span>';
-                }
-            } else {
-                if (newValue >= sl) {
-                    resultadoDiv.innerHTML = '🔴 <span style="color:var(--rojo)">SL alcanzado! Pérdida: ' + document.getElementById('riesgoUsd').textContent + '</span>';
-                } else if (newValue <= tp) {
-                    const ganancia = (entryPrice - tp) / (slPips * dataAtualPreco.pip) * parseFloat(document.getElementById('riesgoUsd').textContent.slice(1));
-                    resultadoDiv.innerHTML = '🟢 <span style="color:var(--verde)">TP alcanzado! Ganancia: +$' + ganancia.toFixed(2) + '</span>';
-                } else {
-                    resultadoDiv.innerHTML = 'Precio actual: <span id="precioActual">' + newValue.toFixed(dataAtualPreco.decimales) + '</span>';
-                }
-            }
+                const fecha = new Date(item.published_on * 1000);
+                const tiempo = tiempoAgo(fecha);
+
+                html += `
+                    <a href="${item.url}" target="_blank" class="noticia-item">
+                        <div class="noticia-fuente">
+                            <span class="fuente-nombre">${item.source}</span>
+                            <span class="fuente-tiempo">${tiempo}</span>
+                        </div>
+                        <div class="noticia-titulo">${item.title}</div>
+                        <div class="noticia-etiquetas">
+                            ${esOro ? '<span class="etiqueta oro">🥇 ORO</span>' : ''}
+                            ${esBtc ? '<span class="etiqueta bitcoin">₿ BITCOIN</span>' : ''}
+                        </div>
+                    </a>
+                `;
+            });
+            container.innerHTML = html;
+
+            // Actualizar timer cada segundo
+            if (ultimaActualizacion) actualizarTimer();
         }
 
-        function resetSimulacion() {
-            calcularTodo(); // recalcula y reinicia gráfico
-            document.getElementById('simulacionResult').innerHTML = 'Precio actual: <span id="precioActual">' + currentPrice.toFixed(PARES[activoActual].decimales) + '</span>';
+        function tiempoAgo(fecha) {
+            const segundos = Math.floor((new Date() - fecha) / 1000);
+            if (segundos < 60) return idiomaActual === 'es' ? 'hace 1m' : '1m ago';
+            if (segundos < 3600) return idiomaActual === 'es' ? `hace ${Math.floor(segundos / 60)}m` : `${Math.floor(segundos / 60)}m ago`;
+            if (segundos < 86400) return idiomaActual === 'es' ? `hace ${Math.floor(segundos / 3600)}h` : `${Math.floor(segundos / 3600)}h ago`;
+            return idiomaActual === 'es' ? `hace ${Math.floor(segundos / 86400)}d` : `${Math.floor(segundos / 86400)}d ago`;
         }
 
-        function updatePrecioActual() {
-            const span = document.getElementById('precioActual');
-            if (span) span.textContent = currentPrice.toFixed(PARES[activoActual].decimales);
+        function actualizarTimer() {
+            if (!ultimaActualizacion) return;
+            const segundos = Math.floor((new Date() - ultimaActualizacion) / 1000);
+            document.getElementById('news-timer').textContent = idiomaActual === 'es' ? `hace ${segundos}s` : `${segundos}s ago`;
         }
 
-        function setDireccion(dir) {
-            direccion = dir;
-            document.getElementById('btnCompra').classList.toggle('activo', dir === 'BUY');
-            document.getElementById('btnVenta').classList.toggle('activo', dir === 'SELL');
-        }
+        // Actualizar timer cada segundo
+        setInterval(actualizarTimer, 1000);
+        // Recargar noticias cada 5 minutos
+        setInterval(() => cargarNoticias(), 300000);
 
+        // Inicializar
         window.onload = function() {
-            initChart();
+            cambiarIdioma('es');
             calcularTodo();
         };
-
-        window.addEventListener('resize', () => {
-            if (chart) {
-                chart.resize(document.getElementById('chart-container').clientWidth, 250);
-            }
-        });
     </script>
 </body>
 </html>
