@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>EOS Trade · Calculadora VIP</title>
+    <title>Pro Trader · Simulador + Calculadora</title>
+    <!-- Lightweight Charts (TradingView) -->
+    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -14,7 +16,6 @@
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
         }
-
         :root {
             --fondo: #0B0E14;
             --tarjeta: #141A24;
@@ -27,10 +28,10 @@
             --bitcoin: #F7931A;
             --verde: #2EBD85;
             --rojo: #F05A5A;
+            --azul: #3B7FBD;
             --fuente: 'Inter', sans-serif;
             --mono: 'JetBrains Mono', monospace;
         }
-
         body, html {
             height: 100%;
             width: 100%;
@@ -39,83 +40,21 @@
             color: var(--texto);
             font-family: var(--fuente);
         }
-
         #app {
             display: flex;
             flex-direction: column;
             height: 100vh;
-            background: var(--fondo);
         }
-
-        /* Pantallas */
-        .pantalla {
-            display: none;
-            flex: 1;
-            flex-direction: column;
-            height: 100%;
-        }
-        .pantalla.activa { display: flex; }
-
-        /* Carga */
-        #carga {
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-        }
-        .logo-carga {
-            font-size: 32px;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--oro), var(--bitcoin));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .spinner {
-            width: 44px;
-            height: 44px;
-            border: 3px solid var(--borde);
-            border-top-color: var(--oro);
-            border-radius: 50%;
-            animation: girar 0.8s linear infinite;
-        }
-        @keyframes girar { to { transform: rotate(360deg); } }
-
-        /* Denegado */
-        #denegado {
-            align-items: center;
-            justify-content: center;
-            padding: 32px;
-            text-align: center;
-        }
-        .icono-denegado { font-size: 64px; margin-bottom: 20px; }
-        .titulo-denegado { font-size: 24px; font-weight: 700; color: var(--rojo); margin-bottom: 12px; }
-        .texto-denegado { color: var(--texto-sec); max-width: 280px; margin-bottom: 32px; }
-        .boton-denegado {
-            background: var(--input);
-            border: 1px solid var(--borde);
-            color: white;
-            padding: 14px 32px;
-            border-radius: 40px;
-            font-weight: 500;
-            cursor: pointer;
-        }
-
-        /* Principal */
-        #principal {
-            flex: 1;
-            display: none;
-            flex-direction: column;
-            overflow: hidden;
-        }
-        #principal.activa { display: flex; }
-
         .header {
             padding: 16px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            background: var(--tarjeta);
+            border-bottom: 1px solid var(--borde);
         }
         .header-titulo {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 700;
             background: linear-gradient(135deg, var(--oro), var(--bitcoin));
             -webkit-background-clip: text;
@@ -127,58 +66,37 @@
             border-radius: 30px;
             padding: 4px 14px;
             font-size: 12px;
-            font-weight: 600;
             color: var(--oro);
         }
-
         .contenido {
             flex: 1;
             overflow-y: auto;
-            padding: 0 16px 16px;
-            scrollbar-width: thin;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
         }
-        .contenido::-webkit-scrollbar { width: 4px; }
-        .contenido::-webkit-scrollbar-track { background: var(--tarjeta); }
-        .contenido::-webkit-scrollbar-thumb { background: var(--borde); }
-
-        .consejo {
-            background: rgba(46,189,133,0.08);
-            border-left: 3px solid var(--verde);
-            border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 16px;
-            font-size: 13px;
-            color: var(--texto-sec);
-            line-height: 1.5;
-        }
-        .consejo i {
-            color: var(--verde);
-            font-style: normal;
-            font-weight: 600;
-            margin-right: 6px;
-        }
-
-        .tarjeta {
+        /* Panel de calculadora */
+        .panel-calc {
             background: var(--tarjeta);
             border: 1px solid var(--borde);
             border-radius: 20px;
             padding: 20px;
-            margin-bottom: 20px;
         }
-
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
-
-        .campo { margin-bottom: 16px; }
+        .campo {
+            margin-bottom: 12px;
+        }
         .etiqueta {
             font-size: 12px;
             font-weight: 600;
             color: var(--texto-sec);
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             text-transform: uppercase;
             display: flex;
             justify-content: space-between;
@@ -188,13 +106,12 @@
             font-weight: 400;
             text-transform: none;
         }
-
         .control, .selector {
             width: 100%;
             background: var(--input);
             border: 1px solid var(--borde);
             border-radius: 12px;
-            padding: 14px;
+            padding: 12px 14px;
             font-size: 15px;
             color: var(--texto);
             font-family: var(--mono);
@@ -209,7 +126,6 @@
             background-repeat: no-repeat;
             background-position: right 16px center;
         }
-
         .toggle-group {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -220,7 +136,7 @@
             background: var(--input);
             border: 1px solid var(--borde);
             border-radius: 12px;
-            padding: 14px;
+            padding: 12px;
             font-weight: 600;
             color: var(--texto-sec);
             text-align: center;
@@ -236,20 +152,18 @@
             border-color: var(--rojo);
             color: var(--rojo);
         }
-
         .pips-rapidos {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
-            margin: 8px 0 16px;
+            margin: 8px 0 12px;
         }
         .pip-btn {
             background: var(--input);
             border: 1px solid var(--borde);
             border-radius: 20px;
-            padding: 8px 16px;
+            padding: 6px 14px;
             font-size: 12px;
-            font-weight: 500;
             color: var(--texto-sec);
             cursor: pointer;
         }
@@ -257,7 +171,6 @@
             border-color: var(--oro);
             color: var(--oro);
         }
-
         .btn-principal {
             width: 100%;
             background: var(--oro);
@@ -268,264 +181,376 @@
             font-size: 16px;
             font-weight: 700;
             cursor: pointer;
-            margin: 8px 0 16px;
+            margin: 8px 0;
         }
-
-        .resultado {
+        .resultados {
             background: var(--input);
-            border-radius: 12px;
+            border-radius: 16px;
             padding: 16px;
-            border-left: 3px solid var(--oro);
+            margin-top: 16px;
         }
         .fila {
             display: flex;
             justify-content: space-between;
-            padding: 10px 0;
+            padding: 8px 0;
             border-bottom: 1px solid var(--borde);
             font-size: 14px;
         }
-        .fila:last-child { border-bottom: none; }
+        .fila:last-child {
+            border-bottom: none;
+        }
         .rojo { color: var(--rojo); }
         .verde { color: var(--verde); }
         .oro { color: var(--oro); }
-        .precios-destacados {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-        .precio-box {
-            flex: 1;
-            background: var(--tarjeta);
-            border-radius: 12px;
-            padding: 12px;
-            text-align: center;
-            border: 1px solid var(--borde);
-        }
-        .precio-box .label {
-            font-size: 11px;
-            color: var(--texto-mute);
-            text-transform: uppercase;
-            margin-bottom: 4px;
-        }
-        .precio-box .valor {
+        .precio-destacado {
             font-size: 18px;
             font-weight: 700;
             font-family: var(--mono);
-            word-break: break-word;
         }
-        .precio-box.sl .valor { color: var(--rojo); }
-        .precio-box.tp .valor { color: var(--verde); }
-
-        .lote-destacado {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--oro);
-            text-align: center;
-            margin: 12px 0;
+        /* Panel gráfico */
+        .panel-grafico {
+            background: var(--tarjeta);
+            border: 1px solid var(--borde);
+            border-radius: 20px;
+            padding: 16px;
+        }
+        #chart-container {
+            width: 100%;
+            height: 250px;
+            margin-bottom: 12px;
+        }
+        .simulacion-control {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        .simulacion-btn {
+            background: var(--input);
+            border: 1px solid var(--borde);
+            border-radius: 30px;
+            padding: 8px 20px;
+            font-size: 13px;
+            color: var(--texto-sec);
+            cursor: pointer;
+        }
+        .simulacion-result {
             font-family: var(--mono);
+            font-size: 14px;
+            background: var(--input);
+            padding: 8px 16px;
+            border-radius: 20px;
         }
-
         .nota {
             font-size: 12px;
             color: var(--texto-mute);
             text-align: center;
-            margin-top: 16px;
+            margin-top: 8px;
         }
     </style>
 </head>
 <body>
     <div id="app">
-        <!-- CARGA -->
-        <div id="carga" class="pantalla activa">
-            <div class="logo-carga">EOS TRADE LAB</div>
-            <div class="spinner"></div>
+        <div class="header">
+            <div class="header-titulo">SIMULADOR PROFESIONAL</div>
+            <div class="header-badge">ORO/BTC</div>
         </div>
+        <div class="contenido">
+            <!-- Panel de calculadora -->
+            <div class="panel-calc">
+                <div class="grid-2">
+                    <div class="campo">
+                        <div class="etiqueta">Activo</div>
+                        <select id="activo" class="selector">
+                            <option value="XAUUSD">🥇 ORO (XAUUSD)</option>
+                            <option value="BTCUSD">₿ BITCOIN (BTCUSD)</option>
+                        </select>
+                    </div>
+                    <div class="campo">
+                        <div class="etiqueta">Entrada</div>
+                        <input type="number" id="entrada" class="control" step="any" value="64251">
+                    </div>
+                </div>
 
-        <!-- DENEGADO -->
-        <div id="denegado" class="pantalla">
-            <div class="icono-denegado">🔒</div>
-            <div class="titulo-denegado">Acceso Restringido</div>
-            <div class="texto-denegado">Necesitas una membresía activa para usar la calculadora VIP.</div>
-            <button class="boton-denegado" onclick="window.Telegram?.WebApp?.close()">← Volver al Bot</button>
-        </div>
+                <div class="toggle-group">
+                    <div class="toggle-btn comprar activo" id="btnCompra" onclick="setDireccion('BUY')">📈 COMPRA</div>
+                    <div class="toggle-btn vender" id="btnVenta" onclick="setDireccion('SELL')">📉 VENTA</div>
+                </div>
 
-        <!-- PRINCIPAL -->
-        <div id="principal" class="pantalla">
-            <div class="header">
-                <div class="header-titulo">EOS TRADE LAB</div>
-                <div class="header-badge" id="insignia">VIP</div>
+                <div class="grid-2">
+                    <div class="campo">
+                        <div class="etiqueta">Balance ($)</div>
+                        <input type="number" id="balance" class="control" value="10000">
+                    </div>
+                    <div class="campo">
+                        <div class="etiqueta">Riesgo %</div>
+                        <input type="number" id="riesgo" class="control" value="1" step="0.1">
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="campo">
+                        <div class="etiqueta">SL (pips)</div>
+                        <input type="number" id="slPips" class="control" value="300">
+                        <div class="pips-rapidos">
+                            <span class="pip-btn" onclick="document.getElementById('slPips').value=100">100</span>
+                            <span class="pip-btn" onclick="document.getElementById('slPips').value=200">200</span>
+                            <span class="pip-btn" onclick="document.getElementById('slPips').value=300">300</span>
+                            <span class="pip-btn" onclick="document.getElementById('slPips').value=500">500</span>
+                            <span class="pip-btn" onclick="document.getElementById('slPips').value=1000">1000</span>
+                        </div>
+                    </div>
+                    <div class="campo">
+                        <div class="etiqueta">TP (pips)</div>
+                        <input type="number" id="tpPips" class="control" value="600">
+                        <div class="pips-rapidos">
+                            <span class="pip-btn" onclick="document.getElementById('tpPips').value=200">200</span>
+                            <span class="pip-btn" onclick="document.getElementById('tpPips').value=400">400</span>
+                            <span class="pip-btn" onclick="document.getElementById('tpPips').value=600">600</span>
+                            <span class="pip-btn" onclick="document.getElementById('tpPips').value=1000">1000</span>
+                            <span class="pip-btn" onclick="document.getElementById('tpPips').value=1500">1500</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn-principal" onclick="calcularTodo()">Actualizar cálculo</button>
+
+                <div class="resultados" id="resultados">
+                    <div class="fila">
+                        <span>Stop Loss</span>
+                        <span class="rojo precio-destacado" id="slPrecio">—</span>
+                    </div>
+                    <div class="fila">
+                        <span>Take Profit</span>
+                        <span class="verde precio-destacado" id="tpPrecio">—</span>
+                    </div>
+                    <div class="fila">
+                        <span>Lotes</span>
+                        <span class="oro" id="loteResultado">0.00</span>
+                    </div>
+                    <div class="fila">
+                        <span>Riesgo USD</span>
+                        <span class="rojo" id="riesgoUsd">$0</span>
+                    </div>
+                    <div class="fila">
+                        <span>Valor por pip</span>
+                        <span id="valorPip">$0</span>
+                    </div>
+                    <div class="fila">
+                        <span>Ratio R:R</span>
+                        <span class="oro" id="rrRatio">1:0</span>
+                    </div>
+                </div>
             </div>
 
-            <div class="contenido">
-                <div class="consejo">
-                    <i>💡 Cómo usar:</i> Ingresa el precio de entrada, elige dirección, tu capital y % de riesgo. Luego selecciona SL y TP en pips (usa los botones rápidos) y obtén al instante tu lote, los precios exactos para copiar y más.
+            <!-- Panel gráfico y simulador -->
+            <div class="panel-grafico">
+                <div id="chart-container"></div>
+                <div class="simulacion-control">
+                    <button class="simulacion-btn" onclick="simularMovimiento('abajo')">⬇️ Bajar</button>
+                    <button class="simulacion-btn" onclick="simularMovimiento('arriba')">⬆️ Subir</button>
+                    <button class="simulacion-btn" onclick="resetSimulacion()">↺ Reset</button>
                 </div>
-
-                <div class="tarjeta">
-                    <!-- Activo y entrada -->
-                    <div class="grid-2">
-                        <div class="campo">
-                            <div class="etiqueta">Activo</div>
-                            <select id="activo" class="selector">
-                                <option value="XAUUSD">🥇 ORO (XAUUSD)</option>
-                                <option value="BTCUSD">₿ BITCOIN (BTCUSD)</option>
-                            </select>
-                        </div>
-                        <div class="campo">
-                            <div class="etiqueta">Precio entrada</div>
-                            <input type="number" id="entrada" class="control" step="any" placeholder="Ej: 64251" value="64251">
-                        </div>
-                    </div>
-
-                    <!-- Dirección -->
-                    <div class="toggle-group">
-                        <div class="toggle-btn comprar activo" id="btnCompra" onclick="setDireccion('BUY')">📈 COMPRA</div>
-                        <div class="toggle-btn vender" id="btnVenta" onclick="setDireccion('SELL')">📉 VENTA</div>
-                    </div>
-
-                    <!-- Capital y riesgo -->
-                    <div class="grid-2">
-                        <div class="campo">
-                            <div class="etiqueta">Balance ($)</div>
-                            <input type="number" id="balance" class="control" value="10000" step="any">
-                        </div>
-                        <div class="campo">
-                            <div class="etiqueta">Riesgo (%)</div>
-                            <input type="number" id="riesgo" class="control" value="1" step="0.1">
-                        </div>
-                    </div>
-
-                    <!-- SL y TP en pips -->
-                    <div class="grid-2">
-                        <div class="campo">
-                            <div class="etiqueta">SL (pips)</div>
-                            <input type="number" id="slPips" class="control" value="300" step="any">
-                            <div class="pips-rapidos">
-                                <span class="pip-btn" onclick="document.getElementById('slPips').value=100">100</span>
-                                <span class="pip-btn" onclick="document.getElementById('slPips').value=200">200</span>
-                                <span class="pip-btn" onclick="document.getElementById('slPips').value=300">300</span>
-                                <span class="pip-btn" onclick="document.getElementById('slPips').value=500">500</span>
-                                <span class="pip-btn" onclick="document.getElementById('slPips').value=1000">1000</span>
-                            </div>
-                        </div>
-                        <div class="campo">
-                            <div class="etiqueta">TP (pips)</div>
-                            <input type="number" id="tpPips" class="control" value="600" step="any">
-                            <div class="pips-rapidos">
-                                <span class="pip-btn" onclick="document.getElementById('tpPips').value=200">200</span>
-                                <span class="pip-btn" onclick="document.getElementById('tpPips').value=400">400</span>
-                                <span class="pip-btn" onclick="document.getElementById('tpPips').value=600">600</span>
-                                <span class="pip-btn" onclick="document.getElementById('tpPips').value=1000">1000</span>
-                                <span class="pip-btn" onclick="document.getElementById('tpPips').value=1500">1500</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <button class="btn-principal" onclick="calcularTodo()">Calcular operación</button>
-
-                    <!-- Resultados -->
-                    <div class="precios-destacados" id="preciosDestacados" style="display: none;">
-                        <div class="precio-box sl">
-                            <div class="label">STOP LOSS</div>
-                            <div class="valor" id="slPrecio">—</div>
-                        </div>
-                        <div class="precio-box tp">
-                            <div class="label">TAKE PROFIT</div>
-                            <div class="valor" id="tpPrecio">—</div>
-                        </div>
-                    </div>
-
-                    <div class="resultado" id="resultado" style="display: none;">
-                        <div class="lote-destacado" id="loteValor">0.00</div>
-                        <div class="fila">
-                            <span>Lotes recomendados</span>
-                            <span class="oro" id="loteResultado">0.00</span>
-                        </div>
-                        <div class="fila">
-                            <span>Riesgo en USD</span>
-                            <span class="rojo" id="riesgoUsd">$0</span>
-                        </div>
-                        <div class="fila">
-                            <span>Valor por pip</span>
-                            <span id="valorPip">$0</span>
-                        </div>
-                        <div class="fila">
-                            <span>Ratio R:R</span>
-                            <span class="oro" id="rrRatio">1:0</span>
-                        </div>
-                    </div>
-
-                    <div class="nota" id="nota">
-                        <span>⚡ Los precios de SL y TP están listos para copiar a tu orden.</span>
-                    </div>
+                <div class="simulacion-result" id="simulacionResult">
+                    Precio actual: <span id="precioActual">—</span>
                 </div>
+                <div class="nota">⚡ Usa los botones para simular movimiento del precio y ver cuándo toca SL/TP.</div>
             </div>
         </div>
     </div>
 
     <script>
-        // Telegram WebApp
-        const tg = window.Telegram?.WebApp;
-        if (tg) {
-            tg.ready();
-            tg.expand();
-        }
-
-        // Configuración
-        const API_URL = 'https://dx-botv1-production.up.railway.app';
-
-        // Datos de pares
+        // Configuración de pares
         const PARES = {
             'XAUUSD': { pip: 0.1, valor: 10.0, decimales: 2 },
             'BTCUSD': { pip: 1.0, valor: 1.0, decimales: 0 }
         };
 
+        // Variables globales
         let direccion = 'BUY';
-        let datosUsuario = null;
+        let chart, lineSeries, markerSeries;
+        let slPrice = 0, tpPrice = 0, entryPrice = 0;
+        let currentPrice = 0;
+        let activoActual = 'XAUUSD';
 
-        // Verificar membresía
-        async function iniciar() {
-            try {
-                const userId = tg?.initDataUnsafe?.user?.id;
-                if (!userId) {
-                    mostrarDenegado();
-                    return;
+        // Inicializar gráfico
+        function initChart() {
+            const container = document.getElementById('chart-container');
+            container.innerHTML = ''; // Limpiar
+            chart = LightweightCharts.createChart(container, {
+                width: container.clientWidth,
+                height: 250,
+                layout: {
+                    backgroundColor: '#141A24',
+                    textColor: '#9AA8B9',
+                },
+                grid: {
+                    vertLines: { color: '#2A3442' },
+                    horzLines: { color: '#2A3442' },
+                },
+                crosshair: {
+                    mode: LightweightCharts.CrosshairMode.Normal,
+                },
+                rightPriceScale: {
+                    borderColor: '#2A3442',
+                },
+                timeScale: {
+                    borderColor: '#2A3442',
+                },
+            });
+            lineSeries = chart.addLineSeries({
+                color: '#F0B90B',
+                lineWidth: 2,
+            });
+            // Datos iniciales falsos (solo para tener algo)
+            const data = [];
+            const basePrice = entryPrice || 64251;
+            for (let i = 0; i < 20; i++) {
+                data.push({ time: i, value: basePrice + (Math.random() - 0.5) * 100 });
+            }
+            lineSeries.setData(data);
+            currentPrice = data[data.length-1].value;
+            updatePrecioActual();
+        }
+
+        // Actualizar líneas de SL/TP en el gráfico
+        function updateMarkers() {
+            if (!chart) return;
+            // Eliminar marcadores anteriores
+            lineSeries.setMarkers([]);
+            const markers = [];
+            if (slPrice) {
+                markers.push({
+                    time: 19, // último índice
+                    position: 'aboveBar',
+                    color: '#F05A5A',
+                    shape: 'arrowDown',
+                    text: 'SL',
+                });
+            }
+            if (tpPrice) {
+                markers.push({
+                    time: 19,
+                    position: 'aboveBar',
+                    color: '#2EBD85',
+                    shape: 'arrowUp',
+                    text: 'TP',
+                });
+            }
+            lineSeries.setMarkers(markers);
+        }
+
+        // Calcular todo
+        function calcularTodo() {
+            const activo = document.getElementById('activo').value;
+            activoActual = activo;
+            const entrada = parseFloat(document.getElementById('entrada').value);
+            const balance = parseFloat(document.getElementById('balance').value);
+            const riesgoPct = parseFloat(document.getElementById('riesgo').value);
+            const slPips = parseFloat(document.getElementById('slPips').value);
+            const tpPips = parseFloat(document.getElementById('tpPips').value);
+
+            if (!entrada || !balance || !riesgoPct || !slPips || !tpPips) {
+                alert('Completa todos los campos');
+                return;
+            }
+
+            const data = PARES[activo];
+            entryPrice = entrada;
+
+            // Precios SL/TP
+            if (direccion === 'BUY') {
+                slPrice = entrada - slPips * data.pip;
+                tpPrice = entrada + tpPips * data.pip;
+            } else {
+                slPrice = entrada + slPips * data.pip;
+                tpPrice = entrada - tpPips * data.pip;
+            }
+
+            // Lote
+            const riesgoUsd = balance * (riesgoPct / 100);
+            const lotes = riesgoUsd / (slPips * data.valor);
+            const lotesRedondeados = Math.floor(lotes * 100) / 100;
+            const valorPorPip = lotesRedondeados * data.valor;
+            const ratio = (tpPips / slPips).toFixed(2);
+
+            // Mostrar en UI
+            document.getElementById('slPrecio').textContent = slPrice.toFixed(data.decimales);
+            document.getElementById('tpPrecio').textContent = tpPrice.toFixed(data.decimales);
+            document.getElementById('loteResultado').textContent = lotesRedondeados.toFixed(2);
+            document.getElementById('riesgoUsd').textContent = '$' + riesgoUsd.toFixed(2);
+            document.getElementById('valorPip').textContent = '$' + valorPorPip.toFixed(2);
+            document.getElementById('rrRatio').textContent = '1:' + ratio;
+
+            // Reiniciar gráfico con nuevo precio base
+            if (chart) {
+                const newData = [];
+                for (let i = 0; i < 20; i++) {
+                    newData.push({ time: i, value: entrada + (Math.random() - 0.5) * (slPips * data.pip * 2) });
                 }
+                lineSeries.setData(newData);
+                currentPrice = newData[newData.length-1].value;
+                updatePrecioActual();
+                updateMarkers();
+            } else {
+                initChart();
+            }
+        }
 
-                const response = await fetch(`${API_URL}/api/user_info?user_id=${userId}`);
-                const data = await response.json();
+        // Simular movimiento
+        function simularMovimiento(dir) {
+            if (!lineSeries) return;
+            const data = lineSeries.data();
+            if (data.length === 0) return;
+            const last = data[data.length-1];
+            const dataAtual = PARES[activoActual];
+            const step = dataAtual.pip * 10; // mover 10 pips por click
+            let newValue = last.value;
+            if (dir === 'arriba') newValue += step;
+            else newValue -= step;
 
-                if (data && data.has_membership && !data.is_expired) {
-                    datosUsuario = data;
-                    mostrarPrincipal(data);
+            // Agregar nuevo punto y desplazar ventana
+            const newTime = last.time + 1;
+            const newData = [...data.slice(1), { time: newTime, value: newValue }];
+            lineSeries.setData(newData);
+            currentPrice = newValue;
+            updatePrecioActual();
+
+            // Verificar si tocó SL o TP
+            const dataAtualPreco = PARES[activoActual];
+            const sl = parseFloat(document.getElementById('slPrecio').textContent);
+            const tp = parseFloat(document.getElementById('tpPrecio').textContent);
+            const resultadoDiv = document.getElementById('simulacionResult');
+            if (direccion === 'BUY') {
+                if (newValue <= sl) {
+                    resultadoDiv.innerHTML = '🔴 <span style="color:var(--rojo)">SL alcanzado! Pérdida: ' + document.getElementById('riesgoUsd').textContent + '</span>';
+                } else if (newValue >= tp) {
+                    const ganancia = (tp - entryPrice) / (slPips * dataAtualPreco.pip) * parseFloat(document.getElementById('riesgoUsd').textContent.slice(1));
+                    resultadoDiv.innerHTML = '🟢 <span style="color:var(--verde)">TP alcanzado! Ganancia: +$' + ganancia.toFixed(2) + '</span>';
                 } else {
-                    mostrarDenegado();
+                    resultadoDiv.innerHTML = 'Precio actual: <span id="precioActual">' + newValue.toFixed(dataAtualPreco.decimales) + '</span>';
                 }
-            } catch (error) {
-                console.error('Error:', error);
-                mostrarDenegado();
+            } else {
+                if (newValue >= sl) {
+                    resultadoDiv.innerHTML = '🔴 <span style="color:var(--rojo)">SL alcanzado! Pérdida: ' + document.getElementById('riesgoUsd').textContent + '</span>';
+                } else if (newValue <= tp) {
+                    const ganancia = (entryPrice - tp) / (slPips * dataAtualPreco.pip) * parseFloat(document.getElementById('riesgoUsd').textContent.slice(1));
+                    resultadoDiv.innerHTML = '🟢 <span style="color:var(--verde)">TP alcanzado! Ganancia: +$' + ganancia.toFixed(2) + '</span>';
+                } else {
+                    resultadoDiv.innerHTML = 'Precio actual: <span id="precioActual">' + newValue.toFixed(dataAtualPreco.decimales) + '</span>';
+                }
             }
         }
 
-        function mostrarDenegado() {
-            document.getElementById('carga').classList.remove('activa');
-            document.getElementById('denegado').classList.add('activa');
+        function resetSimulacion() {
+            calcularTodo(); // recalcula y reinicia gráfico
+            document.getElementById('simulacionResult').innerHTML = 'Precio actual: <span id="precioActual">' + currentPrice.toFixed(PARES[activoActual].decimales) + '</span>';
         }
 
-        function mostrarPrincipal(userData) {
-            document.getElementById('carga').classList.remove('activa');
-            document.getElementById('principal').classList.add('activa');
-
-            // Actualizar insignia
-            if (userData) {
-                const dias = Math.floor((userData.seconds_left || 0) / 86400);
-                let nivel = 'VIP';
-                if (dias < 7) nivel = 'PRUEBA';
-                else if (dias < 30) nivel = 'VIP';
-                else if (dias < 90) nivel = 'PREMIUM';
-                else nivel = 'DIAMANTE';
-                document.getElementById('insignia').textContent = nivel;
-            }
+        function updatePrecioActual() {
+            const span = document.getElementById('precioActual');
+            if (span) span.textContent = currentPrice.toFixed(PARES[activoActual].decimales);
         }
 
         function setDireccion(dir) {
@@ -534,59 +559,16 @@
             document.getElementById('btnVenta').classList.toggle('activo', dir === 'SELL');
         }
 
-        function calcularTodo() {
-            const activo = document.getElementById('activo').value;
-            const entrada = parseFloat(document.getElementById('entrada').value);
-            const balance = parseFloat(document.getElementById('balance').value);
-            const riesgoPct = parseFloat(document.getElementById('riesgo').value);
-            const slPips = parseFloat(document.getElementById('slPips').value);
-            const tpPips = parseFloat(document.getElementById('tpPips').value);
+        window.onload = function() {
+            initChart();
+            calcularTodo();
+        };
 
-            if (!entrada || !balance || !riesgoPct || !slPips || !tpPips) {
-                alert('Por favor, completa todos los campos');
-                return;
+        window.addEventListener('resize', () => {
+            if (chart) {
+                chart.resize(document.getElementById('chart-container').clientWidth, 250);
             }
-
-            const data = PARES[activo];
-
-            // Calcular lote
-            const riesgoUsd = balance * (riesgoPct / 100);
-            const lotes = riesgoUsd / (slPips * data.valor);
-            const lotesRedondeados = Math.floor(lotes * 100) / 100;
-
-            // Precios SL/TP
-            let slPrecio, tpPrecio;
-            if (direccion === 'BUY') {
-                slPrecio = entrada - slPips * data.pip;
-                tpPrecio = entrada + tpPips * data.pip;
-            } else {
-                slPrecio = entrada + slPips * data.pip;
-                tpPrecio = entrada - tpPips * data.pip;
-            }
-
-            // Valor por pip
-            const valorPorPip = lotesRedondeados * data.valor;
-
-            // Ratio R:R
-            const ratio = (tpPips / slPips).toFixed(2);
-
-            // Mostrar precios destacados
-            document.getElementById('slPrecio').textContent = slPrecio.toFixed(data.decimales);
-            document.getElementById('tpPrecio').textContent = tpPrecio.toFixed(data.decimales);
-            document.getElementById('preciosDestacados').style.display = 'flex';
-
-            // Mostrar resultados
-            document.getElementById('loteValor').textContent = lotesRedondeados.toFixed(2);
-            document.getElementById('loteResultado').textContent = lotesRedondeados.toFixed(2);
-            document.getElementById('riesgoUsd').textContent = '$' + riesgoUsd.toFixed(2);
-            document.getElementById('valorPip').textContent = '$' + valorPorPip.toFixed(2);
-            document.getElementById('rrRatio').textContent = '1:' + ratio;
-            document.getElementById('resultado').style.display = 'block';
-            document.getElementById('nota').innerHTML = '⚡ Los precios de SL y TP están listos para copiar a tu orden.';
-        }
-
-        // Iniciar
-        iniciar();
+        });
     </script>
 </body>
 </html>
