@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>EOS Trade · Calculadora Rápida</title>
+    <title>EOS Trade · Calculadora VIP</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -46,6 +46,67 @@
             height: 100vh;
             background: var(--fondo);
         }
+
+        /* Pantallas */
+        .pantalla {
+            display: none;
+            flex: 1;
+            flex-direction: column;
+            height: 100%;
+        }
+        .pantalla.activa { display: flex; }
+
+        /* Carga */
+        #carga {
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+        .logo-carga {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--oro), var(--bitcoin));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .spinner {
+            width: 44px;
+            height: 44px;
+            border: 3px solid var(--borde);
+            border-top-color: var(--oro);
+            border-radius: 50%;
+            animation: girar 0.8s linear infinite;
+        }
+        @keyframes girar { to { transform: rotate(360deg); } }
+
+        /* Denegado */
+        #denegado {
+            align-items: center;
+            justify-content: center;
+            padding: 32px;
+            text-align: center;
+        }
+        .icono-denegado { font-size: 64px; margin-bottom: 20px; }
+        .titulo-denegado { font-size: 24px; font-weight: 700; color: var(--rojo); margin-bottom: 12px; }
+        .texto-denegado { color: var(--texto-sec); max-width: 280px; margin-bottom: 32px; }
+        .boton-denegado {
+            background: var(--input);
+            border: 1px solid var(--borde);
+            color: white;
+            padding: 14px 32px;
+            border-radius: 40px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        /* Principal */
+        #principal {
+            flex: 1;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        #principal.activa { display: flex; }
 
         .header {
             padding: 16px 20px;
@@ -274,124 +335,198 @@
 </head>
 <body>
     <div id="app">
-        <div class="header">
-            <div class="header-titulo">EOS TRADE LAB</div>
-            <div class="header-badge">CALCULADORA</div>
+        <!-- CARGA -->
+        <div id="carga" class="pantalla activa">
+            <div class="logo-carga">EOS TRADE LAB</div>
+            <div class="spinner"></div>
         </div>
 
-        <div class="contenido">
-            <div class="consejo">
-                <i>💡 Cómo usar:</i> Ingresa el precio de entrada, elige dirección, tu capital y % de riesgo. Luego selecciona SL y TP en pips (usa los botones rápidos) y obtén al instante tu lote, los precios exactos para copiar y más.
+        <!-- DENEGADO -->
+        <div id="denegado" class="pantalla">
+            <div class="icono-denegado">🔒</div>
+            <div class="titulo-denegado">Acceso Restringido</div>
+            <div class="texto-denegado">Necesitas una membresía activa para usar la calculadora VIP.</div>
+            <button class="boton-denegado" onclick="window.Telegram?.WebApp?.close()">← Volver al Bot</button>
+        </div>
+
+        <!-- PRINCIPAL -->
+        <div id="principal" class="pantalla">
+            <div class="header">
+                <div class="header-titulo">EOS TRADE LAB</div>
+                <div class="header-badge" id="insignia">VIP</div>
             </div>
 
-            <div class="tarjeta">
-                <!-- Activo y entrada -->
-                <div class="grid-2">
-                    <div class="campo">
-                        <div class="etiqueta">Activo</div>
-                        <select id="activo" class="selector">
-                            <option value="XAUUSD">🥇 ORO (XAUUSD)</option>
-                            <option value="BTCUSD">₿ BITCOIN (BTCUSD)</option>
-                        </select>
-                    </div>
-                    <div class="campo">
-                        <div class="etiqueta">Precio entrada</div>
-                        <input type="number" id="entrada" class="control" step="any" placeholder="Ej: 64251" value="64251">
-                    </div>
+            <div class="contenido">
+                <div class="consejo">
+                    <i>💡 Cómo usar:</i> Ingresa el precio de entrada, elige dirección, tu capital y % de riesgo. Luego selecciona SL y TP en pips (usa los botones rápidos) y obtén al instante tu lote, los precios exactos para copiar y más.
                 </div>
 
-                <!-- Dirección -->
-                <div class="toggle-group">
-                    <div class="toggle-btn comprar activo" id="btnCompra" onclick="setDireccion('BUY')">📈 COMPRA</div>
-                    <div class="toggle-btn vender" id="btnVenta" onclick="setDireccion('SELL')">📉 VENTA</div>
-                </div>
-
-                <!-- Capital y riesgo -->
-                <div class="grid-2">
-                    <div class="campo">
-                        <div class="etiqueta">Balance ($)</div>
-                        <input type="number" id="balance" class="control" value="10000" step="any">
-                    </div>
-                    <div class="campo">
-                        <div class="etiqueta">Riesgo (%)</div>
-                        <input type="number" id="riesgo" class="control" value="1" step="0.1">
-                    </div>
-                </div>
-
-                <!-- SL y TP en pips con botones rápidos -->
-                <div class="grid-2">
-                    <div class="campo">
-                        <div class="etiqueta">SL (pips)</div>
-                        <input type="number" id="slPips" class="control" value="300" step="any">
-                        <div class="pips-rapidos">
-                            <span class="pip-btn" onclick="document.getElementById('slPips').value=100">100</span>
-                            <span class="pip-btn" onclick="document.getElementById('slPips').value=200">200</span>
-                            <span class="pip-btn" onclick="document.getElementById('slPips').value=300">300</span>
-                            <span class="pip-btn" onclick="document.getElementById('slPips').value=500">500</span>
-                            <span class="pip-btn" onclick="document.getElementById('slPips').value=1000">1000</span>
+                <div class="tarjeta">
+                    <!-- Activo y entrada -->
+                    <div class="grid-2">
+                        <div class="campo">
+                            <div class="etiqueta">Activo</div>
+                            <select id="activo" class="selector">
+                                <option value="XAUUSD">🥇 ORO (XAUUSD)</option>
+                                <option value="BTCUSD">₿ BITCOIN (BTCUSD)</option>
+                            </select>
+                        </div>
+                        <div class="campo">
+                            <div class="etiqueta">Precio entrada</div>
+                            <input type="number" id="entrada" class="control" step="any" placeholder="Ej: 64251" value="64251">
                         </div>
                     </div>
-                    <div class="campo">
-                        <div class="etiqueta">TP (pips)</div>
-                        <input type="number" id="tpPips" class="control" value="600" step="any">
-                        <div class="pips-rapidos">
-                            <span class="pip-btn" onclick="document.getElementById('tpPips').value=200">200</span>
-                            <span class="pip-btn" onclick="document.getElementById('tpPips').value=400">400</span>
-                            <span class="pip-btn" onclick="document.getElementById('tpPips').value=600">600</span>
-                            <span class="pip-btn" onclick="document.getElementById('tpPips').value=1000">1000</span>
-                            <span class="pip-btn" onclick="document.getElementById('tpPips').value=1500">1500</span>
+
+                    <!-- Dirección -->
+                    <div class="toggle-group">
+                        <div class="toggle-btn comprar activo" id="btnCompra" onclick="setDireccion('BUY')">📈 COMPRA</div>
+                        <div class="toggle-btn vender" id="btnVenta" onclick="setDireccion('SELL')">📉 VENTA</div>
+                    </div>
+
+                    <!-- Capital y riesgo -->
+                    <div class="grid-2">
+                        <div class="campo">
+                            <div class="etiqueta">Balance ($)</div>
+                            <input type="number" id="balance" class="control" value="10000" step="any">
+                        </div>
+                        <div class="campo">
+                            <div class="etiqueta">Riesgo (%)</div>
+                            <input type="number" id="riesgo" class="control" value="1" step="0.1">
                         </div>
                     </div>
-                </div>
 
-                <button class="btn-principal" onclick="calcularTodo()">Calcular operación</button>
+                    <!-- SL y TP en pips -->
+                    <div class="grid-2">
+                        <div class="campo">
+                            <div class="etiqueta">SL (pips)</div>
+                            <input type="number" id="slPips" class="control" value="300" step="any">
+                            <div class="pips-rapidos">
+                                <span class="pip-btn" onclick="document.getElementById('slPips').value=100">100</span>
+                                <span class="pip-btn" onclick="document.getElementById('slPips').value=200">200</span>
+                                <span class="pip-btn" onclick="document.getElementById('slPips').value=300">300</span>
+                                <span class="pip-btn" onclick="document.getElementById('slPips').value=500">500</span>
+                                <span class="pip-btn" onclick="document.getElementById('slPips').value=1000">1000</span>
+                            </div>
+                        </div>
+                        <div class="campo">
+                            <div class="etiqueta">TP (pips)</div>
+                            <input type="number" id="tpPips" class="control" value="600" step="any">
+                            <div class="pips-rapidos">
+                                <span class="pip-btn" onclick="document.getElementById('tpPips').value=200">200</span>
+                                <span class="pip-btn" onclick="document.getElementById('tpPips').value=400">400</span>
+                                <span class="pip-btn" onclick="document.getElementById('tpPips').value=600">600</span>
+                                <span class="pip-btn" onclick="document.getElementById('tpPips').value=1000">1000</span>
+                                <span class="pip-btn" onclick="document.getElementById('tpPips').value=1500">1500</span>
+                            </div>
+                        </div>
+                    </div>
 
-                <!-- Resultados: precios destacados para copiar -->
-                <div class="precios-destacados" id="preciosDestacados" style="display: none;">
-                    <div class="precio-box sl">
-                        <div class="label">STOP LOSS</div>
-                        <div class="valor" id="slPrecio">—</div>
-                    </div>
-                    <div class="precio-box tp">
-                        <div class="label">TAKE PROFIT</div>
-                        <div class="valor" id="tpPrecio">—</div>
-                    </div>
-                </div>
+                    <button class="btn-principal" onclick="calcularTodo()">Calcular operación</button>
 
-                <div class="resultado" id="resultado" style="display: none;">
-                    <div class="lote-destacado" id="loteValor">0.00</div>
-                    <div class="fila">
-                        <span>Lotes recomendados</span>
-                        <span class="oro" id="loteResultado">0.00</span>
+                    <!-- Resultados -->
+                    <div class="precios-destacados" id="preciosDestacados" style="display: none;">
+                        <div class="precio-box sl">
+                            <div class="label">STOP LOSS</div>
+                            <div class="valor" id="slPrecio">—</div>
+                        </div>
+                        <div class="precio-box tp">
+                            <div class="label">TAKE PROFIT</div>
+                            <div class="valor" id="tpPrecio">—</div>
+                        </div>
                     </div>
-                    <div class="fila">
-                        <span>Riesgo en USD</span>
-                        <span class="rojo" id="riesgoUsd">$0</span>
-                    </div>
-                    <div class="fila">
-                        <span>Valor por pip</span>
-                        <span id="valorPip">$0</span>
-                    </div>
-                    <div class="fila">
-                        <span>Ratio R:R</span>
-                        <span class="oro" id="rrRatio">1:0</span>
-                    </div>
-                </div>
 
-                <div class="nota" id="nota">
-                    <span>⚡ Los precios de SL y TP están listos para copiar a tu orden.</span>
+                    <div class="resultado" id="resultado" style="display: none;">
+                        <div class="lote-destacado" id="loteValor">0.00</div>
+                        <div class="fila">
+                            <span>Lotes recomendados</span>
+                            <span class="oro" id="loteResultado">0.00</span>
+                        </div>
+                        <div class="fila">
+                            <span>Riesgo en USD</span>
+                            <span class="rojo" id="riesgoUsd">$0</span>
+                        </div>
+                        <div class="fila">
+                            <span>Valor por pip</span>
+                            <span id="valorPip">$0</span>
+                        </div>
+                        <div class="fila">
+                            <span>Ratio R:R</span>
+                            <span class="oro" id="rrRatio">1:0</span>
+                        </div>
+                    </div>
+
+                    <div class="nota" id="nota">
+                        <span>⚡ Los precios de SL y TP están listos para copiar a tu orden.</span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
+        // Telegram WebApp
+        const tg = window.Telegram?.WebApp;
+        if (tg) {
+            tg.ready();
+            tg.expand();
+        }
+
+        // Configuración
+        const API_URL = 'https://dx-botv1-production.up.railway.app';
+
+        // Datos de pares
         const PARES = {
             'XAUUSD': { pip: 0.1, valor: 10.0, decimales: 2 },
             'BTCUSD': { pip: 1.0, valor: 1.0, decimales: 0 }
         };
 
         let direccion = 'BUY';
+        let datosUsuario = null;
+
+        // Verificar membresía
+        async function iniciar() {
+            try {
+                const userId = tg?.initDataUnsafe?.user?.id;
+                if (!userId) {
+                    mostrarDenegado();
+                    return;
+                }
+
+                const response = await fetch(`${API_URL}/api/user_info?user_id=${userId}`);
+                const data = await response.json();
+
+                if (data && data.has_membership && !data.is_expired) {
+                    datosUsuario = data;
+                    mostrarPrincipal(data);
+                } else {
+                    mostrarDenegado();
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                mostrarDenegado();
+            }
+        }
+
+        function mostrarDenegado() {
+            document.getElementById('carga').classList.remove('activa');
+            document.getElementById('denegado').classList.add('activa');
+        }
+
+        function mostrarPrincipal(userData) {
+            document.getElementById('carga').classList.remove('activa');
+            document.getElementById('principal').classList.add('activa');
+
+            // Actualizar insignia
+            if (userData) {
+                const dias = Math.floor((userData.seconds_left || 0) / 86400);
+                let nivel = 'VIP';
+                if (dias < 7) nivel = 'PRUEBA';
+                else if (dias < 30) nivel = 'VIP';
+                else if (dias < 90) nivel = 'PREMIUM';
+                else nivel = 'DIAMANTE';
+                document.getElementById('insignia').textContent = nivel;
+            }
+        }
 
         function setDireccion(dir) {
             direccion = dir;
@@ -414,12 +549,12 @@
 
             const data = PARES[activo];
 
-            // 1. Calcular lote
+            // Calcular lote
             const riesgoUsd = balance * (riesgoPct / 100);
             const lotes = riesgoUsd / (slPips * data.valor);
             const lotesRedondeados = Math.floor(lotes * 100) / 100;
 
-            // 2. Precios SL/TP
+            // Precios SL/TP
             let slPrecio, tpPrecio;
             if (direccion === 'BUY') {
                 slPrecio = entrada - slPips * data.pip;
@@ -429,10 +564,10 @@
                 tpPrecio = entrada - tpPips * data.pip;
             }
 
-            // 3. Valor por pip
+            // Valor por pip
             const valorPorPip = lotesRedondeados * data.valor;
 
-            // 4. Ratio R:R
+            // Ratio R:R
             const ratio = (tpPips / slPips).toFixed(2);
 
             // Mostrar precios destacados
@@ -447,15 +582,11 @@
             document.getElementById('valorPip').textContent = '$' + valorPorPip.toFixed(2);
             document.getElementById('rrRatio').textContent = '1:' + ratio;
             document.getElementById('resultado').style.display = 'block';
-
-            // Actualizar nota
             document.getElementById('nota').innerHTML = '⚡ Los precios de SL y TP están listos para copiar a tu orden.';
         }
 
-        // Cargar ejemplo al inicio
-        window.onload = function() {
-            calcularTodo();
-        };
+        // Iniciar
+        iniciar();
     </script>
 </body>
 </html>
